@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@source "../../**/*.php";
+
+@theme {
+  --color-brand-50: #f0fdf4;
+  --color-brand-100: #dcfce7;
+  --color-brand-500: #0ca14e;
+  --color-brand-600: #09813e;
+  --color-brand-700: #15803d;
+  --font-sans: "Inter", sans-serif;
+}
+
+body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #111827; }

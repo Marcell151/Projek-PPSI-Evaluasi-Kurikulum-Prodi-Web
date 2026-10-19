@@ -1,0 +1,20 @@
+@startuml
+start
+:Admin Mengakses Menu Pengguna;
+if (Pilih Metode Penambahan?) then (Manual)
+    :Isi Form Biodata & Peran;
+    :Sistem Menghasilkan Sandi Bawaan;
+else (Massal / Excel)
+    :Unduh Format & Unggah Berkas Excel/CSV;
+    :Sistem Memindai Baris Data;
+    if (Format Sesuai & Surel Unik?) then (Tidak)
+        :Tolak Proses & Tampilkan Pesan Galat Baris;
+        stop
+    else (Ya)
+        :Looping: Generate Sandi & Enkripsi Bcrypt;
+    endif
+endif
+:Simpan ke Tabel Pengguna & Profil Pengguna;
+:Tampilkan Notifikasi Sukses;
+stop
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+start
+:Admin Akses Master Instrumen;
+if (Pilih Aksi?) then (Tambah Data Baru)
+    :Input Detail Matkul / Pertanyaan;
+    :Sistem Melakukan INSERT ke Database;
+else (Non-Aktifkan Data Lama)
+    :Pilih Baris Data;
+    :Klik Toggle Status menjadi Tidak Aktif;
+    :Sistem Memblokir Perintah DELETE;
+    :Sistem Melakukan UPDATE kolom aktif = FALSE;
+endif
+stop
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+start
+:Pengguna Menginput Kredensial;
+:Sistem Memeriksa Database;
+if (Kredensial Valid?) then (Tidak)
+    :Tampilkan Pesan Galat;
+    stop
+else (Ya)
+    if (Atribut Peran?) then (Admin / Kaprodi)
+        :Inisialisasi Session Manajemen;
+        :Muat Antarmuka Dasbor Kendali;
+    else (Responden)
+        :Inisialisasi Session Responden;
+        :Muat Antarmuka Portal Kuesioner;
+    endif
+endif
+stop
+@enduml

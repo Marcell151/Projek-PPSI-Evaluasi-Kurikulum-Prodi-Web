@@ -1,0 +1,101 @@
+@startuml
+entity "PENGGUNA" as PENGGUNA {
+  *id : INT <<PK>>
+  --
+  nama : VARCHAR
+  email : VARCHAR
+  password : VARCHAR
+  peran : ENUM
+}
+
+entity "PROFIL_PENGGUNA" as PROFIL {
+  *pengguna_id : INT <<PK, FK>>
+  --
+  nim_nip : VARCHAR
+  instansi : VARCHAR
+  posisi_pekerjaan : VARCHAR
+  tahun_masuk : YEAR
+  tahun_lulus : YEAR
+}
+
+entity "PERIODE_EVALUASI" as PERIODE {
+  *id : INT <<PK>>
+  --
+  tahun_akademik : VARCHAR
+  status : ENUM
+}
+
+entity "MATA_KULIAH" as MK {
+  *id : INT <<PK>>
+  --
+  kode : VARCHAR
+  nama : VARCHAR
+  aktif : BOOLEAN
+}
+
+entity "PERTANYAAN" as PERTANYAAN {
+  *id : INT <<PK>>
+  --
+  teks_pertanyaan : TEXT
+  jenis : ENUM
+  peruntukan_peran : VARCHAR
+  kode : VARCHAR
+}
+
+entity "OPSI_PERTANYAAN" as OPSI {
+  *id : INT <<PK>>
+  --
+  pertanyaan_id : INT <<FK>>
+  teks_opsi : VARCHAR
+  kategori_kompetensi_id : INT <<FK>>
+}
+
+entity "KATEGORI_KOMPETENSI" as KATEGORI {
+  *id : INT <<PK>>
+  --
+  nama : VARCHAR
+}
+
+entity "PENGISIAN" as PENGISIAN {
+  *id : INT <<PK>>
+  --
+  pengguna_id : INT <<FK>>
+  periode_id : INT <<FK>>
+  status : ENUM
+}
+
+entity "PENGISIAN_MATKUL" as PENGISIAN_MK {
+  *id : INT <<PK>>
+  --
+  pengisian_id : INT <<FK>>
+  mata_kuliah_id : INT <<FK>>
+}
+
+entity "JAWABAN" as JAWABAN {
+  *id : INT <<PK>>
+  --
+  pengisian_id : INT <<FK>>
+  pertanyaan_id : INT <<FK>>
+  mata_kuliah_id : INT <<FK>>
+  nilai_skala : INT
+  alasan : TEXT
+}
+
+entity "JAWABAN_MULTI" as JAWABAN_MULTI {
+  *jawaban_id : INT <<FK>>
+  *opsi_id : INT <<FK>>
+}
+
+PENGGUNA ||--|| PROFIL
+PENGGUNA ||--o{ PENGISIAN
+PERIODE ||--o{ PENGISIAN
+PENGISIAN ||--o{ PENGISIAN_MK
+MK ||--o{ PENGISIAN_MK
+MK ||--o{ JAWABAN
+PENGISIAN ||--o{ JAWABAN
+PERTANYAAN ||--o{ JAWABAN
+PERTANYAAN ||--o{ OPSI
+OPSI }o--|| KATEGORI
+JAWABAN ||--o{ JAWABAN_MULTI
+OPSI ||--o{ JAWABAN_MULTI
+@enduml

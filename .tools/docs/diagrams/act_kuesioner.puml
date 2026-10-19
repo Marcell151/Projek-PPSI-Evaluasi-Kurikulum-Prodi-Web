@@ -1,0 +1,25 @@
+@startuml
+start
+:Responden Login;
+if (Pemeriksaan Status Sesi) then (Telah Submit / Final)
+    :Sistem Menolak Akses Formulir;
+    stop
+else (Belum / Draft)
+    :Memuat Portal Kuesioner;
+    :Sistem Menarik Data Draft Terakhir;
+    :Responden Memilih Mata Kuliah via Filter;
+    repeat
+        :Mulai Mengisi Kuesioner;
+        if (Apakah Nilai Skala <= 3?) then (Ya)
+            :Muncul Form Alasan Wajib (Min. 10 Karakter);
+        else (Tidak)
+            :Sistem Menerima Jawaban Skala Normal;
+        endif
+        :Simpan Otomatis via AJAX API;
+    repeat while (Formulir Selesai?) is (Belum)
+    ->Sudah;
+    :Klik 'Submit Final';
+    :Ubah Status Pengisian DB Menjadi Final;
+endif
+stop
+@enduml

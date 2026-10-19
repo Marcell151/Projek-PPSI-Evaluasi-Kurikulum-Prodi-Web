@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<!-- saved from url=(0118)file:///C:/Users/Marcell/.gemini/antigravity-ide/brain/0e247ec0-4377-4850-a2fa-fe5f78de4d89/viewer_arsitektur.html#erd -->
+<html lang="id"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viewer Arsitektur – Sistem Evaluasi Kurikulum</title>
+<meta name="description" content="Penampil diagram UML (Use Case, Activity, ERD) Sistem Evaluasi Kurikulum bergaya Draw.io untuk dokumen Bab III / SRS.">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Segoe UI",Helvetica,Arial,sans-serif;background:#eef1f5;color:#1f2937;display:flex;height:100vh;overflow:hidden}
+  aside{width:290px;background:#111827;color:#e5e7eb;display:flex;flex-direction:column;flex-shrink:0}
+  aside header{padding:20px 18px;border-bottom:1px solid #1f2937}
+  aside h1{font-size:15px;font-weight:700;color:#fff}
+  aside p{font-size:11px;color:#9ca3af;margin-top:4px}
+  nav{flex:1;overflow:auto;padding:10px}
+  .grp{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;margin:14px 8px 6px}
+  nav button{display:block;width:100%;text-align:left;background:none;border:0;color:#d1d5db;font-size:13px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:.15s}
+  nav button:hover{background:#1f2937;color:#fff}
+  nav button.active{background:#2563eb;color:#fff}
+  main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .toolbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:10px 18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .toolbar h2{font-size:15px;font-weight:600;margin-right:auto}
+  .btn{border:1px solid #d1d5db;background:#fff;border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;transition:.15s}
+  .btn:hover{background:#f3f4f6}
+  .btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+  .btn.primary:hover{background:#1d4ed8}
+  .stage{flex:1;overflow:auto;padding:28px;display:flex;justify-content:center;align-items:flex-start}
+  #canvas{background:#fff;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.12);transform-origin:top center;transition:transform .15s}
+  #canvas svg{display:block;max-width:none;height:auto}
+  .status{font-size:13px;color:#6b7280;padding:40px}
+  .editor{display:none;border-top:1px solid #e5e7eb;background:#fff;height:38vh;flex-direction:column}
+  .editor.open{display:flex}
+  .editor textarea{flex:1;border:0;padding:12px 16px;font:12px/1.5 Consolas,monospace;resize:none;outline:none}
+  .editor .bar{padding:6px 12px;border-bottom:1px solid #e5e7eb;display:flex;gap:8px;align-items:center;font-size:12px;color:#6b7280}
+</style>
+</head>
+<body>
+<aside>
+  <header>
+    <h1>Arsitektur Sistem Evaluasi Kurikulum</h1>
+    <p>Bab III – Pemodelan Visual (gaya Draw.io)</p>
+  </header>
+  <nav id="nav"><div class="grp">Use Case</div><button id="nav-uc" class="">Use Case Diagram</button><div class="grp">Activity Diagram</div><button id="nav-act-login" class="">Autentikasi (Login &amp; RBAC)</button><button id="nav-act-impor" class="">Manajemen Pengguna &amp; Impor</button><button id="nav-act-instrumen" class="">Manajemen Instrumen (Soft Delete)</button><button id="nav-act-kuesioner" class="">Pengisian Kuesioner (Auto-Save)</button><button id="nav-act-dasbor" class="">Dasbor Analitik &amp; Ekspor</button><button id="nav-act-tiket" class="">Tiket Bantuan (Helpdesk)</button><div class="grp">Basis Data</div><button id="nav-erd" class="active">Entity Relationship Diagram (ERD)</button></nav>
+</aside>
+
+<main>
+  <div class="toolbar">
+    <h2 id="title">Entity Relationship Diagram (ERD)</h2>
+    <button class="btn" id="btn-zoom-out">−</button>
+    <button class="btn" id="btn-zoom-reset">100%</button>
+    <button class="btn" id="btn-zoom-in">+</button>
+    <button class="btn" id="btn-edit">Edit Kode</button>
+    <button class="btn" id="btn-svg">Unduh SVG</button>
+    <button class="btn primary" id="btn-png">Unduh PNG (HD)</button>
+  </div>
+  <div class="stage"><div id="canvas"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" data-diagram-type="CLASS" style="width:1466px;height:711px;background:#FFFFFF;" width="1466px" height="711px" viewBox="0 0 1466 711" zoomAndPan="magnify" preserveAspectRatio="none" contentstyletype="text/css"><?plantuml 1.2026.9beta4?><defs></defs><g font-family="sans-serif" lengthAdjust="spacing"><!--class pengguna--><g class="entity" data-qualified-name="pengguna" id="ent0001" data-source-line="40"><rect x="505.16" y="13.98" width="139.559" height="109.813" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="505.16" y="13.98" width="139.559" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="505.16" y="30.949" width="139.559" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="505.16" y="13.98" width="139.559" height="109.813" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="544.737" y="30.119" fill="#000" font-size="12" textLength="60.404" font-family="Arial">pengguna</text><line x1="506.16" y1="37.949" x2="643.719" y2="37.949" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="516.16" cy="50.433" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="524.16" y="53.087" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="506.16" y1="59.918" x2="643.719" y2="59.918" style="stroke:#000;stroke-width:1;"></line><text x="511.16" y="75.056" fill="#000" font-size="12" textLength="104.379" font-family="Arial">nama : VARCHAR</text><text x="511.16" y="89.025" fill="#000" font-size="12" textLength="103.471" font-family="Arial">email : VARCHAR</text><text x="511.16" y="102.994" fill="#000" font-size="12" textLength="127.559" font-family="Arial">password : VARCHAR</text><text x="511.16" y="116.962" fill="#000" font-size="12" textLength="82.26" font-family="Arial">peran : ENUM</text></g><!--class profil--><g class="entity" data-qualified-name="profil" id="ent0002" data-source-line="48"><rect x="586" y="211.73" width="189.877" height="137.75" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="586" y="211.73" width="189.877" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="586" y="228.699" width="189.877" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="586" y="211.73" width="189.877" height="137.75" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="632.344" y="227.869" fill="#000" font-size="12" textLength="97.189" font-family="Arial">profil_pengguna</text><line x1="587" y1="235.699" x2="774.877" y2="235.699" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="597" cy="248.183" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="605" y="250.837" fill="#000" font-size="12" textLength="164.877" font-family="Arial">pengguna_id : INT «PK, FK»</text><line x1="587" y1="257.668" x2="774.877" y2="257.668" style="stroke:#000;stroke-width:1;"></line><text x="592" y="272.806" fill="#000" font-size="12" textLength="148.4" font-family="Arial">nomor_induk : VARCHAR</text><text x="592" y="286.775" fill="#000" font-size="12" textLength="83.924" font-family="Arial">alamat : TEXT</text><text x="592" y="300.744" fill="#000" font-size="12" textLength="115.746" font-family="Arial">telepon : VARCHAR</text><text x="592" y="314.712" fill="#000" font-size="12" textLength="170.42" font-family="Arial">posisi_pekerjaan : VARCHAR</text><text x="592" y="328.681" fill="#000" font-size="12" textLength="116.818" font-family="Arial">instansi : VARCHAR</text><text x="592" y="342.65" fill="#000" font-size="12" textLength="112.137" font-family="Arial">tahun_lulus : YEAR</text></g><!--class periode--><g class="entity" data-qualified-name="periode" id="ent0003" data-source-line="58"><rect x="7" y="7" width="181.881" height="123.781" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="7" y="7" width="181.881" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="7" y="23.969" width="181.881" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="7" y="7" width="181.881" height="123.781" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="47.277" y="23.139" fill="#000" font-size="12" textLength="101.326" font-family="Arial">periode_evaluasi</text><line x1="8" y1="30.969" x2="187.881" y2="30.969" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="18" cy="43.453" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="26" y="46.107" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="8" y1="52.938" x2="187.881" y2="52.938" style="stroke:#000;stroke-width:1;"></line><text x="13" y="68.076" fill="#000" font-size="12" textLength="169.881" font-family="Arial">tahun_akademik : VARCHAR</text><text x="13" y="82.045" fill="#000" font-size="12" textLength="103.348" font-family="Arial">semester : ENUM</text><text x="13" y="96.014" fill="#000" font-size="12" textLength="128.936" font-family="Arial">tanggal_mulai : DATE</text><text x="13" y="109.982" fill="#000" font-size="12" textLength="136.91" font-family="Arial">tanggal_selesai : DATE</text><text x="13" y="123.951" fill="#000" font-size="12" textLength="84.24" font-family="Arial">status : ENUM</text></g><!--class kategori--><g class="entity" data-qualified-name="kategori" id="ent0004" data-source-line="67"><rect x="1276" y="20.96" width="131.877" height="95.844" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="1276" y="20.96" width="131.877" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="1276" y="37.929" width="131.877" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="1276" y="20.96" width="131.877" height="95.844" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="1279" y="37.099" fill="#000" font-size="12" textLength="125.877" font-family="Arial">kategori_kompetensi</text><line x1="1277" y1="44.929" x2="1406.877" y2="44.929" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="1287" cy="57.413" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="1295" y="60.067" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="1277" y1="66.898" x2="1406.877" y2="66.898" style="stroke:#000;stroke-width:1;"></line><text x="1282" y="82.036" fill="#000" font-size="12" textLength="99.668" font-family="Arial">kode : VARCHAR</text><text x="1282" y="96.005" fill="#000" font-size="12" textLength="104.379" font-family="Arial">nama : VARCHAR</text><text x="1282" y="109.974" fill="#000" font-size="12" textLength="96.814" font-family="Arial">aktif : BOOLEAN</text></g><!--class bk--><g class="entity" data-qualified-name="bk" id="ent0005" data-source-line="74"><rect x="1232.13" y="225.7" width="219.615" height="109.813" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="1232.13" y="225.7" width="219.615" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="1232.13" y="242.669" width="219.615" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="1232.13" y="225.7" width="219.615" height="109.813" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="1302.205" y="241.839" fill="#000" font-size="12" textLength="79.465" font-family="Arial">bahan_kajian</text><line x1="1233.13" y1="249.669" x2="1450.745" y2="249.669" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="1243.13" cy="262.153" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="1251.13" y="264.807" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="1233.13" y1="271.638" x2="1450.745" y2="271.638" style="stroke:#000;stroke-width:1;"></line><text x="1238.13" y="286.776" fill="#000" font-size="12" textLength="207.615" font-family="Arial">kategori_kompetensi_id : INT «FK»</text><text x="1238.13" y="300.745" fill="#000" font-size="12" textLength="99.668" font-family="Arial">kode : VARCHAR</text><text x="1238.13" y="314.714" fill="#000" font-size="12" textLength="104.379" font-family="Arial">nama : VARCHAR</text><text x="1238.13" y="328.682" fill="#000" font-size="12" textLength="96.814" font-family="Arial">aktif : BOOLEAN</text></g><!--class mk--><g class="entity" data-qualified-name="mk" id="ent0006" data-source-line="82"><rect x="210.75" y="197.76" width="142.383" height="165.688" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="210.75" y="197.76" width="142.383" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="210.75" y="214.729" width="142.383" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="210.75" y="197.76" width="142.383" height="165.688" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="245.3" y="213.899" fill="#000" font-size="12" textLength="73.283" font-family="Arial">mata_kuliah</text><line x1="211.75" y1="221.729" x2="352.133" y2="221.729" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="221.75" cy="234.213" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="229.75" y="236.867" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="211.75" y1="243.698" x2="352.133" y2="243.698" style="stroke:#000;stroke-width:1;"></line><text x="216.75" y="258.836" fill="#000" font-size="12" textLength="99.668" font-family="Arial">kode : VARCHAR</text><text x="216.75" y="272.805" fill="#000" font-size="12" textLength="104.379" font-family="Arial">nama : VARCHAR</text><text x="216.75" y="286.774" fill="#000" font-size="12" textLength="87.498" font-family="Arial">semester : INT</text><text x="216.75" y="300.742" fill="#000" font-size="12" textLength="50.971" font-family="Arial">sks : INT</text><text x="216.75" y="314.711" fill="#000" font-size="12" textLength="130.383" font-family="Arial">kurikulum : VARCHAR</text><text x="216.75" y="328.68" fill="#000" font-size="12" textLength="105.973" font-family="Arial">kelompok : ENUM</text><text x="216.75" y="342.649" fill="#000" font-size="12" textLength="75.275" font-family="Arial">jenis : ENUM</text><text x="216.75" y="356.617" fill="#000" font-size="12" textLength="96.814" font-family="Arial">aktif : BOOLEAN</text></g><!--class mkbk--><g class="entity" data-qualified-name="mkbk" id="ent0007" data-source-line="94"><rect x="707.47" y="462.37" width="208.938" height="59.906" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="707.47" y="462.37" width="208.938" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="707.47" y="479.339" width="208.938" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="707.47" y="462.37" width="208.938" height="59.906" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="765.014" y="478.509" fill="#000" font-size="12" textLength="93.85" font-family="Arial">mata_kuliah_bk</text><line x1="708.47" y1="486.339" x2="915.408" y2="486.339" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="718.47" cy="498.823" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="726.47" y="501.477" fill="#000" font-size="12" textLength="177.756" font-family="Arial">mata_kuliah_id : INT «PK, FK»</text><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="718.47" cy="512.792" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="726.47" y="515.446" fill="#000" font-size="12" textLength="183.938" font-family="Arial">bahan_kajian_id : INT «PK, FK»</text></g><!--class pertanyaan--><g class="entity" data-qualified-name="pertanyaan" id="ent0008" data-source-line="98"><rect x="1000.46" y="190.78" width="196.969" height="179.656" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="1000.46" y="190.78" width="196.969" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="1000.46" y="207.749" width="196.969" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="1000.46" y="190.78" width="196.969" height="179.656" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="1064.439" y="206.919" fill="#000" font-size="12" textLength="69.012" font-family="Arial">pertanyaan</text><line x1="1001.46" y1="214.749" x2="1196.429" y2="214.749" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="1011.46" cy="227.233" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="1019.46" y="229.887" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="1001.46" y1="236.718" x2="1196.429" y2="236.718" style="stroke:#000;stroke-width:1;"></line><text x="1006.46" y="251.856" fill="#000" font-size="12" textLength="67.424" font-family="Arial">teks : TEXT</text><text x="1006.46" y="265.825" fill="#000" font-size="12" textLength="70.406" font-family="Arial">tipe : ENUM</text><text x="1006.46" y="279.794" fill="#000" font-size="12" textLength="88.248" font-family="Arial">bagian : ENUM</text><text x="1006.46" y="293.762" fill="#000" font-size="12" textLength="135.363" font-family="Arial">peran_sasaran : ENUM</text><text x="1006.46" y="307.731" fill="#000" font-size="12" textLength="107.514" font-family="Arial">label_skala : JSON</text><text x="1006.46" y="321.7" fill="#000" font-size="12" textLength="184.969" font-family="Arial">alasan_jika_rendah : BOOLEAN</text><text x="1006.46" y="335.669" fill="#000" font-size="12" textLength="168.217" font-family="Arial">untuk_peringkat : BOOLEAN</text><text x="1006.46" y="349.637" fill="#000" font-size="12" textLength="101.701" font-family="Arial">wajib : BOOLEAN</text><text x="1006.46" y="363.606" fill="#000" font-size="12" textLength="96.814" font-family="Arial">aktif : BOOLEAN</text></g><!--class opsi--><g class="entity" data-qualified-name="opsi" id="ent0009" data-source-line="111"><rect x="984.57" y="451.39" width="162.75" height="81.875" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="984.57" y="451.39" width="162.75" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="984.57" y="468.359" width="162.75" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="984.57" y="451.39" width="162.75" height="81.875" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="1016.167" y="467.529" fill="#000" font-size="12" textLength="99.557" font-family="Arial">opsi_pertanyaan</text><line x1="985.57" y1="475.359" x2="1146.32" y2="475.359" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="995.57" cy="487.843" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="1003.57" y="490.497" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="985.57" y1="497.328" x2="1146.32" y2="497.328" style="stroke:#000;stroke-width:1;"></line><text x="990.57" y="512.466" fill="#000" font-size="12" textLength="150.75" font-family="Arial">pertanyaan_id : INT «FK»</text><text x="990.57" y="526.435" fill="#000" font-size="12" textLength="126.211" font-family="Arial">teks_opsi : VARCHAR</text></g><!--class pengisian--><g class="entity" data-qualified-name="pengisian" id="ent0010" data-source-line="117"><rect x="20.32" y="225.7" width="155.25" height="109.813" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="20.32" y="225.7" width="155.25" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="20.32" y="242.669" width="155.25" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="20.32" y="225.7" width="155.25" height="109.813" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="68.894" y="241.839" fill="#000" font-size="12" textLength="58.102" font-family="Arial">pengisian</text><line x1="21.32" y1="249.669" x2="174.57" y2="249.669" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="31.32" cy="262.153" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="39.32" y="264.807" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="21.32" y1="271.638" x2="174.57" y2="271.638" style="stroke:#000;stroke-width:1;"></line><text x="26.32" y="286.776" fill="#000" font-size="12" textLength="142.143" font-family="Arial">pengguna_id : INT «FK»</text><text x="26.32" y="300.745" fill="#000" font-size="12" textLength="127.348" font-family="Arial">periode_id : INT «FK»</text><text x="26.32" y="314.714" fill="#000" font-size="12" textLength="143.25" font-family="Arial">tab_terakhir : VARCHAR</text><text x="26.32" y="328.682" fill="#000" font-size="12" textLength="84.24" font-family="Arial">status : ENUM</text></g><!--class pmk--><g class="entity" data-qualified-name="pmk" id="ent0011" data-source-line="125"><rect x="106.43" y="451.39" width="167.021" height="81.875" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="106.43" y="451.39" width="167.021" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="106.43" y="468.359" width="167.021" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="106.43" y="451.39" width="167.021" height="81.875" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="137.072" y="467.529" fill="#000" font-size="12" textLength="105.738" font-family="Arial">pengisian_matkul</text><line x1="107.43" y1="475.359" x2="272.451" y2="475.359" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="117.43" cy="487.843" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="125.43" y="490.497" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="107.43" y1="497.328" x2="272.451" y2="497.328" style="stroke:#000;stroke-width:1;"></line><text x="112.43" y="512.466" fill="#000" font-size="12" textLength="139.84" font-family="Arial">pengisian_id : INT «FK»</text><text x="112.43" y="526.435" fill="#000" font-size="12" textLength="155.021" font-family="Arial">mata_kuliah_id : INT «FK»</text></g><!--class jawaban--><g class="entity" data-qualified-name="jawaban" id="ent0012" data-source-line="131"><rect x="439.43" y="430.43" width="167.021" height="123.781" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="439.43" y="430.43" width="167.021" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="439.43" y="447.399" width="167.021" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="439.43" y="430.43" width="167.021" height="123.781" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="497.725" y="446.569" fill="#000" font-size="12" textLength="50.432" font-family="Arial">jawaban</text><line x1="440.43" y1="454.399" x2="605.451" y2="454.399" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="450.43" cy="466.883" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="458.43" y="469.537" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="440.43" y1="476.368" x2="605.451" y2="476.368" style="stroke:#000;stroke-width:1;"></line><text x="445.43" y="491.506" fill="#000" font-size="12" textLength="139.84" font-family="Arial">pengisian_id : INT «FK»</text><text x="445.43" y="505.475" fill="#000" font-size="12" textLength="150.75" font-family="Arial">pertanyaan_id : INT «FK»</text><text x="445.43" y="519.444" fill="#000" font-size="12" textLength="155.021" font-family="Arial">mata_kuliah_id : INT «FK»</text><text x="445.43" y="533.412" fill="#000" font-size="12" textLength="56.479" font-family="Arial">nilai : INT</text><text x="445.43" y="547.381" fill="#000" font-size="12" textLength="81.387" font-family="Arial">alasan : TEXT</text></g><!--class jm--><g class="entity" data-qualified-name="jm" id="ent0013" data-source-line="140"><rect x="721.86" y="614.21" width="144.17" height="81.875" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="721.86" y="614.21" width="144.17" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="721.86" y="631.179" width="144.17" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="721.86" y="614.21" width="144.17" height="81.875" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="750.395" y="630.349" fill="#000" font-size="12" textLength="87.1" font-family="Arial">jawaban_multi</text><line x1="722.86" y1="638.179" x2="865.03" y2="638.179" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="732.86" cy="650.663" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="740.86" y="653.317" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="722.86" y1="660.148" x2="865.03" y2="660.148" style="stroke:#000;stroke-width:1;"></line><text x="727.86" y="675.286" fill="#000" font-size="12" textLength="132.17" font-family="Arial">jawaban_id : INT «FK»</text><text x="727.86" y="689.255" fill="#000" font-size="12" textLength="106.283" font-family="Arial">opsi_id : INT «FK»</text></g><!--class tiket--><g class="entity" data-qualified-name="tiket" id="ent0014" data-source-line="146"><rect x="810.87" y="225.7" width="154.143" height="109.813" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="810.87" y="225.7" width="154.143" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="810.87" y="242.669" width="154.143" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="810.87" y="225.7" width="154.143" height="109.813" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="874.403" y="241.839" fill="#000" font-size="12" textLength="27.076" font-family="Arial">tiket</text><line x1="811.87" y1="249.669" x2="964.013" y2="249.669" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="821.87" cy="262.153" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="829.87" y="264.807" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="811.87" y1="271.638" x2="964.013" y2="271.638" style="stroke:#000;stroke-width:1;"></line><text x="816.87" y="286.776" fill="#000" font-size="12" textLength="142.143" font-family="Arial">pengguna_id : INT «FK»</text><text x="816.87" y="300.745" fill="#000" font-size="12" textLength="109.518" font-family="Arial">subjek : VARCHAR</text><text x="816.87" y="314.714" fill="#000" font-size="12" textLength="78.346" font-family="Arial">pesan : TEXT</text><text x="816.87" y="328.682" fill="#000" font-size="12" textLength="84.24" font-family="Arial">status : ENUM</text></g><!--class log--><g class="entity" data-qualified-name="log" id="ent0015" data-source-line="154"><rect x="388.51" y="225.7" width="162.867" height="109.813" fill="#FFF" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="388.51" y="225.7" width="162.867" height="23.969" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;" rx="7" ry="7"></rect><rect x="388.51" y="242.669" width="162.867" height="7" fill="#F2F2F2" style="stroke:#F2F2F2;stroke-width:0.5;"></rect><rect x="388.51" y="225.7" width="162.867" height="109.813" fill="none" style="stroke:#000;stroke-width:0.5;" rx="7" ry="7"></rect><text x="440.339" y="241.839" fill="#000" font-size="12" textLength="59.209" font-family="Arial">log_impor</text><line x1="389.51" y1="249.669" x2="550.377" y2="249.669" style="stroke:#000;stroke-width:0.5;"></line><g data-visibility-modifier="IE_MANDATORY"><ellipse cx="399.51" cy="262.153" rx="3" ry="3" fill="#000" style="stroke:#000;stroke-width:1;"></ellipse></g><text x="407.51" y="264.807" fill="#000" font-size="12" textLength="76.072" font-family="Arial">id : INT «PK»</text><line x1="389.51" y1="271.638" x2="550.377" y2="271.638" style="stroke:#000;stroke-width:1;"></line><text x="394.51" y="286.776" fill="#000" font-size="12" textLength="142.143" font-family="Arial">pengguna_id : INT «FK»</text><text x="394.51" y="300.745" fill="#000" font-size="12" textLength="150.867" font-family="Arial">nama_berkas : VARCHAR</text><text x="394.51" y="314.714" fill="#000" font-size="12" textLength="126.252" font-family="Arial">jumlah_berhasil : INT</text><text x="394.51" y="328.682" fill="#000" font-size="12" textLength="111.715" font-family="Arial">jumlah_gagal : INT</text></g><!--link pengguna to profil--><g class="link" data-entity-1="ent0001" data-entity-2="ent0002" id="lnk16" data-source-line="163" data-link-type="association"><path d="M615.36,132.24 C615.36,158.95 615.36,175.26 615.36,203.56" style="stroke:#000;stroke-width:1;" fill="none" id="pengguna-profil" codeline="163"></path><line x1="611.36" y1="128.24" x2="619.36" y2="128.24" style="stroke:#000;stroke-width:1;"></line><line x1="611.36" y1="131.24" x2="619.36" y2="131.24" style="stroke:#000;stroke-width:1;"></line><line x1="615.36" y1="132.24" x2="615.36" y2="124.24" style="stroke:#000;stroke-width:1;"></line><line x1="619.36" y1="207.56" x2="611.36" y2="207.56" style="stroke:#000;stroke-width:1;"></line><line x1="619.36" y1="204.56" x2="611.36" y2="204.56" style="stroke:#000;stroke-width:1;"></line><line x1="615.36" y1="203.56" x2="615.36" y2="211.56" style="stroke:#000;stroke-width:1;"></line></g><!--link pengguna to pengisian--><g class="link" data-entity-1="ent0001" data-entity-2="ent0010" id="lnk17" data-source-line="164" data-link-type="crowfoot"><path d="M520.57,132.12 C520.57,151.76 520.57,161.09 520.57,161.09 C520.57,161.09 123.82,161.09 123.82,161.09 C123.82,161.09 123.82,176.08 123.82,207.4" style="stroke:#000;stroke-width:1;" fill="none" id="pengguna-pengisian" codeline="164"></path><line x1="516.57" y1="128.12" x2="524.57" y2="128.12" style="stroke:#000;stroke-width:1;"></line><line x1="516.57" y1="131.12" x2="524.57" y2="131.12" style="stroke:#000;stroke-width:1;"></line><line x1="520.57" y1="132.12" x2="520.57" y2="124.12" style="stroke:#000;stroke-width:1;"></line><line x1="123.82" y1="217.4" x2="129.82" y2="225.4" style="stroke:#000;stroke-width:1;"></line><line x1="123.82" y1="217.4" x2="117.82" y2="225.4" style="stroke:#000;stroke-width:1;"></line><line x1="123.82" y1="217.4" x2="123.82" y2="225.4" style="stroke:#000;stroke-width:1;"></line><ellipse cx="123.82" cy="211.4" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link pengguna to tiket--><g class="link" data-entity-1="ent0001" data-entity-2="ent0014" id="lnk18" data-source-line="165" data-link-type="crowfoot"><path d="M653.18,69.09 C745.47,69.09 887.94,69.09 887.94,69.09 C887.94,69.09 887.94,144.64 887.94,207.31" style="stroke:#000;stroke-width:1;" fill="none" id="pengguna-tiket" codeline="165"></path><line x1="649.18" y1="73.09" x2="649.18" y2="65.09" style="stroke:#000;stroke-width:1;"></line><line x1="652.18" y1="73.09" x2="652.18" y2="65.09" style="stroke:#000;stroke-width:1;"></line><line x1="653.18" y1="69.09" x2="645.18" y2="69.09" style="stroke:#000;stroke-width:1;"></line><line x1="887.94" y1="217.31" x2="893.94" y2="225.31" style="stroke:#000;stroke-width:1;"></line><line x1="887.94" y1="217.31" x2="881.94" y2="225.31" style="stroke:#000;stroke-width:1;"></line><line x1="887.94" y1="217.31" x2="887.94" y2="225.31" style="stroke:#000;stroke-width:1;"></line><ellipse cx="887.94" cy="211.31" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link pengguna to log--><g class="link" data-entity-1="ent0001" data-entity-2="ent0015" id="lnk19" data-source-line="166" data-link-type="crowfoot"><path d="M535.97,132.24 C535.97,163.36 535.97,176.08 535.97,207.21" style="stroke:#000;stroke-width:1;" fill="none" id="pengguna-log" codeline="166"></path><line x1="531.97" y1="128.24" x2="539.97" y2="128.24" style="stroke:#000;stroke-width:1;"></line><line x1="531.97" y1="131.24" x2="539.97" y2="131.24" style="stroke:#000;stroke-width:1;"></line><line x1="535.97" y1="132.24" x2="535.97" y2="124.24" style="stroke:#000;stroke-width:1;"></line><line x1="535.97" y1="217.21" x2="541.97" y2="225.21" style="stroke:#000;stroke-width:1;"></line><line x1="535.97" y1="217.21" x2="529.97" y2="225.21" style="stroke:#000;stroke-width:1;"></line><line x1="535.97" y1="217.21" x2="535.97" y2="225.21" style="stroke:#000;stroke-width:1;"></line><ellipse cx="535.97" cy="211.21" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link periode to pengisian--><g class="link" data-entity-1="ent0003" data-entity-2="ent0010" id="lnk20" data-source-line="167" data-link-type="crowfoot"><path d="M72.07,139.26 C72.07,169.15 72.07,178.63 72.07,207.51" style="stroke:#000;stroke-width:1;" fill="none" id="periode-pengisian" codeline="167"></path><line x1="68.07" y1="135.26" x2="76.07" y2="135.26" style="stroke:#000;stroke-width:1;"></line><line x1="68.07" y1="138.26" x2="76.07" y2="138.26" style="stroke:#000;stroke-width:1;"></line><line x1="72.07" y1="139.26" x2="72.07" y2="131.26" style="stroke:#000;stroke-width:1;"></line><line x1="72.07" y1="217.51" x2="78.07" y2="225.51" style="stroke:#000;stroke-width:1;"></line><line x1="72.07" y1="217.51" x2="66.07" y2="225.51" style="stroke:#000;stroke-width:1;"></line><line x1="72.07" y1="217.51" x2="72.07" y2="225.51" style="stroke:#000;stroke-width:1;"></line><ellipse cx="72.07" cy="211.51" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link pengisian to pmk--><g class="link" data-entity-1="ent0010" data-entity-2="ent0011" id="lnk21" data-source-line="168" data-link-type="crowfoot"><path d="M129.47,343.96 C129.47,379.98 129.47,400.19 129.47,433.01" style="stroke:#000;stroke-width:1;" fill="none" id="pengisian-pmk" codeline="168"></path><line x1="125.47" y1="339.96" x2="133.47" y2="339.96" style="stroke:#000;stroke-width:1;"></line><line x1="125.47" y1="342.96" x2="133.47" y2="342.96" style="stroke:#000;stroke-width:1;"></line><line x1="129.47" y1="343.96" x2="129.47" y2="335.96" style="stroke:#000;stroke-width:1;"></line><line x1="129.47" y1="443.01" x2="135.47" y2="451.01" style="stroke:#000;stroke-width:1;"></line><line x1="129.47" y1="443.01" x2="123.47" y2="451.01" style="stroke:#000;stroke-width:1;"></line><line x1="129.47" y1="443.01" x2="129.47" y2="451.01" style="stroke:#000;stroke-width:1;"></line><ellipse cx="129.47" cy="437.01" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link mk to pmk--><g class="link" data-entity-1="ent0006" data-entity-2="ent0011" id="lnk22" data-source-line="169" data-link-type="crowfoot"><path d="M242.1,371.67 C242.1,401.68 242.1,408.25 242.1,433.11" style="stroke:#000;stroke-width:1;" fill="none" id="mk-pmk" codeline="169"></path><line x1="238.1" y1="367.67" x2="246.1" y2="367.67" style="stroke:#000;stroke-width:1;"></line><line x1="238.1" y1="370.67" x2="246.1" y2="370.67" style="stroke:#000;stroke-width:1;"></line><line x1="242.1" y1="371.67" x2="242.1" y2="363.67" style="stroke:#000;stroke-width:1;"></line><line x1="242.1" y1="443.11" x2="248.1" y2="451.11" style="stroke:#000;stroke-width:1;"></line><line x1="242.1" y1="443.11" x2="236.1" y2="451.11" style="stroke:#000;stroke-width:1;"></line><line x1="242.1" y1="443.11" x2="242.1" y2="451.11" style="stroke:#000;stroke-width:1;"></line><ellipse cx="242.1" cy="437.11" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link pengisian to jawaban--><g class="link" data-entity-1="ent0010" data-entity-2="ent0012" id="lnk23" data-source-line="170" data-link-type="crowfoot"><path d="M152.52,343.83 C152.52,391.62 152.52,445.09 152.52,445.09 C152.52,445.09 312.1,445.09 421.35,445.09" style="stroke:#000;stroke-width:1;" fill="none" id="pengisian-jawaban" codeline="170"></path><line x1="148.52" y1="339.83" x2="156.52" y2="339.83" style="stroke:#000;stroke-width:1;"></line><line x1="148.52" y1="342.83" x2="156.52" y2="342.83" style="stroke:#000;stroke-width:1;"></line><line x1="152.52" y1="343.83" x2="152.52" y2="335.83" style="stroke:#000;stroke-width:1;"></line><line x1="431.35" y1="445.09" x2="439.35" y2="439.09" style="stroke:#000;stroke-width:1;"></line><line x1="431.35" y1="445.09" x2="439.35" y2="451.09" style="stroke:#000;stroke-width:1;"></line><line x1="431.35" y1="445.09" x2="439.35" y2="445.09" style="stroke:#000;stroke-width:1;"></line><ellipse cx="425.35" cy="445.09" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link pertanyaan to jawaban--><g class="link" data-entity-1="ent0008" data-entity-2="ent0012" id="lnk24" data-source-line="171" data-link-type="crowfoot"><path d="M992.22,355.09 C845.82,355.09 596.23,355.09 596.23,355.09 C596.23,355.09 596.23,375.82 596.23,412.13" style="stroke:#000;stroke-width:1;" fill="none" id="pertanyaan-jawaban" codeline="171"></path><line x1="996.22" y1="351.09" x2="996.22" y2="359.09" style="stroke:#000;stroke-width:1;"></line><line x1="993.22" y1="351.09" x2="993.22" y2="359.09" style="stroke:#000;stroke-width:1;"></line><line x1="992.22" y1="355.09" x2="1000.22" y2="355.09" style="stroke:#000;stroke-width:1;"></line><line x1="596.23" y1="422.13" x2="602.23" y2="430.13" style="stroke:#000;stroke-width:1;"></line><line x1="596.23" y1="422.13" x2="590.23" y2="430.13" style="stroke:#000;stroke-width:1;"></line><line x1="596.23" y1="422.13" x2="596.23" y2="430.13" style="stroke:#000;stroke-width:1;"></line><ellipse cx="596.23" cy="416.13" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link mk to jawaban--><g class="link" data-entity-1="ent0006" data-entity-2="ent0012" id="lnk25" data-source-line="172" data-link-type="crowfoot"><path d="M313.29,378.5 C313.29,416.44 313.29,438.09 313.29,438.09 C313.29,438.09 362.78,438.09 421.18,438.09" style="stroke:#000;stroke-width:1;" fill="none" id="mk-jawaban" codeline="172"></path><line x1="313.29" y1="374.5" x2="313.29" y2="363.5" style="stroke:#000;stroke-width:1;"></line><ellipse cx="313.29" cy="374.5" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse><line x1="309.29" y1="367.5" x2="317.29" y2="367.5" style="stroke:#000;stroke-width:1;"></line><line x1="431.18" y1="438.09" x2="439.18" y2="432.09" style="stroke:#000;stroke-width:1;"></line><line x1="431.18" y1="438.09" x2="439.18" y2="444.09" style="stroke:#000;stroke-width:1;"></line><line x1="431.18" y1="438.09" x2="439.18" y2="438.09" style="stroke:#000;stroke-width:1;"></line><ellipse cx="425.18" cy="438.09" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link pertanyaan to opsi--><g class="link" data-entity-1="ent0008" data-entity-2="ent0009" id="lnk26" data-source-line="173" data-link-type="crowfoot"><path d="M1073.89,378.7 C1073.89,406.61 1073.89,410.02 1073.89,432.93" style="stroke:#000;stroke-width:1;" fill="none" id="pertanyaan-opsi" codeline="173"></path><line x1="1069.89" y1="374.7" x2="1077.89" y2="374.7" style="stroke:#000;stroke-width:1;"></line><line x1="1069.89" y1="377.7" x2="1077.89" y2="377.7" style="stroke:#000;stroke-width:1;"></line><line x1="1073.89" y1="378.7" x2="1073.89" y2="370.7" style="stroke:#000;stroke-width:1;"></line><line x1="1073.89" y1="442.93" x2="1079.89" y2="450.93" style="stroke:#000;stroke-width:1;"></line><line x1="1073.89" y1="442.93" x2="1067.89" y2="450.93" style="stroke:#000;stroke-width:1;"></line><line x1="1073.89" y1="442.93" x2="1073.89" y2="450.93" style="stroke:#000;stroke-width:1;"></line><ellipse cx="1073.89" cy="436.93" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link jawaban to jm--><g class="link" data-entity-1="ent0012" data-entity-2="ent0013" id="lnk27" data-source-line="174" data-link-type="crowfoot"><path d="M614.9,544.09 C686.5,544.09 769.91,544.09 769.91,544.09 C769.91,544.09 769.91,564.22 769.91,595.8" style="stroke:#000;stroke-width:1;" fill="none" id="jawaban-jm" codeline="174"></path><line x1="610.9" y1="548.09" x2="610.9" y2="540.09" style="stroke:#000;stroke-width:1;"></line><line x1="613.9" y1="548.09" x2="613.9" y2="540.09" style="stroke:#000;stroke-width:1;"></line><line x1="614.9" y1="544.09" x2="606.9" y2="544.09" style="stroke:#000;stroke-width:1;"></line><line x1="769.91" y1="605.8" x2="775.91" y2="613.8" style="stroke:#000;stroke-width:1;"></line><line x1="769.91" y1="605.8" x2="763.91" y2="613.8" style="stroke:#000;stroke-width:1;"></line><line x1="769.91" y1="605.8" x2="769.91" y2="613.8" style="stroke:#000;stroke-width:1;"></line><ellipse cx="769.91" cy="599.8" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link opsi to jm--><g class="link" data-entity-1="ent0009" data-entity-2="ent0013" id="lnk28" data-source-line="175" data-link-type="crowfoot"><path d="M976.4,528.09 C904.13,528.09 817.97,528.09 817.97,528.09 C817.97,528.09 817.97,558.8 817.97,595.9" style="stroke:#000;stroke-width:1;" fill="none" id="opsi-jm" codeline="175"></path><line x1="980.4" y1="524.09" x2="980.4" y2="532.09" style="stroke:#000;stroke-width:1;"></line><line x1="977.4" y1="524.09" x2="977.4" y2="532.09" style="stroke:#000;stroke-width:1;"></line><line x1="976.4" y1="528.09" x2="984.4" y2="528.09" style="stroke:#000;stroke-width:1;"></line><line x1="817.97" y1="605.9" x2="823.97" y2="613.9" style="stroke:#000;stroke-width:1;"></line><line x1="817.97" y1="605.9" x2="811.97" y2="613.9" style="stroke:#000;stroke-width:1;"></line><line x1="817.97" y1="605.9" x2="817.97" y2="613.9" style="stroke:#000;stroke-width:1;"></line><ellipse cx="817.97" cy="599.9" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link mk to mkbk--><g class="link" data-entity-1="ent0006" data-entity-2="ent0007" id="lnk29" data-source-line="176" data-link-type="crowfoot"><path d="M361.52,359.09 C490.74,359.09 741.68,359.09 741.68,359.09 C741.68,359.09 741.68,404.78 741.68,444.09" style="stroke:#000;stroke-width:1;" fill="none" id="mk-mkbk" codeline="176"></path><line x1="357.52" y1="363.09" x2="357.52" y2="355.09" style="stroke:#000;stroke-width:1;"></line><line x1="360.52" y1="363.09" x2="360.52" y2="355.09" style="stroke:#000;stroke-width:1;"></line><line x1="361.52" y1="359.09" x2="353.52" y2="359.09" style="stroke:#000;stroke-width:1;"></line><line x1="741.68" y1="454.09" x2="747.68" y2="462.09" style="stroke:#000;stroke-width:1;"></line><line x1="741.68" y1="454.09" x2="735.68" y2="462.09" style="stroke:#000;stroke-width:1;"></line><line x1="741.68" y1="454.09" x2="741.68" y2="462.09" style="stroke:#000;stroke-width:1;"></line><ellipse cx="741.68" cy="448.09" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link bk to mkbk--><g class="link" data-entity-1="ent0005" data-entity-2="ent0007" id="lnk30" data-source-line="177" data-link-type="crowfoot"><path d="M1341.94,343.91 C1341.94,375.58 1341.94,401.09 1341.94,401.09 C1341.94,401.09 863.64,401.09 863.64,401.09 C863.64,401.09 863.64,417.4 863.64,443.94" style="stroke:#000;stroke-width:1;" fill="none" id="bk-mkbk" codeline="177"></path><line x1="1337.94" y1="339.91" x2="1345.94" y2="339.91" style="stroke:#000;stroke-width:1;"></line><line x1="1337.94" y1="342.91" x2="1345.94" y2="342.91" style="stroke:#000;stroke-width:1;"></line><line x1="1341.94" y1="343.91" x2="1341.94" y2="335.91" style="stroke:#000;stroke-width:1;"></line><line x1="863.64" y1="453.94" x2="869.64" y2="461.94" style="stroke:#000;stroke-width:1;"></line><line x1="863.64" y1="453.94" x2="857.64" y2="461.94" style="stroke:#000;stroke-width:1;"></line><line x1="863.64" y1="453.94" x2="863.64" y2="461.94" style="stroke:#000;stroke-width:1;"></line><ellipse cx="863.64" cy="447.94" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><!--link kategori to bk--><g class="link" data-entity-1="ent0004" data-entity-2="ent0005" id="lnk31" data-source-line="178" data-link-type="crowfoot"><path d="M1341.94,125.19 C1341.94,157.41 1341.94,173.85 1341.94,207.41" style="stroke:#000;stroke-width:1;" fill="none" id="kategori-bk" codeline="178"></path><line x1="1337.94" y1="121.19" x2="1345.94" y2="121.19" style="stroke:#000;stroke-width:1;"></line><line x1="1337.94" y1="124.19" x2="1345.94" y2="124.19" style="stroke:#000;stroke-width:1;"></line><line x1="1341.94" y1="125.19" x2="1341.94" y2="117.19" style="stroke:#000;stroke-width:1;"></line><line x1="1341.94" y1="217.41" x2="1347.94" y2="225.41" style="stroke:#000;stroke-width:1;"></line><line x1="1341.94" y1="217.41" x2="1335.94" y2="225.41" style="stroke:#000;stroke-width:1;"></line><line x1="1341.94" y1="217.41" x2="1341.94" y2="225.41" style="stroke:#000;stroke-width:1;"></line><ellipse cx="1341.94" cy="211.41" rx="4" ry="4" fill="none" style="stroke:#000;stroke-width:1;"></ellipse></g><?plantuml-src fLPDZzis4BthLn3fBUWMtRJeeGW2E1ilqYzlaNM2z2ICh5cB9aKQ91NNpUv_xuYIBDAo9MCZ0uRuPiXvCtmSoWgkjc2WPBQ0NE-uMhC7a1OJUx3a-02LTBTQkGMKo6Q6Wpnjl-V_8Rj-5HYDhbI-qaQXOTS_3sSjyLytatojIbIEhUWFJU2LmKgi_HetMch3lhlrJ-0nCqRlMkEF_ZasBWk-4WgjPTV7ffvpP5ev_eMx_Tlfu9sdDZcQiomYhu3E3p-Ty7h7eTGglpnuD-4Y3gtpUEBt3eoRMcb-O7O-OJZBvtx7ImaAnrd7NgStilDPSYVHv-Ns4bccPJxgvRC_sW1jBYexkOtI_cXn1HQdr-eSBrfjf0PpvIxIQ-it6kv6WhNJIpLkqokzHo2NuNglwb_WlD3kWe9vhp3eB_v92fuZMt6pajYyOxbrUrQYAtHkWmKaL-ZsMsJQa6cg7qbyS4c2lchinHRLUbqfUC70icx0lYQClMGyPx-otnPBzlhrtt-yUKFOrHNzAIY139zc7sxUppuGW2Lm6I5RAjAEKef1DA08cIy-_fKyzGoCVk0oZObuhANHMTA8p_ViDkIaIsrIhl9AH3514bb7q7B-UKbZXnAtMiMyjEMM4m61PWCG6xco3fJb4UYWg5GgArbPml-P4nZaWuRh75Fy0h82ozlAUd2yiCso84XS9O_pi5YYfMkaAr_jJ5K1cPQLX9hTkzbo7i2M4hMXWT9mdkvH-GKuN6l3Kw7BBJfKBUCE7wSiwgH2eWDnW73yWP2tTtT_pcUB87861QXKm8Q3yY4pCH5iI3NKHAk7Rw54Me5KL993uHcLublJ3pQEfjU0i8TtKHbEqQeocY9GKdvQz7kzGSLjFxo8Vvg9DeL3MKFhwRFqaeMRSj8f4ZgfRG_jxlN32PMZhq1t8FaM-ymoMFE-HxGj8xLWmOImX0n9ue9EDu6_tzyjcgDkoNd31QG6LGv5K2B6AkKgaTRdKAs5RmczRKVfPX5oliHwwtj5b7gDZIVTJpYXsBeYgL-Zby5JrA6fFnsgt8wcuWrxPXkjwqydU42MabH15Dp48ZxJEmvaKf8M2QjXE7Le-bb32cSaUgIy3UmWQmlIlZy_vEZMZF6XqywRtjkSvaQ0dRG7REjExPhUkYd7wNOpXX6z-iuNnd61peVmRy_MYAso3OgZspj8xhmaf5wddBgNyInez6mETIjDCpG2R4HaKz57Rr5R2hfTvQ7yBRu6klvQy2b93fyqZuzNLu-FxPT53EkllK065b_80Kg99TsTVdA9vensfb8aT2g2qS2btV8awA97bde1FU5RooFfJaGtlqnyR-c7FPNwSaYoU7Yu-5im4_y3?></g></svg></div></div>
+  <div class="editor" id="editor">
+    <div class="bar">Kode PlantUML (blok gaya Draw.io disisipkan otomatis setelah @startuml)
+      <button class="btn primary" id="btn-render" style="margin-left:auto">Render Ulang (Ctrl+Enter)</button>
+    </div>
+    <textarea id="src" spellcheck="false"></textarea>
+  </div>
+</main>
+
+<!-- ===================== GAYA DRAW.IO (disisipkan ke setiap diagram) ===================== -->
+<script type="text/plain" id="skin">
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam roundcorner 14
+skinparam defaultTextAlignment center
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #000000
+skinparam ArrowThickness 1
+skinparam ArrowFontSize 11
+skinparam ActivityBackgroundColor #FFFFFF
+skinparam ActivityBorderColor #000000
+skinparam ActivityBorderThickness 1.3
+skinparam ActivityDiamondBackgroundColor #FFFFFF
+skinparam ActivityDiamondBorderColor #000000
+skinparam ActivityDiamondFontSize 11
+skinparam ActivityStartColor #000000
+skinparam ActivityEndColor #000000
+skinparam ActivityBarColor #000000
+skinparam SwimlaneBorderColor #000000
+skinparam SwimlaneBorderThickness 1
+skinparam SwimlaneTitleFontStyle bold
+skinparam SwimlaneTitleFontSize 13
+skinparam ActorBackgroundColor #FFFFFF
+skinparam ActorBorderColor #000000
+skinparam UsecaseBackgroundColor #FFFFFF
+skinparam UsecaseBorderColor #000000
+skinparam UsecaseBorderThickness 1
+skinparam EntityBackgroundColor #FFFFFF
+skinparam EntityBorderColor #000000
+skinparam ClassBackgroundColor #FFFFFF
+skinparam ClassBorderColor #000000
+skinparam ClassHeaderBackgroundColor #F2F2F2
+skinparam NoteBackgroundColor #FFFFFF
+skinparam NoteBorderColor #666666
+</script>
+
+<!-- ===================== 1. USE CASE ===================== -->
+<script type="text/plain" data-id="uc" data-group="Use Case" data-title="Use Case Diagram">
+@startuml
+left to right direction
+skinparam linetype polyline
+skinparam nodesep 18
+skinparam ranksep 90
+
+actor "Admin" as Admin
+actor "Responden" as Resp
+actor "Mahasiswa" as Mhs
+actor "Alumni" as Alm
+actor "Perusahaan" as Prs
+actor "Dosen" as Dsn
+
+usecase "Login &\nAutentikasi (RBAC)" as UC_LOGIN
+usecase "Kelola Master\nPengguna" as UC_USER
+usecase "Impor Data\nPengguna (CSV/Excel)" as UC_IMPOR
+usecase "Lihat Log\nImpor" as UC_LOG
+usecase "Kelola Periode\nEvaluasi" as UC_PERIODE
+usecase "Kelola Bank\nKuesioner" as UC_BANK
+usecase "Kategori\nKompetensi" as UC_KK
+usecase "Bahan\nKajian" as UC_BK
+usecase "Mata\nKuliah" as UC_MK
+usecase "Pertanyaan" as UC_PT
+usecase "Non-aktifkan Data\n(Soft Delete)" as UC_SOFT
+usecase "Dasbor\nAnalitik" as UC_DASH
+usecase "Ekspor Laporan\n(PDF/Excel)" as UC_EKSPOR
+usecase "Kelola Tiket\nBantuan" as UC_TIKET
+
+usecase "Pilih & Filter\nMata Kuliah" as UC_PILIH
+usecase "Isi Kuesioner" as UC_ISI
+usecase "Auto-Save\nDraft" as UC_DRAFT
+usecase "Isi Alasan\nNilai Skala 1-2" as UC_ALASAN
+usecase "Submit Final" as UC_SUBMIT
+usecase "Kirim Tiket\nBantuan" as UC_KIRIM
+
+Admin --> UC_USER
+Admin --> UC_PERIODE
+Admin --> UC_BANK
+Admin --> UC_DASH
+Admin --> UC_TIKET
+Admin --> UC_LOGIN
+
+UC_USER <.. UC_IMPOR : <<extend>>
+UC_IMPOR <.. UC_LOG : <<extend>>
+UC_BANK ..> UC_KK : <<include>>
+UC_BANK ..> UC_BK : <<include>>
+UC_BANK ..> UC_MK : <<include>>
+UC_BANK ..> UC_PT : <<include>>
+UC_BANK <.. UC_SOFT : <<extend>>
+UC_DASH <.. UC_EKSPOR : <<extend>>
+
+UC_LOGIN <-- Resp
+UC_PILIH <-- Resp
+UC_ISI <-- Resp
+UC_SUBMIT <-- Resp
+UC_KIRIM <-- Resp
+
+UC_ISI ..> UC_DRAFT : <<include>>
+UC_ISI <.. UC_ALASAN : <<extend>>
+
+Resp <|-- Mhs
+Resp <|-- Alm
+Resp <|-- Prs
+Resp <|-- Dsn
+@enduml
+</script>
+
+<!-- ===================== 2. ACTIVITY LOGIN ===================== -->
+<script type="text/plain" data-id="act-login" data-group="Activity Diagram" data-title="Autentikasi (Login &amp; RBAC)">
+@startuml
+title Autentikasi (Login)
+|Pengguna|
+start
+:Mengakses halaman\nLogin;
+repeat
+  :Memasukkan Email\ndan Password;
+  :Menekan tombol\nMasuk;
+  |Sistem|
+  :Memverifikasi kredensial\nke Database (Bcrypt);
+  backward:Menampilkan pesan\nEmail/Password salah;
+repeat while (Apakah Data Valid?) is (Tidak) not (Ya)
+:Membuat Session\n& Token CSRF;
+:Mengecek Peran\n(Otorisasi Akses);
+switch (Pengecekan Peran)
+case (Admin)
+  :Menampilkan Dasbor Admin,\nMaster Data, Bank Kuesioner,\nLaporan & Tiket;
+case (Mahasiswa / Alumni /\nPerusahaan / Dosen)
+  :Menampilkan Portal\nKuesioner Responden;
+endswitch
+stop
+@enduml
+</script>
+
+<!-- ===================== 3. ACTIVITY PENGGUNA & IMPOR ===================== -->
+<script type="text/plain" data-id="act-impor" data-group="Activity Diagram" data-title="Manajemen Pengguna &amp; Impor">
+@startuml
+title Manajemen Data Pengguna & Impor
+|Admin|
+start
+:Membuka menu\nMaster Pengguna;
+if (Metode Penambahan?) then (Manual)
+  :Mengisi form biodata\n& memilih peran;
+  :Menekan tombol\nSimpan;
+  |Sistem|
+  :Validasi Token CSRF\n& email unik;
+  :Enkripsi password\n(Bcrypt);
+  :Menyimpan ke tabel pengguna\n& profil_pengguna;
+else (Impor Massal)
+  |Admin|
+  :Mengunduh template\nCSV/Excel;
+  :Mengunggah berkas;
+  |Sistem|
+  :Memindai baris data\n(abaikan header);
+  if (Format sesuai &\nemail unik?) then (Ya)
+    :Generate password bawaan\n& enkripsi Bcrypt;
+    :Menyimpan ke tabel pengguna\n& profil_pengguna;
+  else (Tidak)
+    :Rollback transaksi &\ntandai baris gagal;
+  endif
+  :Mencatat riwayat\nke log_impor;
+endif
+:Menampilkan notifikasi\nhasil proses;
+|Admin|
+:Melihat daftar\npengguna terbaru;
+stop
+@enduml
+</script>
+
+<!-- ===================== 4. ACTIVITY SOFT DELETE ===================== -->
+<script type="text/plain" data-id="act-instrumen" data-group="Activity Diagram" data-title="Manajemen Instrumen (Soft Delete)">
+@startuml
+title Manajemen Bank Kuesioner
+|Admin|
+start
+:Membuka menu\nBank Kuesioner;
+:Memilih master data\n(Kategori / Bahan Kajian /\nMata Kuliah / Pertanyaan);
+if (Aksi?) then (Tambah / Ubah)
+  :Mengisi form data\n(Mata Kuliah: centang\nBahan Kajian terkait);
+  :Menekan tombol\nSimpan;
+  |Sistem|
+  :Validasi Token CSRF\n& input;
+  :INSERT / UPDATE data\n(+ relasi mata_kuliah_bk);
+else (Non-aktifkan)
+  |Admin|
+  :Menekan toggle\nAktif / Non-aktif;
+  |Sistem|
+  :UPDATE kolom aktif = 0\n(Soft Delete, tanpa DELETE);
+  :Menyembunyikan data dari\nportal responden\n(riwayat tetap utuh);
+endif
+:Menampilkan notifikasi\nberhasil;
+|Admin|
+:Melihat daftar\ndata terbaru;
+stop
+@enduml
+</script>
+
+<!-- ===================== 5. ACTIVITY KUESIONER ===================== -->
+<script type="text/plain" data-id="act-kuesioner" data-group="Activity Diagram" data-title="Pengisian Kuesioner (Auto-Save)">
+@startuml
+title Pengisian Kuesioner Bersyarat
+|Responden|
+start
+:Membuka Portal\nKuesioner;
+|Sistem|
+:Mengecek periode 'buka'\n& status pengisian;
+if (Status pengisian?) then (Final)
+  :Menampilkan pesan\nkuesioner sudah dikirim;
+  stop
+else (Belum / Draft)
+  :Memuat draft terakhir\n(tab_terakhir & jawaban);
+endif
+|Responden|
+:Memfilter mata kuliah\n(Semester / Bahan Kajian);
+:Mencentang mata kuliah\nyang akan dinilai;
+repeat
+  :Mengisi jawaban\npertanyaan;
+  if (Nilai skala 1 atau 2?) then (Ya)
+    :Mengisi alasan\n(min. 10 karakter);
+  else (Tidak)
+  endif
+  |Sistem|
+  :Auto-Save ke\nsimpan-draf.php\n(status = draft);
+repeat while (Semua bagian selesai?) is (Belum) not (Sudah)
+|Responden|
+:Menekan tombol\nSubmit Final;
+|Sistem|
+:Validasi CSRF & alasan\nskala rendah (submit-final.php);
+if (Data valid?) then (Ya)
+  :Mengubah status\npengisian = final;
+  :Menampilkan halaman\nterima kasih;
+else (Tidak)
+  :Menolak pengiriman &\nmenampilkan pesan galat;
+endif
+stop
+@enduml
+</script>
+
+<!-- ===================== 6. ACTIVITY DASBOR ===================== -->
+<script type="text/plain" data-id="act-dasbor" data-group="Activity Diagram" data-title="Dasbor Analitik &amp; Ekspor">
+@startuml
+title Dasbor Analitik & Ekspor Laporan
+|Admin|
+start
+:Membuka Dasbor\nAdmin;
+repeat
+  |Sistem|
+  :Request AJAX ke\ndata-dashboard.php;
+  :Agregasi data jawaban\nsesuai periode;
+  fork
+    :Render Radar Chart\nKompetensi;
+  fork again
+    :Render Peringkat\nTop / Bottom 5;
+  fork again
+    :Render Doughnut\nSebaran Instansi;
+  fork again
+    :Render Tabel Ulasan\n(paginasi);
+  end fork
+  :Tampilkan empty state jika 0 data\n& label "Data Terbatas" jika < 3 penilai;
+  |Admin|
+  :Melihat hasil\nvisualisasi;
+repeat while (Ubah filter periode?) is (Ya) not (Tidak)
+if (Ekspor laporan?) then (Ya)
+  :Memilih format\nPDF / Excel;
+  |Sistem|
+  :Menyusun & mengunduh\nberkas laporan;
+else (Tidak)
+endif
+stop
+@enduml
+</script>
+
+<!-- ===================== 7. ACTIVITY TIKET ===================== -->
+<script type="text/plain" data-id="act-tiket" data-group="Activity Diagram" data-title="Tiket Bantuan (Helpdesk)">
+@startuml
+title Tiket Bantuan (Helpdesk)
+|Responden|
+start
+:Membuka menu\nBantuan;
+:Mengisi subjek &\nisi kendala;
+:Menekan tombol\nKirim Tiket;
+|Sistem|
+:Validasi Token CSRF;
+:Menyimpan data\nke tabel tiket;
+|Admin|
+:Membuka menu\nKelola Tiket;
+:Membaca &\nmenanggapi tiket;
+|Sistem|
+:Memperbarui status\n& tanggapan tiket;
+|Responden|
+:Melihat tanggapan\n& status tiket;
+stop
+@enduml
+</script>
+
+<!-- ===================== 8. ERD ===================== -->
+<script type="text/plain" data-id="erd" data-group="Basis Data" data-title="Entity Relationship Diagram (ERD)">
+@startuml
+hide circle
+hide empty methods
+skinparam linetype ortho
+skinparam defaultTextAlignment left
+
+entity "pengguna" as pengguna {
+  * id : INT <<PK>>
+  --
+  nama : VARCHAR
+  email : VARCHAR
+  password : VARCHAR
+  peran : ENUM
+}
+entity "profil_pengguna" as profil {
+  * pengguna_id : INT <<PK, FK>>
+  --
+  nomor_induk : VARCHAR
+  alamat : TEXT
+  telepon : VARCHAR
+  posisi_pekerjaan : VARCHAR
+  instansi : VARCHAR
+  tahun_lulus : YEAR
+}
+entity "periode_evaluasi" as periode {
+  * id : INT <<PK>>
+  --
+  tahun_akademik : VARCHAR
+  semester : ENUM
+  tanggal_mulai : DATE
+  tanggal_selesai : DATE
+  status : ENUM
+}
+entity "kategori_kompetensi" as kategori {
+  * id : INT <<PK>>
+  --
+  kode : VARCHAR
+  nama : VARCHAR
+  aktif : BOOLEAN
+}
+entity "bahan_kajian" as bk {
+  * id : INT <<PK>>
+  --
+  kategori_kompetensi_id : INT <<FK>>
+  kode : VARCHAR
+  nama : VARCHAR
+  aktif : BOOLEAN
+}
+entity "mata_kuliah" as mk {
+  * id : INT <<PK>>
+  --
+  kode : VARCHAR
+  nama : VARCHAR
+  semester : INT
+  sks : INT
+  kurikulum : VARCHAR
+  kelompok : ENUM
+  jenis : ENUM
+  aktif : BOOLEAN
+}
+entity "mata_kuliah_bk" as mkbk {
+  * mata_kuliah_id : INT <<PK, FK>>
+  * bahan_kajian_id : INT <<PK, FK>>
+}
+entity "pertanyaan" as pertanyaan {
+  * id : INT <<PK>>
+  --
+  teks : TEXT
+  tipe : ENUM
+  bagian : ENUM
+  peran_sasaran : ENUM
+  label_skala : JSON
+  alasan_jika_rendah : BOOLEAN
+  untuk_peringkat : BOOLEAN
+  wajib : BOOLEAN
+  aktif : BOOLEAN
+}
+entity "opsi_pertanyaan" as opsi {
+  * id : INT <<PK>>
+  --
+  pertanyaan_id : INT <<FK>>
+  teks_opsi : VARCHAR
+}
+entity "pengisian" as pengisian {
+  * id : INT <<PK>>
+  --
+  pengguna_id : INT <<FK>>
+  periode_id : INT <<FK>>
+  tab_terakhir : VARCHAR
+  status : ENUM
+}
+entity "pengisian_matkul" as pmk {
+  * id : INT <<PK>>
+  --
+  pengisian_id : INT <<FK>>
+  mata_kuliah_id : INT <<FK>>
+}
+entity "jawaban" as jawaban {
+  * id : INT <<PK>>
+  --
+  pengisian_id : INT <<FK>>
+  pertanyaan_id : INT <<FK>>
+  mata_kuliah_id : INT <<FK>>
+  nilai : INT
+  alasan : TEXT
+}
+entity "jawaban_multi" as jm {
+  * id : INT <<PK>>
+  --
+  jawaban_id : INT <<FK>>
+  opsi_id : INT <<FK>>
+}
+entity "tiket" as tiket {
+  * id : INT <<PK>>
+  --
+  pengguna_id : INT <<FK>>
+  subjek : VARCHAR
+  pesan : TEXT
+  status : ENUM
+}
+entity "log_impor" as log {
+  * id : INT <<PK>>
+  --
+  pengguna_id : INT <<FK>>
+  nama_berkas : VARCHAR
+  jumlah_berhasil : INT
+  jumlah_gagal : INT
+}
+
+pengguna ||--|| profil
+pengguna ||--o{ pengisian
+pengguna ||--o{ tiket
+pengguna ||--o{ log
+periode ||--o{ pengisian
+pengisian ||--o{ pmk
+mk ||--o{ pmk
+pengisian ||--o{ jawaban
+pertanyaan ||--o{ jawaban
+mk |o--o{ jawaban
+pertanyaan ||--o{ opsi
+jawaban ||--o{ jm
+opsi ||--o{ jm
+mk ||--o{ mkbk
+bk ||--o{ mkbk
+kategori ||--o{ bk
+@enduml
+</script>
+
+<script>
+/* ---------- PlantUML encoder (deflate-raw + base64 khusus PlantUML) ---------- */
+function e6(b){if(b<10)return String.fromCharCode(48+b);b-=10;if(b<26)return String.fromCharCode(65+b);b-=26;if(b<26)return String.fromCharCode(97+b);b-=26;return b===0?'-':'_';}
+function a3(b1,b2,b3){return e6(b1>>2&63)+e6(((b1&3)<<4|b2>>4)&63)+e6(((b2&15)<<2|b3>>6)&63)+e6(b3&63);}
+function enc64(d){let r='';for(let i=0;i<d.length;i+=3){r+=a3(d[i],i+1<d.length?d[i+1]:0,i+2<d.length?d[i+2]:0);}return r;}
+async function encode(text){
+  const bytes=new TextEncoder().encode(text);
+  if(window.CompressionStream){
+    const s=new Blob([bytes]).stream().pipeThrough(new CompressionStream('deflate-raw'));
+    return enc64(new Uint8Array(await new Response(s).arrayBuffer()));
+  }
+  return '~h'+Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+}
+const SERVER='https://www.plantuml.com/plantuml';
+const SKIN=document.getElementById('skin').textContent.trim();
+function withSkin(src){return src.replace(/@startuml[^\n]*\n/,m=>m+SKIN+'\n');}
+
+/* ---------- State & UI ---------- */
+const diagrams=[...document.querySelectorAll('script[data-id]')].map(s=>({id:s.dataset.id,group:s.dataset.group,title:s.dataset.title,src:s.textContent.trim()}));
+const nav=document.getElementById('nav'),canvas=document.getElementById('canvas'),srcEl=document.getElementById('src');
+let current=null,zoom=1,lastSvg='';
+
+let g='';
+diagrams.forEach(d=>{
+  if(d.group!==g){g=d.group;nav.insertAdjacentHTML('beforeend',`<div class="grp">${g}</div>`);}
+  const b=document.createElement('button');b.id='nav-'+d.id;b.textContent=d.title;b.onclick=()=>show(d);nav.appendChild(b);
+});
+
+async function render(src){
+  canvas.innerHTML='<div class="status">Merender diagram…</div>';
+  const code=await encode(withSkin(src));
+  try{
+    const res=await fetch(`${SERVER}/svg/${code}`);
+    lastSvg=await res.text();
+    canvas.innerHTML=lastSvg;
+  }catch(e){
+    lastSvg='';
+    canvas.innerHTML=`<img src="${SERVER}/svg/${code}" alt="diagram">`;
+  }
+}
+function show(d){
+  current=d;document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.id==='nav-'+d.id));
+  document.getElementById('title').textContent=d.title;srcEl.value=d.src;location.hash=d.id;render(d.src);
+}
+function setZoom(z){zoom=Math.min(3,Math.max(.3,z));canvas.style.transform=`scale(${zoom})`;document.getElementById('btn-zoom-reset').textContent=Math.round(zoom*100)+'%';}
+document.getElementById('btn-zoom-in').onclick=()=>setZoom(zoom+.1);
+document.getElementById('btn-zoom-out').onclick=()=>setZoom(zoom-.1);
+document.getElementById('btn-zoom-reset').onclick=()=>setZoom(1);
+document.getElementById('btn-edit').onclick=()=>document.getElementById('editor').classList.toggle('open');
+document.getElementById('btn-render').onclick=()=>{current.src=srcEl.value;render(current.src);};
+srcEl.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter'){e.preventDefault();document.getElementById('btn-render').click();}});
+
+function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);}
+document.getElementById('btn-svg').onclick=()=>{if(lastSvg)download(new Blob([lastSvg],{type:'image/svg+xml'}),current.id+'.svg');};
+document.getElementById('btn-png').onclick=()=>{
+  const svg=canvas.querySelector('svg');if(!svg)return;
+  const scale=3,w=svg.width.baseVal.value||svg.getBBox().width,h=svg.height.baseVal.value||svg.getBBox().height;
+  const img=new Image();
+  img.onload=()=>{
+    const c=document.createElement('canvas');c.width=w*scale;c.height=h*scale;
+    const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);
+    c.toBlob(b=>download(b,current.id+'.png'),'image/png');
+  };
+  img.src=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'}));
+};
+
+show(diagrams.find(d=>d.id===location.hash.slice(1))||diagrams[0]);
+</script>
+
+
+</body></html>

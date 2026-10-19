@@ -1,0 +1,26 @@
+@startuml
+start
+:Akses Dasbor Admin;
+:Sistem Membaca Filter Periode 'Aktif';
+if (Ubah Filter Periode?) then (Ya)
+    :Kirim AJAX API Request;
+    :Agregasi Ulang Basis Data;
+else (Tidak)
+endif
+fork
+    :Render Radar Chart (Empty State jika 0 data);
+fork again
+    :Render Peringkat (Cek Threshold < 3 Penilai);
+fork again
+    :Render Sebaran Instansi (Doughnut Chart);
+fork again
+    :Render Tabel Ulasan (Pajinasi JS);
+end fork
+:Tampilan Dasbor Diperbarui;
+if (Tindakan Ekspor?) then (Ekspor PDF)
+    :Sistem Menyusun Layout Print;
+else (Ekspor Excel)
+    :Sistem Menarik Data Laporan CSV/XLSX;
+endif
+stop
+@enduml

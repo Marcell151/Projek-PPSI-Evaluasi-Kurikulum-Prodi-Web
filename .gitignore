@@ -1,0 +1,5 @@
+.tools/tailwindcss.exe
+.tools/node_modules/
+node_modules/
+vendor/
+.env
