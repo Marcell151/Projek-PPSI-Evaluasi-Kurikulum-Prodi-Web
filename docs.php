@@ -23,7 +23,7 @@ $diagrams = [
     <title><?= $page_title ?></title>
     <!-- Tailwind CSS Lokal (Anti-CDN) -->
     <link rel="stylesheet" href="<?= base_url('assets/css/output.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/vendor/phosphor.css') ?>">
+    <script src="<?= base_url('assets/vendor/phosphor.js') ?>" onerror="this.onerror=null;this.src='https://unpkg.com/@phosphor-icons/web';"></script>
     <style>
         .diagram-container {
             display: flex;

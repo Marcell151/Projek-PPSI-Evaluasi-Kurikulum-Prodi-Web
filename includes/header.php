@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= isset($page_title) ? escape($page_title) . ' - ' : '' ?>Evaluasi Kurikulum</title>
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css?v=' . filemtime(__DIR__ . '/../assets/css/style.css')) ?>">
-    <script src="<?= base_url('assets/vendor/phosphor.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/phosphor.js') ?>" onerror="this.onerror=null;this.src='https://unpkg.com/@phosphor-icons/web';"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #111827; }
     </style>

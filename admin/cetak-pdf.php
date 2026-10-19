@@ -118,7 +118,7 @@ foreach ($ulasan_mentah as $u) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Evaluasi Kurikulum - <?= escape($periode['tahun_akademik']) ?></title>
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
-    <script src="<?= base_url('assets/vendor/chart.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/chart.js') ?>" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/chart.js';"></script>
     <style>
         @media print {
             body { font-size: 12pt; background: #fff !important; }

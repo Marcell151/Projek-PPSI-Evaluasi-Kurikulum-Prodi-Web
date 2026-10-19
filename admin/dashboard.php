@@ -28,7 +28,7 @@ require_once '../includes/header.php';
 ?>
 
 <!-- Chart.js -->
-<script src="<?= base_url('assets/vendor/chart.js') ?>"></script>
+<script src="<?= base_url('assets/vendor/chart.js') ?>" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/chart.js';"></script>
 
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">

@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $valid_token) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atur Ulang Kata Sandi - <?= APP_NAME ?></title>
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
-    <script src="<?= base_url('assets/vendor/phosphor.js') ?>"></script>
+    <script src="<?= base_url('assets/vendor/phosphor.js') ?>" onerror="this.onerror=null;this.src='https://unpkg.com/@phosphor-icons/web';"></script>
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
 </head>
 <body class="bg-gray-50 font-sans antialiased text-gray-800 min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
