@@ -57,7 +57,7 @@ class Page
 
 /* ===================== Konstanta gaya (mirip draw.io default) ===================== */
 const FLOW = 'edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;labelBackgroundColor=#ffffff;fontSize=11;';
-const oR = 'exitX=1;exitY=0.5;exitDx=0;exitDy=0;';
+define('o_R', 'exitX=1;exitY=0.5;exitDx=0;exitDy=0;');
 const oL = 'exitX=0;exitY=0.5;exitDx=0;exitDy=0;';
 const oB = 'exitX=0.5;exitY=1;exitDx=0;exitDy=0;';
 const oT = 'exitX=0.5;exitY=0;exitDx=0;exitDy=0;';
@@ -139,7 +139,7 @@ foreach ([$A1, $A2, $A3, $A4, $A5, $A6] as $u) $uc->edge($admin, $u, '', $ASSOC)
 // Include/extend A1
 foreach ([['Data Mahasiswa', 0], ['Data Dosen', 60], ['Data Alumni', 120], ['Data Perusahaan', 180]] as $s) {
     $id = $uc->vertex($s[0], $SX, $s[1], $SW, $SH, $UC);
-    $uc->edge($A1, $id, 'Include', $DASH . oR . iL);
+    $uc->edge($A1, $id, 'Include', $DASH . o_R . iL);
 }
 $imp = $uc->vertex('Impor Massal Pengguna (Excel / CSV)', $SX, 240, $SW, $SH, $UC);
 $uc->edge($imp, $A1, 'Extend', $DASH . oL . iR);
@@ -147,7 +147,7 @@ $uc->edge($imp, $A1, 'Extend', $DASH . oL . iR);
 // Include/extend A3
 foreach ([['Kategori Kompetensi', 400], ['Bahan Kajian', 460], ['Mata Kuliah', 520], ['Pertanyaan &amp; Opsi Jawaban', 580]] as $s) {
     $id = $uc->vertex($s[0], $SX, $s[1], $SW, $SH, $UC);
-    $uc->edge($A3, $id, 'Include', $DASH . oR . iL);
+    $uc->edge($A3, $id, 'Include', $DASH . o_R . iL);
 }
 $soft = $uc->vertex('Aktif / Nonaktifkan Data (Soft Delete)', $SX, 645, $SW, 55, $UC);
 $uc->edge($soft, $A3, 'Extend', $DASH . oL . iR);
@@ -173,7 +173,7 @@ $drf = $uc->vertex('Simpan Draf Otomatis (Auto-Save)', $TX, 532, $SW, $SH, $UC);
 $als = $uc->vertex('Mengisi Alasan Nilai Rendah (Skala 1–2)', $TX, 625, $SW, 55, $UC);
 $uc->edge($R2, $pil, 'Include', $DASH . oL . iR);
 $uc->edge($R2, $drf, 'Include', $DASH . oL . iR);
-$uc->edge($als, $R2, 'Extend', $DASH . oR . iL);
+$uc->edge($als, $R2, 'Extend', $DASH . o_R . iL);
 
 // Use case bersama
 $S2 = $uc->vertex('Kelola Profil &amp; Ganti Kata Sandi', 650, 1060, 180, $AH, $UC);
@@ -209,19 +209,19 @@ $rs  = $a->n('act', 1, 10, 'Menampilkan Beranda Responden', 120, 140, 50);
 $mg  = $a->n('dec', 1, 11, '', -15);
 $e   = $a->n('end', 1, 12, '', -15);
 $a->f($s, $n1); $a->f($n1, $n2); $a->f($n2, $n3);
-$a->f($n3, $n4, '', oR . iL);
+$a->f($n3, $n4, '', o_R . iL);
 $a->f($n4, $d1, '', oB . iT);
-$a->f($d1, $er, 'Tidak', oR . iL);
+$a->f($d1, $er, 'Tidak', o_R . iL);
 $a->f($er, $n2, '', oT . iR, [[$a->cx(1, 140), $a->cy(2)]]);
 $a->f($d1, $n5, 'Ya', oB . iT);
 $a->f($n5, $d2, '', oB . iT);
-$a->f($d2, $pf, 'Ya', oR . iL);
+$a->f($d2, $pf, 'Ya', o_R . iL);
 $a->f($pf, $gs, '', oB . iR);
-$a->f($gs, $sv, '', oR . iL);
+$a->f($gs, $sv, '', o_R . iL);
 $a->f($sv, $d3, '', oB . iR);
 $a->f($d2, $d3, 'Tidak', oB . iT);
 $a->f($d3, $ad, 'Admin', oL . iT);
-$a->f($d3, $rs, 'Responden', oR . iT);
+$a->f($d3, $rs, 'Responden', o_R . iT);
 $a->f($ad, $mg, '', oB . iL);
 $a->f($rs, $mg, '', oB . iR);
 $a->f($mg, $e, '', oB . iT);
@@ -251,11 +251,11 @@ $lg  = $a->n('act', 1, 7, 'Mencatat riwayat ke tabel log_impor', 215, 140, 50);
 $sm  = $a->n('act', 1, 8, 'Menampilkan ringkasan impor (berhasil / gagal)', 215, 140, 50);
 $mg  = $a->n('dec', 1, 9, '', 0);
 $e   = $a->n('end', 1, 10, '', 0);
-$a->f($s, $n1); $a->f($n1, $l1, '', oR . iL); $a->f($l1, $d1, '', oB . iR);
-$a->f($d1, $t1, 'Tambah', oL . iT); $a->f($d1, $t2, 'Edit', oB . iT); $a->f($d1, $t3, 'Impor', oR . iT);
+$a->f($s, $n1); $a->f($n1, $l1, '', o_R . iL); $a->f($l1, $d1, '', oB . iR);
+$a->f($d1, $t1, 'Tambah', oL . iT); $a->f($d1, $t2, 'Edit', oB . iT); $a->f($d1, $t3, 'Impor', o_R . iT);
 $a->f($t1, $sv, '', oB . iT); $a->f($t2, $sv, '', oB . iT); $a->f($t3, $df, '', oB . iT);
 $a->f($sv, $de, '', oB . iT);
-$a->f($de, $ok, 'Ya', oB . iT); $a->f($de, $rb, 'Tidak', oR . iT);
+$a->f($de, $ok, 'Ya', oB . iT); $a->f($de, $rb, 'Tidak', o_R . iT);
 $a->f($df, $fe, 'Tidak', oL . iT); $a->f($df, $rd, 'Ya', oB . iT);
 $a->f($rd, $ins); $a->f($ins, $lg); $a->f($lg, $sm);
 $a->f($ok, $mg, '', oB . iL); $a->f($rb, $mg, '', oB . iT); $a->f($fe, $mg, '', oB . iT); $a->f($sm, $mg, '', oB . iR);
@@ -280,8 +280,8 @@ $x3 = $a->n('act', 1, 4, "UPDATE status = 'tutup'", 175, 140, 55);
 $mg = $a->n('dec', 1, 5, '');
 $x4 = $a->n('act', 1, 6, 'Menampilkan notifikasi &amp; daftar periode terbaru', 0, 180, 50);
 $e  = $a->n('end', 1, 7);
-$a->f($s, $n1); $a->f($n1, $l1, '', oR . iL); $a->f($l1, $d1, '', oB . iR);
-$a->f($d1, $t1, 'Tambah', oL . iT); $a->f($d1, $t2, 'Buka', oB . iT); $a->f($d1, $t3, 'Tutup', oR . iT);
+$a->f($s, $n1); $a->f($n1, $l1, '', o_R . iL); $a->f($l1, $d1, '', oB . iR);
+$a->f($d1, $t1, 'Tambah', oL . iT); $a->f($d1, $t2, 'Buka', oB . iT); $a->f($d1, $t3, 'Tutup', o_R . iT);
 $a->f($t1, $x1, '', oB . iT); $a->f($t2, $x2, '', oB . iT); $a->f($t3, $x3, '', oB . iT);
 $a->f($x1, $mg, '', oB . iL); $a->f($x2, $mg, '', oB . iT); $a->f($x3, $mg, '', oB . iR);
 $a->f($mg, $x4); $a->f($x4, $e);
@@ -308,11 +308,11 @@ $in = $a->n('act', 1, 7, 'INSERT / UPDATE data + relasi (mata_kuliah_bk / opsi_p
 $mg = $a->n('dec', 1, 8, '', 40);
 $sh = $a->n('act', 1, 9, 'Menampilkan notifikasi &amp; daftar terbaru', 40, 170, 50);
 $e  = $a->n('end', 1, 10, '', 40);
-$a->f($s, $n1); $a->f($n1, $n2); $a->f($n2, $l1, '', oR . iL); $a->f($l1, $d1, '', oB . iR);
-$a->f($d1, $t1, 'Tambah', oL . iT); $a->f($d1, $t2, 'Edit', oB . iT); $a->f($d1, $t3, 'Nonaktifkan', oR . iT);
+$a->f($s, $n1); $a->f($n1, $n2); $a->f($n2, $l1, '', o_R . iL); $a->f($l1, $d1, '', oB . iR);
+$a->f($d1, $t1, 'Tambah', oL . iT); $a->f($d1, $t2, 'Edit', oB . iT); $a->f($d1, $t3, 'Nonaktifkan', o_R . iT);
 $a->f($t1, $v1, '', oB . iT); $a->f($t2, $v1, '', oB . iT); $a->f($t3, $sd, '', oB . iT);
 $a->f($v1, $d2, '', oB . iT);
-$a->f($d2, $er, 'Tidak', oR . iL); $a->f($d2, $in, 'Ya', oB . iT);
+$a->f($d2, $er, 'Tidak', o_R . iL); $a->f($d2, $in, 'Ya', oB . iT);
 $a->f($in, $mg, '', oB . iL); $a->f($er, $mg, '', oB . iT); $a->f($sd, $mg, '', oB . iR);
 $a->f($mg, $sh); $a->f($sh, $e);
 $pages[] = $p;
@@ -343,19 +343,19 @@ $ge  = $a->n('act', 1, 11, 'Menampilkan pesan galat &amp; kembali ke formulir', 
 $fn  = $a->n('act', 1, 12, "UPDATE pengisian: status = 'final', waktu_submit = NOW()", -100, 190, 55);
 $ok  = $a->n('act', 1, 13, 'Menampilkan notifikasi sukses di Beranda', -100, 180, 50);
 $e   = $a->n('end', 1, 14, '', -100);
-$a->f($s, $n1); $a->f($n1, $c1, '', oR . iL); $a->f($c1, $d1, '', oB . iT);
-$a->f($d1, $inf, 'Tidak', oR . iL); $a->f($inf, $e1, '', oB . iT);
+$a->f($s, $n1); $a->f($n1, $c1, '', o_R . iL); $a->f($c1, $d1, '', oB . iT);
+$a->f($d1, $inf, 'Tidak', o_R . iL); $a->f($inf, $e1, '', oB . iT);
 $a->f($d1, $ld, 'Ya', oB . iT);
 $a->f($ld, $pm, '', oB . iR);
 $a->f($pm, $is); $a->f($is, $d2, '', oB . iT);
-$a->f($d2, $al, 'Ya', oR . iT); $a->f($d2, $m1, 'Tidak', oB . iT); $a->f($al, $m1, '', oB . iR);
-$a->f($m1, $ds, '', oR . iL);
+$a->f($d2, $al, 'Ya', o_R . iT); $a->f($d2, $m1, 'Tidak', oB . iT); $a->f($al, $m1, '', oB . iR);
+$a->f($m1, $ds, '', o_R . iL);
 $a->f($ds, $d3, '', oB . iR);
 $a->f($d3, $is, 'Belum', oL . iL, [[$a->cx(0, -205), $a->cy(9)], [$a->cx(0, -205), $a->cy(5)]]);
 $a->f($d3, $sb, 'Sudah', oB . iT);
-$a->f($sb, $vs, '', oR . iL);
+$a->f($sb, $vs, '', o_R . iL);
 $a->f($vs, $d4, '', oB . iT);
-$a->f($d4, $ge, 'Tidak', oR . iL);
+$a->f($d4, $ge, 'Tidak', o_R . iL);
 $a->f($ge, $is, '', oT . iR, [[$a->cx(1, 150), $a->cy(5)]]);
 $a->f($d4, $fn, 'Ya', oB . iT); $a->f($fn, $ok); $a->f($ok, $e);
 $pages[] = $p;
@@ -383,16 +383,16 @@ $ex  = $a->n('act', 1, 9, 'Membuat berkas Excel (export-excel.php)', 120, 150, 5
 $m2  = $a->n('dec', 1, 10, '');
 $dl  = $a->n('act', 0, 11, 'Mengunduh / mencetak laporan');
 $e   = $a->n('end', 0, 12);
-$a->f($s, $n1); $a->f($n1, $ap, '', oR . iL); $a->f($ap, $ag); $a->f($ag, $d1, '', oB . iT);
-$a->f($d1, $rd, 'Ya', oB . iT); $a->f($d1, $em, 'Tidak', oR . iT);
+$a->f($s, $n1); $a->f($n1, $ap, '', o_R . iL); $a->f($ap, $ag); $a->f($ag, $d1, '', oB . iT);
+$a->f($d1, $rd, 'Ya', oB . iT); $a->f($d1, $em, 'Tidak', o_R . iT);
 $a->f($rd, $m1, '', oB . iT); $a->f($em, $m1, '', oB . iR);
 $a->f($m1, $d2, '', oL . iR);
 $a->f($d2, $fp, 'Ganti periode', oL . iT);
 $a->f($d2, $lp, 'Cetak laporan', oB . iT);
-$a->f($d2, $e1, 'Selesai', oR . iT);
+$a->f($d2, $e1, 'Selesai', o_R . iT);
 $a->f($fp, $ap, '', oT . iT, [[$a->cx(0, -145), $a->cy(0) + 45], [$a->cx(1, -90), $a->cy(0) + 45]]);
 $a->f($lp, $d3, '', oB . iT);
-$a->f($d3, $pd, 'PDF', oB . iT); $a->f($d3, $ex, 'Excel', oR . iT);
+$a->f($d3, $pd, 'PDF', oB . iT); $a->f($d3, $ex, 'Excel', o_R . iT);
 $a->f($pd, $m2, '', oB . iL); $a->f($ex, $m2, '', oB . iR);
 $a->f($m2, $dl, '', oB . iR); $a->f($dl, $e);
 $pages[] = $p;
@@ -414,8 +414,8 @@ $s3 = $a->n('act', 1, 7, 'UPDATE status dan balasan_admin', 0, 170, 50);
 $r4 = $a->n('act', 0, 8, 'Melihat status &amp; balasan tiket');
 $e  = $a->n('end', 0, 9);
 $a->f($s, $r1); $a->f($r1, $r2); $a->f($r2, $r3);
-$a->f($r3, $s1, '', oR . iL); $a->f($s1, $m1, '', oR . iT);
-$a->f($m1, $s2, '', oB . iR); $a->f($s2, $m2, '', oR . iT);
+$a->f($r3, $s1, '', o_R . iL); $a->f($s1, $m1, '', o_R . iT);
+$a->f($m1, $s2, '', oB . iR); $a->f($s2, $m2, '', o_R . iT);
 $a->f($m2, $s3, '', oB . iR); $a->f($s3, $r4, '', oB . iR); $a->f($r4, $e);
 $pages[] = $p;
 

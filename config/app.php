@@ -23,6 +23,7 @@ if (!empty($doc_root) && strpos($app_root, $doc_root) === 0) {
 }
 
 define('BASE_URL', rtrim($protocol . '://' . $host . $base_dir, '/'));
+define('APP_NAME', 'Evaluasi Kurikulum');
 
 // Waktu zona Indonesia
 date_default_timezone_set('Asia/Jakarta');
