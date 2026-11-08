@@ -69,40 +69,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if (isset($_FILES['file_excel']) && $_FILES['file_excel']['error'] === UPLOAD_ERR_OK) {
             $file = $_FILES['file_excel']['tmp_name'];
-            $ext = strtolower(pathinfo($_FILES['file_excel']['name'], PATHINFO_EXTENSION));
-            if (!in_array($ext, ['xls', 'xlsx', 'csv'])) {
-                set_flash_message('error', 'Format file harus xls, xlsx, atau csv.');
-                redirect('admin/master/dosen.php');
-            }
-            if (file_exists('../../vendor/autoload.php')) {
-                require_once '../../vendor/autoload.php';
-                try {
-                    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
-                    $worksheet = $spreadsheet->getActiveSheet();
-                    $rows = $worksheet->toArray();
-                    $berhasil = 0; $gagal = 0;
-                    $pdo->beginTransaction();
-                    $stmt_user = $pdo->prepare("INSERT INTO pengguna (nama, email, password_hash, peran) VALUES (?, ?, ?, 'dosen')");
-                    $stmt_profil = $pdo->prepare("INSERT INTO profil_pengguna (pengguna_id, nomor_induk) VALUES (?, ?)");
-                    for ($i = 1; $i < count($rows); $i++) {
-                        $nidn = trim($rows[$i][0] ?? '');
-                        $nama = trim($rows[$i][1] ?? '');
-                        $email = trim($rows[$i][2] ?? '');
-                        if ($nama && $email) {
-                            try {
-                                $stmt_user->execute([$nama, $email, $default_password]);
-                                $user_id = $pdo->lastInsertId();
-                                $stmt_profil->execute([$user_id, $nidn]);
-                                $berhasil++;
-                            } catch (Exception $e) { $gagal++; }
-                        }
+            $file_name = $_FILES['file_excel']['name'];
+            
+            require_once '../../includes/impor_helper.php';
+            try {
+                $rows = baca_file_impor($file, $file_name);
+                $berhasil = 0; $gagal = 0;
+                
+                $pdo->beginTransaction();
+                $stmt_user = $pdo->prepare("INSERT INTO pengguna (nama, email, password_hash, peran, wajib_ganti_sandi) VALUES (?, ?, ?, 'dosen', 1)");
+                $stmt_profil = $pdo->prepare("INSERT INTO profil_pengguna (pengguna_id, nomor_induk) VALUES (?, ?)");
+                
+                for ($i = 1; $i < count($rows); $i++) {
+                    $nidn = trim($rows[$i][0] ?? '');
+                    $nama = trim($rows[$i][1] ?? '');
+                    $email = trim($rows[$i][2] ?? '');
+                    if ($nama && $email) {
+                        try {
+                            $stmt_user->execute([$nama, $email, $default_password]);
+                            $user_id = $pdo->lastInsertId();
+                            $stmt_profil->execute([$user_id, $nidn]);
+                            $berhasil++;
+                        } catch (Exception $e) { $gagal++; }
                     }
-                    $stmt_log = $pdo->prepare("INSERT INTO log_impor (admin_id, nama_berkas, jumlah_berhasil, jumlah_gagal) VALUES (?, ?, ?, ?)");
-                    $stmt_log->execute([$_SESSION['user_id'], $_FILES['file_excel']['name'], $berhasil, $gagal]);
-                    $pdo->commit();
-                    set_flash_message('success', "Impor selesai. Berhasil: $berhasil, Gagal: $gagal.");
-                } catch (Exception $e) { set_flash_message('error', 'Gagal membaca file: ' . $e->getMessage()); }
-            } else { set_flash_message('error', 'Library PhpSpreadsheet belum terinstall.'); }
+                }
+                
+                $stmt_log = $pdo->prepare("INSERT INTO log_impor (admin_id, nama_berkas, jumlah_berhasil, jumlah_gagal) VALUES (?, ?, ?, ?)");
+                $stmt_log->execute([$_SESSION['user_id'], $file_name, $berhasil, $gagal]);
+                
+                $pdo->commit();
+                set_flash_message('success', "Impor selesai. Berhasil: $berhasil, Gagal: $gagal.");
+            } catch (Exception $e) {
+                if ($pdo->inTransaction()) {
+                    $pdo->rollBack();
+                }
+                set_flash_message('error', 'Gagal memproses file impor: ' . $e->getMessage());
+            }
         }
     }
     redirect('admin/master/dosen.php');
@@ -177,13 +179,19 @@ require_once '../../includes/header.php';
                 </div>
                 <div>
                     <h4 class="font-semibold text-gray-900 mb-4 flex items-center gap-2 border-b border-gray-100 pb-2"><i class="ph ph-file-xls text-green-500"></i> Impor Massal Excel</h4>
-                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-4 text-sm text-blue-800 flex justify-between items-start gap-4">
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-4 text-sm text-blue-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
                         <div>
-                            <strong>Format Kolom CSV:</strong><br>Kolom A: NIDN<br>Kolom B: Nama Lengkap (Wajib)<br>Kolom C: Email (Wajib)
+                            <strong>Format Berkas Impor:</strong><br>Kolom A: NIDN | Kolom B: Nama Lengkap | Kolom C: Email
+                            <span class="text-xs text-blue-600 mt-1 block">* Baris pertama (header) akan dilewati otomatis. Mendukung format .xlsx dan .csv</span>
                         </div>
-                        <a href="<?= base_url('template/template_impor_dosen.csv') ?>" download class="bg-white border border-blue-200 text-blue-600 hover:bg-blue-100 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap flex items-center gap-1 shadow-sm transition-colors">
-                            <i class="ph ph-download-simple"></i> Unduh Format
-                        </a>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <a href="<?= base_url('template/dummy_impor_dosen.xlsx') ?>" download class="bg-white border border-green-200 text-green-700 hover:bg-green-50 px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap flex items-center gap-1 shadow-sm transition-colors">
+                                <i class="ph ph-file-xls text-green-600 text-sm"></i> Unduh Excel
+                            </a>
+                            <a href="<?= base_url('template/template_impor_dosen.csv') ?>" download class="bg-white border border-blue-200 text-blue-600 hover:bg-blue-50 px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap flex items-center gap-1 shadow-sm transition-colors">
+                                <i class="ph ph-file-csv text-blue-600 text-sm"></i> Unduh CSV
+                            </a>
+                        </div>
                     </div>
                     <form action="" method="POST" enctype="multipart/form-data" class="space-y-4">
                         <?= csrf_field() ?> <input type="hidden" name="action" value="impor_excel">

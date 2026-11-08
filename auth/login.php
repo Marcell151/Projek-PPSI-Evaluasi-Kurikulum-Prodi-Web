@@ -19,6 +19,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('auth/login.php');
     }
 
+    // 1-Click Demo Login Handler
+    $demo_role = $_POST['demo_role'] ?? '';
+    if (!empty($demo_role)) {
+        $demo_accounts = [
+            'admin' => 'admin@machung.ac.id',
+            'mahasiswa' => '322310001@student.machung.ac.id', // Carlo Imanuel
+            'mahasiswa_marcell' => '322310015@student.machung.ac.id', // Marcell Chandra
+            'dosen' => 'daniel.saputra@machung.ac.id', // Daniel Saputra
+            'alumni' => 'andi.alumni@gmail.com', // Andi Gunawan
+            'perusahaan' => 'hrd@tekmaju.com' // HRD PT Teknologi Maju
+        ];
+
+        if (isset($demo_accounts[$demo_role])) {
+            $email = $demo_accounts[$demo_role];
+            $stmt = $pdo->prepare("SELECT * FROM pengguna WHERE email = ? AND aktif = TRUE");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch();
+
+            if ($user) {
+                session_regenerate_id(true);
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_role'] = $user['peran'];
+                $_SESSION['user_name'] = $user['nama'];
+                $_SESSION['wajib_ganti_sandi'] = 0; // Bypass ganti sandi untuk demo
+
+                set_flash_message('success', 'Berhasil masuk sebagai demo: ' . escape($user['nama']) . ' (' . ucfirst($user['peran']) . ')');
+
+                if ($user['peran'] === 'admin') {
+                    redirect('admin/dashboard.php');
+                } else {
+                    redirect('responden/beranda.php');
+                }
+            } else {
+                set_flash_message('error', 'Akun demo tidak ditemukan di database.');
+                redirect('auth/login.php');
+            }
+        }
+    }
+
+    // Login Manual dengan Email & Kata Sandi
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
@@ -55,43 +95,59 @@ $page_title = 'Masuk';
 require_once '../includes/header.php';
 ?>
 
-<div class="max-w-md mx-auto mt-12 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-    <div class="p-8">
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-50 text-brand-500 mb-4">
-                <i class="ph ph-user text-2xl"></i>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Selamat Datang</h2>
-            <p class="text-sm text-gray-500 mt-2">Masuk untuk melanjutkan ke portal evaluasi.</p>
+<div class="max-w-md mx-auto my-12 bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+    <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-50 text-brand-500 mb-3">
+            <i class="ph ph-user text-2xl"></i>
         </div>
+        <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Selamat Datang</h2>
+        <p class="text-sm text-gray-500 mt-1">Masuk untuk melanjutkan ke portal evaluasi.</p>
+    </div>
+
+    <?= display_flash_message() ?>
+
+    <!-- Form Login Utama -->
+    <form action="<?= base_url('auth/login.php') ?>" method="POST" class="space-y-4">
+        <?= csrf_field() ?>
         
-        <form action="<?= base_url('auth/login.php') ?>" method="POST" class="space-y-5">
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <i class="ph ph-envelope-simple text-base"></i>
+                </div>
+                <input type="email" id="email" name="email" class="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-shadow" placeholder="nama@email.com" required autofocus>
+            </div>
+        </div>
+
+        <div>
+            <div class="flex items-center justify-between mb-1">
+                <label for="password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
+                <a href="<?= base_url('auth/lupa-sandi.php') ?>" class="text-xs font-medium text-brand-600 hover:text-brand-500">Lupa sandi?</a>
+            </div>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <i class="ph ph-lock-key text-base"></i>
+                </div>
+                <input type="password" id="password" name="password" class="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-shadow" placeholder="••••••••" required>
+            </div>
+        </div>
+
+        <button type="submit" class="w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors mt-2 cursor-pointer">
+            Masuk <i class="ph ph-arrow-right"></i>
+        </button>
+    </form>
+
+    <!-- Tombol Akun Demo Minimalis (Kecil, Rapi, Netral) -->
+    <div class="mt-6 pt-5 border-t border-gray-100 text-center">
+        <p class="text-xs text-gray-400 mb-2.5">Akses Cepat Demo:</p>
+        <form action="<?= base_url('auth/login.php') ?>" method="POST" class="flex flex-wrap justify-center gap-1.5">
             <?= csrf_field() ?>
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="ph ph-envelope-simple text-gray-400"></i>
-                    </div>
-                    <input type="email" id="email" name="email" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition-shadow" placeholder="nama@email.com" required autofocus>
-                </div>
-            </div>
-            <div>
-                <div class="flex items-center justify-between mb-1">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Kata Sandi</label>
-                    <a href="<?= base_url('auth/lupa-sandi.php') ?>" class="text-xs font-medium text-brand-600 hover:text-brand-500">Lupa sandi?</a>
-                </div>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="ph ph-lock-key text-gray-400"></i>
-                    </div>
-                    <input type="password" id="password" name="password" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition-shadow" placeholder="••••••••" required>
-                </div>
-            </div>
-            
-            <button type="submit" class="w-full flex justify-center items-center gap-2 py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-brand-500 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors mt-2">
-                Masuk <i class="ph ph-arrow-right font-bold"></i>
-            </button>
+            <button type="submit" name="demo_role" value="admin" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Admin (admin@machung.ac.id)">Admin</button>
+            <button type="submit" name="demo_role" value="mahasiswa" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Mahasiswa (Carlo Imanuel)">Mahasiswa</button>
+            <button type="submit" name="demo_role" value="dosen" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Dosen (Daniel Saputra)">Dosen</button>
+            <button type="submit" name="demo_role" value="alumni" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Alumni (Andi Gunawan)">Alumni</button>
+            <button type="submit" name="demo_role" value="perusahaan" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Mitra Industri (HRD PT Teknologi Maju)">Perusahaan</button>
         </form>
     </div>
 </div>
