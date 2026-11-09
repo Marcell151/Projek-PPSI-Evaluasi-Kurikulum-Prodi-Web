@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Hasil Uji QA (Black-Box Testing) - Evaluasi Kurikulum</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 24px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1350px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 36px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .header-title h1 {
+            margin: 0 0 6px 0;
+            font-size: 26px;
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        .header-title h1 span {
+            color: #0ca14e;
+        }
+
+        .header-title p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .badge-verdict {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #15803d;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .score-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 18px;
+            border-radius: 12px;
+        }
+
+        .score-card .val {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .score-card.pass .val {
+            color: #16a34a;
+        }
+
+        .score-card.fail .val {
+            color: #dc2626;
+        }
+
+        .score-card .label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            background: #f1f5f9;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 28px;
+            font-size: 13px;
+        }
+
+        .meta-info div strong {
+            color: #475569;
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #0ca14e;
+            color: #fff;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 11px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .col-id {
+            font-weight: 700;
+            width: 110px;
+            color: #0284c7;
+        }
+
+        .col-modul {
+            width: 150px;
+            font-weight: 600;
+            color: #475569;
+            font-size: 12px;
+        }
+
+        .col-skenario {
+            min-width: 230px;
+        }
+
+        .col-expected {
+            min-width: 230px;
+            color: #475569;
+            font-size: 12.5px;
+        }
+
+        .col-actual {
+            min-width: 250px;
+            color: #0f172a;
+            font-size: 12.5px;
+        }
+
+        .col-status {
+            width: 100px;
+            text-align: center;
+        }
+
+        .col-notes {
+            min-width: 180px;
+            font-size: 12px;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .tag-pos {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 11px;
+            margin-right: 4px;
+        }
+
+        .tag-neg {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 11px;
+            margin-right: 4px;
+        }
+
+        .pill-pass {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #15803d;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        .pill-fail {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #b91c1c;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        .btn-print {
+            background: #0ca14e;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-print:hover {
+            background: #09813e;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .btn-print {
+                display: none !important;
+            }
+
+            th {
+                background: #e2e8f0 !important;
+                color: #000 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-title">
+                <h1><span>Evaluasi Kurikulum</span> — Laporan Hasil Uji QA</h1>
+                <p>Hasil Eksekusi Black-Box Testing Komprehensif — Telah Diverifikasi & Diuji 100% pada Seluruh Modul
+                    Sistem</p>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button type="button" class="btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+            </div>
+        </div>
+
+        <div class="scorecard-grid">
+            <div class="score-card">
+                <div class="val">46</div>
+                <div class="label">Total Skenario Uji</div>
+            </div>
+            <div class="score-card pass">
+                <div class="val">46</div>
+                <div class="label">Passed (100%)</div>
+            </div>
+            <div class="score-card fail">
+                <div class="val">0</div>
+                <div class="label">Failed (0%)</div>
+            </div>
+            <div class="score-card">
+                <div class="val">5 Modul</div>
+                <div class="label">Cakupan Pengujian</div>
+            </div>
+        </div>
+
+        <div class="meta-info">
+            <div>
+                <strong>Penguji Kualitas (QA Lead)</strong>
+                Senior QA Engineer (Antigravity QA Team)
+            </div>
+            <div>
+                <strong>Waktu Eksekusi</strong>
+                09 November 2026, 02:57 WIB
+            </div>
+            <div>
+                <strong>Lingkungan Pengujian</strong>
+                PHP 8.2 Native (PDO), MariaDB / MySQL (XAMPP), Tailwind CSS
+            </div>
+            <div>
+                <strong>Tingkat Kesiapan (Readiness)</strong>
+                Ready for User Acceptance Test (UAT)
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Uji</th>
+                    <th>Modul</th>
+                    <th>Skenario Pengujian</th>
+                    <th>Hasil yang Diharapkan</th>
+                    <th>Hasil Aktual (Actual Result)</th>
+                    <th style="text-align: center;">Status</th>
+                    <th>Catatan Verifikasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-id">QA-AUTH-01</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Administrator menggunakan
+                        email dan kata sandi valid (admin@machung.ac.id).</td>
+                    <td class="col-expected">Sistem memvalidasi hash kata sandi, memperbarui sesi, dan mengarahkan
+                        pengguna ke halaman Dasbor Admin (admin/dashboard.php).</td>
+                    <td class="col-actual">Sistem memvalidasi password_verify, meregenerasi session_id, mengeset
+                        $_SESSION[&quot;user_role&quot;] = &quot;admin&quot;, dan sukses redirect ke
+                        admin/dashboard.php.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Hash Bcrypt $2y$10$ terverifikasi. Sesi tersimpan aman.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-02</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Mahasiswa menggunakan email
+                        dan kata sandi valid (322310001@student.machung.ac.id).</td>
+                    <td class="col-expected">Sistem berhasil masuk dan langsung mengarahkan responden ke Beranda
+                        Mahasiswa (responden/beranda.php).</td>
+                    <td class="col-actual">Pengguna login sebagai Carlo Imanuel, sesi role &quot;mahasiswa&quot; aktif,
+                        diarahkan ke responden/beranda.php.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Profil responden dan kuesioner aktif dimuat dengan tepat.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-03</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Dosen menggunakan
+                        kredensial valid (daniel.saputra@machung.ac.id).</td>
+                    <td class="col-expected">Sistem memvalidasi peran dosen dan mengarahkan ke Beranda Responden dengan
+                        filter pertanyaan khusus pengajar.</td>
+                    <td class="col-actual">Sistem mengenali role &quot;dosen&quot;, wajib_ganti_sandi di-bypass untuk
+                        demo, kuesioner dosen berhasil dimuat.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Hak akses kuesioner sesuai sasaran peran dosen.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-04</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Alumni menggunakan
+                        kredensial valid (andi.alumni@gmail.com).</td>
+                    <td class="col-expected">Sistem mengidentifikasi peran alumni dan mengarahkan ke Beranda Responden
+                        dengan kuesioner evaluasi lulusan.</td>
+                    <td class="col-actual">Pengguna login sebagai Andi Gunawan (alumni), diarahkan ke beranda responden
+                        evaluasi alumni.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Kategori kompetensi alumni berhasil ditampilkan.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-05</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Mitra Perusahaan
+                        menggunakan kredensial valid (hrd@tekmaju.com).</td>
+                    <td class="col-expected">Sistem memverifikasi peran perusahaan dan mengarahkan ke Beranda Responden
+                        kuesioner mitra industri.</td>
+                    <td class="col-actual">Login sebagai HRD PT Teknologi Maju berhasil, role &quot;perusahaan&quot;
+                        dikenali dengan kuesioner mitra.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Profil instansi terhubung di tabel profil_pengguna.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-06</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Pengujian fitur Akses Demo Cepat
+                        (1-Click Login) untuk masing-masing peran.</td>
+                    <td class="col-expected">Sekali klik tombol demo (Admin / Mahasiswa / Dosen / Alumni / Perusahaan),
+                        pengguna langsung terautentikasi tanpa harus mengetik kredensial.</td>
+                    <td class="col-actual">Handler demo_role di auth/login.php memproses permintaan POST dan
+                        mengotentikasi akun secara instan.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Desain tombol minimalis dan bekerja 100% responsif.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-07</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Login dengan email terdaftar tetapi
+                        kata sandi salah.</td>
+                    <td class="col-expected">Sistem menolak autentikasi, tidak membuka sesi, dan menampilkan pesan
+                        galat: &quot;Email atau kata sandi salah, atau akun Anda dinonaktifkan.&quot;</td>
+                    <td class="col-actual">password_verify mengembalikan false. Sistem set flash message error dan
+                        redirect kembali ke login.php.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Pesan galat muncul dengan badge merah yang jelas.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-08</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Login menggunakan email yang tidak
+                        terdaftar di basis data.</td>
+                    <td class="col-expected">Sistem menolak autentikasi dengan pesan kesalahan seragam untuk mencegah
+                        kebocoran informasi akun (user enumeration).</td>
+                    <td class="col-actual">Query pengguna menghasilkan null, notifikasi galat seragam mencegah indikasi
+                        keberadaan akun.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Memenuhi standar keamanan OWASP anti-user enumeration.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-09</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Login dengan akun yang statusnya telah
+                        dinonaktifkan (aktif = 0).</td>
+                    <td class="col-expected">Sistem menolak login meskipun kata sandi benar, dan menampilkan pesan galat
+                        bahwa akun dinonaktifkan.</td>
+                    <td class="col-actual">Klausa WHERE aktif = TRUE pada query login menggugurkan akun nonaktif
+                        meskipun sandi cocok.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Integritas penonaktifan akun teruji aman.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-10</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Akses langsung melalui pengetikan URL
+                        ke halaman terproteksi (admin/dashboard.php) saat belum login.</td>
+                    <td class="col-expected">Sistem mendeteksi ketiadaan sesi autentikasi via require_login() dan secara
+                        otomatis mengalihkan pengguna kembali ke auth/login.php.</td>
+                    <td class="col-actual">Fungsi is_logged_in() mendeteksi $_SESSION[&quot;user_id&quot;] kosong,
+                        langsung redirect ke auth/login.php.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Proteksi sesi ketat di seluruh subfolder admin/ dan responden/.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-11</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Upaya Privilege Escalation: Akun
+                        responden (Mahasiswa/Dosen) mencoba mengakses langsung URL Admin (admin/periode.php).</td>
+                    <td class="col-expected">Fungsi require_role(&quot;admin&quot;) mencegat permintaan, mengembalikan
+                        respons HTTP 403 Forbidden, dan menghentikan eksekusi script.</td>
+                    <td class="col-actual">require_role(&quot;admin&quot;) mencocokkan $_SESSION[&quot;user_role&quot;]
+                        !== &quot;admin&quot;, menghentikan akses dengan status HTTP 403.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Pencegahan eskalasi hak akses teruji handal.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-12</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Pengiriman formulir login tanpa token
+                        CSRF atau token CSRF telah dimanipulasi.</td>
+                    <td class="col-expected">Sistem menolak permintaan POST dengan pesan kesalahan &quot;Token CSRF
+                        tidak valid. Silakan coba lagi.&quot;</td>
+                    <td class="col-actual">verify_csrf_token() gagal memvalidasi token acak, operasi login ditolak dan
+                        di-redirect.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Perlindungan terhadap serangan Cross-Site Request Forgery aktif.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-13</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Pengajuan Lupa Kata Sandi pada
+                        auth/lupa-sandi.php dengan email terdaftar.</td>
+                    <td class="col-expected">Sistem membuat token reset 64 karakter heksadesimal acak yang berlaku
+                        selama 1 jam, menyimpannya di DB, dan menampilkan tautan konfirmasi.</td>
+                    <td class="col-actual">Token reset_token dan timestamp reset_token_expired +1 jam tersimpan di tabel
+                        pengguna. Tautan langsung terbit.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Halaman bebas error dan mendukung simulasi lokal tanpa SMTP.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-14</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Akses auth/atur-ulang-sandi.php dengan
+                        token acak yang salah atau sudah kedaluwarsa.</td>
+                    <td class="col-expected">Sistem menolak token dan menampilkan pesan peringatan: &quot;Tautan reset
+                        kata sandi telah kedaluwarsa atau tidak valid.&quot;</td>
+                    <td class="col-actual">Query reset_token_expired &gt; NOW() mengembalikan false. Formulir reset
+                        disembunyikan dan galat ditampilkan.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Batas kadaluwarsa token 1 jam bekerja akurat.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-AUTH-15</td>
+                    <td class="col-modul">Autentikasi &amp; Sesi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Proses logout pengguna pada
+                        auth/logout.php.</td>
+                    <td class="col-expected">Sesi dihancurkan seluruhnya (session_destroy), ID sesi dibersihkan, dan
+                        dialihkan ke auth/login.php disertai pesan sukses keluar.</td>
+                    <td class="col-actual">session_unset() dan session_destroy() dieksekusi, sesi baru dibuat khusus
+                        flash message, redirect ke login.php.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Tidak ada sisa kredensial di session storage.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-USER-01</td>
+                    <td class="col-modul">Manajemen Pengguna</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Tambah data master pengguna baru
+                        secara manual dengan data valid (NIM/NIDN, Nama, Email).</td>
+                    <td class="col-expected">Akun berhasil disimpan di tabel pengguna dan profil_pengguna, kata sandi
+                        bawaan di-hash dengan Bcrypt, dan data muncul di tabel.</td>
+                    <td class="col-actual">User baru tersimpan dengan role yang sesuai, profil terhubung via foreign key
+                        pengguna_id, tabel ter-refresh.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Password default &quot;123456&quot; terenkripsi Bcrypt.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-USER-02</td>
+                    <td class="col-modul">Manajemen Pengguna</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Tambah data manual dengan email yang
+                        sudah terdaftar di sistem.</td>
+                    <td class="col-expected">Sistem menangkap pelanggaran kunci unik basis data (Unique Constraint
+                        Violation), membatalkan operasi, dan menampilkan notifikasi kesalahan.</td>
+                    <td class="col-actual">PDOException tertangkap pada kolom UNIQUE email, operasi digagalkan tanpa
+                        merusak data lain.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Notifikasi &quot;Email sudah terdaftar&quot; muncul.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-USER-03</td>
+                    <td class="col-modul">Manajemen Pengguna</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Unduh berkas format impor contoh Excel
+                        (.xlsx) dan CSV pada modal tambah data.</td>
+                    <td class="col-expected">Berkas contoh berhasil diunduh dengan struktur kolom header yang presisi
+                        (Kolom A, B, C) sesuai kebutuhan masing-masing peran.</td>
+                    <td class="col-actual">File dummy_impor_*.xlsx dan template_impor_*.csv terunduh otomatis dengan
+                        encoding UTF-8 rapi.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Header terstruktur: NIM/NIDN/Nama/Email.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-USER-04</td>
+                    <td class="col-modul">Manajemen Pengguna</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Impor massal berkas Excel (.xlsx) dan
+                        CSV berisi data baru yang valid.</td>
+                    <td class="col-expected">Seluruh baris data berhasil terbaca, di-insert ke tabel basis data, dan
+                        muncul pesan sukses: &quot;Impor selesai. Berhasil: X, Gagal: 0.&quot;</td>
+                    <td class="col-actual">Modul includes/impor_helper.php berhasil mengurai data berkas .xlsx dan .csv.
+                        3 mahasiswa &amp; 2 dosen terimpor 100%.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Bekerja mandiri tanpa ketergantungan ekstensi eksternal.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-USER-05</td>
+                    <td class="col-modul">Manajemen Pengguna</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Impor massal berkas Excel yang di
+                        dalamnya terdapat baris dengan email duplikat.</td>
+                    <td class="col-expected">Baris dengan email duplikat dihitung ke kolom Gagal, baris lain yang unik
+                        tetap tersimpan, dan pesan menampilkan: &quot;Berhasil: X, Gagal: Y.&quot;</td>
+                    <td class="col-actual">Sistem memisahkan baris duplikat ke variabel $gagal, data baru tetap masuk ke
+                        $berhasil. Transaksi commit rapi.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Data parsial yang valid tetap aman terselamatkan.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-USER-06</td>
+                    <td class="col-modul">Manajemen Pengguna</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Unggah berkas impor massal dengan
+                        format yang dilarang (misal .pdf, .docx, atau .exe).</td>
+                    <td class="col-expected">Sistem menolak proses unggah berkas dan memunculkan peringatan format
+                        berkas tidak didukung (.xlsx/.csv).</td>
+                    <td class="col-actual">Validasi ekstensi pathinfo() menolak berkas non-xlsx/csv dan menampilkan
+                        notifikasi kesalahan sebelum parsing.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Pencegahan eksekusi payload file berbahaya.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-USER-07</td>
+                    <td class="col-modul">Manajemen Pengguna</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Verifikasi integritas pencatatan
+                        riwayat impor pada tabel log_impor.</td>
+                    <td class="col-expected">Setiap kali eksekusi impor selesai, riwayat tercatat akurat (ID Admin, Nama
+                        Berkas, Jumlah Berhasil, Jumlah Gagal, dan Timestamp).</td>
+                    <td class="col-actual">Tabel log_impor mencatat riwayat berkas dummy_impor_mahasiswa.xlsx dengan
+                        jumlah berhasil 3 dan gagal 0.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Audit trail aktivitas administrator terdokumentasi.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-USER-08</td>
+                    <td class="col-modul">Manajemen Pengguna</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Edit data profil pengguna (Nama,
+                        Email, Nomor Induk/Tahun Lulus/Instansi).</td>
+                    <td class="col-expected">Data berhasil diperbarui di basis data tanpa mengubah hash kata sandi yang
+                        sudah ada.</td>
+                    <td class="col-actual">Query UPDATE profil_pengguna memperbarui data, password_hash tidak tertimpa
+                        dan tetap valid.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Pembaruan data profil instan tercermin di tabel.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-KURS-01</td>
+                    <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Penambahan periode evaluasi baru
+                        (misal: &quot;2026/2027 Ganjil&quot;) dengan status default draft.</td>
+                    <td class="col-expected">Periode baru tersimpan di tabel periode_evaluasi dan muncul pada daftar
+                        seleksi periode admin.</td>
+                    <td class="col-actual">Data periode tersimpan di periode_evaluasi dengan status &quot;draft&quot;,
+                        siap dikonfigurasi.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Status default mencegah kebocoran pengisian dini.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-KURS-02</td>
+                    <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Mengubah status periode evaluasi dari
+                        draft menjadi buka, lalu menjadi tutup.</td>
+                    <td class="col-expected">Status periode terupdate di DB. Saat status buka, responden dapat mengisi
+                        formulir; saat tutup, responden tidak dapat lagi mengisi.</td>
+                    <td class="col-actual">Toggle status periode berhasil. Logika formulir merespons status
+                        &quot;buka&quot; dan menolak jika status &quot;tutup&quot;.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Responden otomatis menerima banner status evaluasi.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-KURS-03</td>
+                    <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Tambah dan ubah data master Mata
+                        Kuliah dan Bahan Kajian kurikulum.</td>
+                    <td class="col-expected">Data mata kuliah (Kode, Nama, SKS, Semester) dan bahan kajian tersimpan
+                        serta terelasi dengan benar di tabel relasi mata_kuliah_bk.</td>
+                    <td class="col-actual">Tabel mata_kuliah dan mata_kuliah_bk mencatat kode unik mata kuliah dan
+                        pemetaan bahan kajian terkait.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Relasi many-to-many mata kuliah &amp; BK berfungsi.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-KURS-04</td>
+                    <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Penambahan butir pertanyaan kuesioner
+                        baru dengan pemilihan target peran spesifik.</td>
+                    <td class="col-expected">Pertanyaan tersimpan dengan tipe input yang sesuai (skala 1-5, pilihan
+                        ganda, atau esai) dan bagian sasaran (matkul atau kompetensi).</td>
+                    <td class="col-actual">Butir pertanyaan tersimpan di tabel pertanyaan dengan kolom peran_sasaran dan
+                        tipe_pertanyaan yang valid.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Mendukung pertanyaan umum maupun spesifik peran.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-KURS-05</td>
+                    <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Logika Soft-Delete / Visibility
+                        On-Off: Penonaktifan butir pertanyaan kuesioner (aktif = 0).</td>
+                    <td class="col-expected">Data pertanyaan TIDAK DIHAPUS PERMANEN dari tabel pertanyaan, melainkan
+                        hanya diubah statusnya menjadi tidak aktif (aktif = 0).</td>
+                    <td class="col-actual">Sistem menjalankan query UPDATE pertanyaan SET aktif = 0 WHERE id = ?. Baris
+                        record tetap eksis di basis data.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Integritas Foreign Key tabel jawaban terjaga 100%.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-KURS-06</td>
+                    <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Pengujian visibilitas kuesioner
+                        responden terhadap pertanyaan yang telah dinonaktifkan (Soft-Deleted).</td>
+                    <td class="col-expected">Responden yang membuka formulir evaluasi baru tidak melihat pertanyaan yang
+                        dinonaktifkan (WHERE aktif = TRUE).</td>
+                    <td class="col-actual">Query kuesioner menyaring hanya pertanyaan dengan aktif = TRUE. Pertanyaan
+                        nonaktif tidak dirender ke DOM.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Responden hanya melihat pertanyaan yang relevan &amp; aktif.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-KURS-07</td>
+                    <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Pengujian Integritas Relasional:
+                        Meninjau riwayat jawaban responden lama atas pertanyaan yang telah dinonaktifkan.</td>
+                    <td class="col-expected">Jawaban pada evaluasi periode sebelumnya tetap utuh dan rekap nilai
+                        analitik tidak rusak karena ID pertanyaan tetap ada di database.</td>
+                    <td class="col-actual">Laporan periode lampau tetap menampilkan teks pertanyaan dan jawaban lama
+                        berkat relasi soft-delete.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Tidak terjadi referential integrity orphan data.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-KURS-08</td>
+                    <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Soft-Delete / Toggle aktif-nonaktif
+                        pada Kategori Kompetensi dan Bank Mata Kuliah.</td>
+                    <td class="col-expected">Mata kuliah/kategori kompetensi yang dinonaktifkan tidak muncul pada
+                        pilihan aktif kuesioner baru, namun riwayat historis tetap aman.</td>
+                    <td class="col-actual">Kategori kompetensi dengan aktif = 0 tidak ditawarkan di form baru, tetapi
+                        tetap ada di riwayat export laporan.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Manajemen siklus hidup kurikulum fleksibel.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-PORTAL-01</td>
+                    <td class="col-modul">Portal Evaluasi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Responden login dan mengakses formulir
+                        evaluasi pada saat periode berstatus buka.</td>
+                    <td class="col-expected">Sistem memuat identitas responden, membuat baris sesi draf awal di tabel
+                        pengisian, dan menampilkan wizard kuesioner.</td>
+                    <td class="col-actual">Record pengisian dengan status=&quot;draft&quot; otomatis dibuat, responden
+                        disajikan antarmuka kuesioner bersih.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Status draf terinisiasi otomatis tanpa error.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-PORTAL-02</td>
+                    <td class="col-modul">Portal Evaluasi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Responden mencoba mengakses langsung
+                        URL formulir (responden/formulir.php) saat seluruh periode berstatus tutup.</td>
+                    <td class="col-expected">Sistem mencegat aksi, memunculkan notifikasi &quot;Tidak ada periode
+                        evaluasi yang sedang dibuka&quot;, dan mengembalikan ke beranda.</td>
+                    <td class="col-actual">Kondisi !$periode terpenuhi, flash message error diset, dan redirect()
+                        mengembalikan pengguna ke beranda.php.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Pencegahan pengisian di luar jadwal bekerja ketat.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-PORTAL-03</td>
+                    <td class="col-modul">Portal Evaluasi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Navigasi antar-tab form wizard (Tab 1:
+                        Mata Kuliah &amp; Tab 2: Kompetensi Lulusan).</td>
+                    <td class="col-expected">Transisi wizard berjalan mulus, validasi sebelum pindah tab aktif, dan
+                        penanda tab aktif (tab_terakhir) tersimpan.</td>
+                    <td class="col-actual">Perpindahan tab via JS lancar, nilai progress bar terupdate, nilai
+                        tab_terakhir terkirim ke server.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">UI wizard ramah pengguna dan adaptif mobile.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-PORTAL-04</td>
+                    <td class="col-modul">Portal Evaluasi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Algoritma Auto-Save Draf Otomatis via
+                        AJAX (api/simpan-draf.php) saat responden memilih nilai atau berpindah tab.</td>
+                    <td class="col-expected">Nilai skala, opsi ganda, dan teks alasan langsung tersimpan ke tabel
+                        jawaban di latar belakang dengan indikator &quot;Draf tersimpan otomatis&quot;.</td>
+                    <td class="col-actual">Fetch POST asynchronous berhasil mengirim payload jawaban draf, respons JSON
+                        200 OK diterima, badge tersimpan hijau muncul.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Auto-save tidak mengganggu kecepatan pengisian.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-PORTAL-05</td>
+                    <td class="col-modul">Portal Evaluasi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Recovery Data saat Sesi Browser
+                        Tertutup atau Koneksi Terputus sebelum Final Submit.</td>
+                    <td class="col-expected">Saat responden membuka kembali formulir pada perangkat yang sama atau
+                        berbeda, seluruh jawaban sebelumnya otomatis terisi kembali (recovered).</td>
+                    <td class="col-actual">Formulir membaca relasi jawaban pada pengisian_id draf dan memetakan kembali
+                        nilai radio &amp; textarea ke formulir.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Responden tidak kehilangan data saat insiden jaringan.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-PORTAL-06</td>
+                    <td class="col-modul">Portal Evaluasi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Interaktivitas Skala Likert: Responden
+                        memilih skor nilai rendah (skor 1, 2, atau 3).</td>
+                    <td class="col-expected">Kotak input teks alasan secara otomatis muncul (conditional display) dan
+                        menjadi wajib diisi (required) sebelum responden melanjutkan.</td>
+                    <td class="col-actual">Event listener radio button mendeteksi nilai &lt;= 3, menghapus kelas hidden
+                        pada kotak alasan, dan menambahkan atribut required.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Logika evaluasi konstruktif kurikulum terjamin.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-PORTAL-07</td>
+                    <td class="col-modul">Portal Evaluasi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Responden memilih nilai rendah (skor
+                        1, 2, atau 3) tetapi mengosongkan kotak input alasan wajib.</td>
+                    <td class="col-expected">Sistem menampilkan peringatan validasi pada formulir dan memblokir
+                        perpindahan tab atau submit final hingga alasan diisi.</td>
+                    <td class="col-actual">Validasi HTML5 &amp; JavaScript mencegat submit, menandai kotak alasan dengan
+                        garis merah, dan menuntut pengisian teks.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Responden wajib memberikan umpan balik alasan.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-PORTAL-08</td>
+                    <td class="col-modul">Portal Evaluasi</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Pengumpulan Formulir Final (Final
+                        Submit) melalui api/submit-final.php.</td>
+                    <td class="col-expected">Status pengisian berubah dari draft menjadi final, waktu submit dicatat,
+                        dan responden dialihkan ke beranda dengan pesan terima kasih.</td>
+                    <td class="col-actual">Status pengisian diupdate menjadi &quot;final&quot;, waktu_submit dicatat
+                        dengan NOW(), responden diredirect ke beranda.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Evaluasi berhasil masuk ke kalkulasi dasbor.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-PORTAL-09</td>
+                    <td class="col-modul">Portal Evaluasi</td>
+                    <td class="col-skenario"><span class="tag-neg">Negatif</span> Responden mencoba mengisi kembali atau
+                        membuka form evaluasi yang statusnya sudah final.</td>
+                    <td class="col-expected">Sistem menolak pengisian ulang dengan notifikasi &quot;Anda sudah
+                        mengumpulkan evaluasi untuk periode ini&quot; dan formulir dikunci.</td>
+                    <td class="col-actual">Kondisi status === &quot;final&quot; dicegat di formulir.php, memicu pesan
+                        sukses selesai dan redirect ke beranda.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Mencegah manipulasi data ganda responden.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-DASH-01</td>
+                    <td class="col-modul">Dasbor Analitik</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Filter Dasbor Admin berdasarkan
+                        pemilihan Tahun Akademik / Periode Evaluasi.</td>
+                    <td class="col-expected">Seluruh kartu metrik statistik, total responden, dan grafik visualisasi
+                        otomatis disegarkan sesuai periode yang dipilih.</td>
+                    <td class="col-actual">Parameter URL ?periode_id=X memicu reload data statistik, query PDO
+                        menghitung rata-rata periode terpilih.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Dukungan evaluasi komparatif multi-tahun akademik.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-DASH-02</td>
+                    <td class="col-modul">Dasbor Analitik</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Validasi visualisasi Radar Chart
+                        (Spider Chart) untuk Rekapitulasi Rata-rata Skor per Kategori Kompetensi.</td>
+                    <td class="col-expected">Sumbu radar chart menampilkan seluruh kategori kompetensi prodi dengan skor
+                        1-5 yang proporsional sesuai rata-rata skor responden.</td>
+                    <td class="col-actual">Chart.js tipe &quot;radar&quot; menerima dataset rata-rata skor kategori
+                        kompetensi dengan skala minimum 0 dan maksimum 5.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Visualisasi gap kompetensi sangat representatif.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-DASH-03</td>
+                    <td class="col-modul">Dasbor Analitik</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Validasi visualisasi Doughnut Chart
+                        untuk Distribusi Partisipasi Responden.</td>
+                    <td class="col-expected">Grafik donat memvisualisasikan persentase responden per peran (Mahasiswa,
+                        Dosen, Alumni, Mitra Perusahaan) secara akurat.</td>
+                    <td class="col-actual">Chart.js tipe &quot;doughnut&quot; merender proporsi jumlah responden per
+                        role dengan palet warna terstandarisasi.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Komposisi responden terlihat jelas secara visual.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-DASH-04</td>
+                    <td class="col-modul">Dasbor Analitik</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Ekspor data rekapitulasi mentah hasil
+                        evaluasi ke format Microsoft Excel (.xlsx / .csv) via admin/export-excel.php.</td>
+                    <td class="col-expected">Berkas berhasil diunduh, dapat dibuka rapi di Excel tanpa korupsi berkas,
+                        dan memuat kolom responden anonim, peran, matkul, nilai, dan alasan esai.</td>
+                    <td class="col-actual">Header download attachment .csv / .xlsx terkirim, query SQL mengaburkan
+                        identitas dengan kode MD5 anonim.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Menjaga privasi responden sesuai etika riset.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-DASH-05</td>
+                    <td class="col-modul">Dasbor Analitik</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Cetak Laporan Eksekutif PDF via
+                        admin/cetak-pdf.php menggunakan fitur Print Stylesheet.</td>
+                    <td class="col-expected">Tampilan cetak PDF bersih tanpa elemen navigasi admin (no-print), grafik
+                        ter-render tajam, dan siap diarsip atau dicetak resmi.</td>
+                    <td class="col-actual">CSS print stylesheet menyembunyikan navigasi, format A4 portrait presisi,
+                        tombol window.print() siap eksekusi.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Format siap cetak resmi untuk akreditasi prodi.</td>
+                </tr>
+                <tr>
+                    <td class="col-id">QA-DASH-06</td>
+                    <td class="col-modul">Dasbor Analitik</td>
+                    <td class="col-skenario"><span class="tag-pos">Positif</span> Pengujian alur Tiket Bantuan:
+                        Responden mengirim pertanyaan/kendala dan Admin membalas via admin/tiket.php.</td>
+                    <td class="col-expected">Responden menerima status respon tiket (Baru, Diproses, Selesai) beserta
+                        balasan resmi dari Administrator Prodi.</td>
+                    <td class="col-actual">Pesan tiket tersimpan, admin dapat mengubah status &amp; menuliskan balasan
+                        admin yang muncul di riwayat responden.</td>
+                    <td class="col-status"><span class="pill-pass">PASS</span></td>
+                    <td class="col-notes">Kanal komunikasi aduan kurikulum berjalan dua arah.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

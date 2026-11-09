@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>QA Checklist Black-Box Testing - Sistem Informasi Evaluasi Kurikulum</title>
+    <style>
+        body { font-family: Calibri, Arial, sans-serif; margin: 30px; color: #333; line-height: 1.4; }
+        h1 { color: #0ca14e; font-size: 20pt; margin-bottom: 4px; }
+        .meta { color: #666; font-size: 10pt; margin-bottom: 24px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 10pt; }
+        th { background-color: #0ca14e; color: white; border: 1px solid #09813e; padding: 10px 8px; text-align: left; }
+        td { border: 1px solid #d1d5db; padding: 8px; vertical-align: top; }
+        tr:nth-child(even) { background-color: #f9fafb; }
+        .id-col { font-weight: bold; width: 110px; color: #1e3a8a; }
+        .modul-col { width: 150px; font-weight: 600; color: #374151; }
+        .status-col { width: 120px; text-align: center; font-family: monospace; font-size: 9pt; }
+        .badge-pos { color: #047857; font-weight: bold; }
+        .badge-neg { color: #b91c1c; font-weight: bold; }
+        @media print {
+            body { margin: 10mm; }
+            th { background-color: #eee !important; color: #000 !important; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Daftar Periksa Pengujian Kualitas (QA Checklist)</h1>
+    <div class="meta">
+        <strong>Aplikasi:</strong> Sistem Informasi Evaluasi Kurikulum Program Studi &nbsp;|&nbsp;
+        <strong>Metode:</strong> Black-Box Testing &nbsp;|&nbsp;
+        <strong>Lingkungan:</strong> PHP Native 8.x, MySQL, Tailwind CSS
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 100px;">ID Uji</th>
+                <th style="width: 160px;">Modul</th>
+                <th>Skenario Pengujian</th>
+                <th>Hasil yang Diharapkan (Expected Result)</th>
+                <th style="width: 130px; text-align: center;">Status</th>
+            </tr>
+        </thead>
+        <tbody><tr>
+        <td class="id-col">QA-AUTH-01</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-pos">[Positif]</span> Login akun Administrator menggunakan email dan kata sandi valid (admin@machung.ac.id).</td>
+        <td>Sistem memvalidasi hash kata sandi, memperbarui sesi, dan mengarahkan pengguna ke halaman Dasbor Admin (admin/dashboard.php).</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-02</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-pos">[Positif]</span> Login akun Mahasiswa menggunakan email dan kata sandi valid (322310001@student.machung.ac.id).</td>
+        <td>Sistem berhasil masuk dan langsung mengarahkan responden ke Beranda Mahasiswa (responden/beranda.php).</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-03</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-pos">[Positif]</span> Login akun Dosen menggunakan kredensial valid (daniel.saputra@machung.ac.id).</td>
+        <td>Sistem memvalidasi peran dosen dan mengarahkan ke Beranda Responden dengan filter pertanyaan khusus pengajar.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-04</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-pos">[Positif]</span> Login akun Alumni menggunakan kredensial valid (andi.alumni@gmail.com).</td>
+        <td>Sistem mengidentifikasi peran alumni dan mengarahkan ke Beranda Responden dengan kuesioner evaluasi lulusan.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-05</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-pos">[Positif]</span> Login akun Mitra Perusahaan menggunakan kredensial valid (hrd@tekmaju.com).</td>
+        <td>Sistem memverifikasi peran perusahaan dan mengarahkan ke Beranda Responden kuesioner mitra industri.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-06</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-pos">[Positif]</span> Pengujian fitur Akses Demo Cepat (1-Click Login) untuk masing-masing peran.</td>
+        <td>Sekali klik tombol demo (Admin / Mahasiswa / Dosen / Alumni / Perusahaan), pengguna langsung terautentikasi tanpa harus mengetik kredensial.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-07</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-neg">[Negatif]</span> Login dengan email terdaftar tetapi kata sandi salah.</td>
+        <td>Sistem menolak autentikasi, tidak membuka sesi, dan menampilkan pesan galat: &quot;Email atau kata sandi salah, atau akun Anda dinonaktifkan.&quot;</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-08</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-neg">[Negatif]</span> Login menggunakan email yang tidak terdaftar di basis data.</td>
+        <td>Sistem menolak autentikasi dengan pesan kesalahan seragam untuk mencegah kebocoran informasi akun (user enumeration).</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-09</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-neg">[Negatif]</span> Login dengan akun yang statusnya telah dinonaktifkan (aktif = 0).</td>
+        <td>Sistem menolak login meskipun kata sandi benar, dan menampilkan pesan galat bahwa akun dinonaktifkan.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-10</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-neg">[Negatif]</span> Akses langsung melalui pengetikan URL ke halaman terproteksi (admin/dashboard.php) saat belum login.</td>
+        <td>Sistem mendeteksi ketiadaan sesi autentikasi via require_login() dan secara otomatis mengalihkan pengguna kembali ke auth/login.php.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-11</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-neg">[Negatif]</span> Upaya Privilege Escalation: Akun responden (Mahasiswa/Dosen) mencoba mengakses langsung URL Admin (admin/periode.php).</td>
+        <td>Fungsi require_role(&#039;admin&#039;) mencegat permintaan, mengembalikan respons HTTP 403 Forbidden, dan menghentikan eksekusi script.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-12</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-neg">[Negatif]</span> Pengiriman formulir login tanpa token CSRF atau token CSRF telah dimanipulasi.</td>
+        <td>Sistem menolak permintaan POST dengan pesan kesalahan &quot;Token CSRF tidak valid. Silakan coba lagi.&quot;</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-13</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-pos">[Positif]</span> Pengajuan Lupa Kata Sandi pada auth/lupa-sandi.php dengan email terdaftar.</td>
+        <td>Sistem membuat token reset 64 karakter heksadesimal acak yang berlaku selama 1 jam, menyimpannya di DB, dan menampilkan tautan konfirmasi.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-14</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-neg">[Negatif]</span> Akses auth/atur-ulang-sandi.php dengan token acak yang salah atau sudah kedaluwarsa.</td>
+        <td>Sistem menolak token dan menampilkan pesan peringatan: &quot;Tautan reset kata sandi telah kedaluwarsa atau tidak valid.&quot;</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-AUTH-15</td>
+        <td class="modul-col">Autentikasi &amp; Sesi</td>
+        <td><span class="badge-pos">[Positif]</span> Proses logout pengguna pada auth/logout.php.</td>
+        <td>Sesi dihancurkan seluruhnya (session_destroy), ID sesi dibersihkan, dan dialihkan ke auth/login.php disertai pesan sukses keluar.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-USER-01</td>
+        <td class="modul-col">Manajemen Pengguna</td>
+        <td><span class="badge-pos">[Positif]</span> Tambah data master pengguna baru secara manual dengan data valid (NIM/NIDN, Nama, Email).</td>
+        <td>Akun berhasil disimpan di tabel pengguna dan profil_pengguna, kata sandi bawaan di-hash dengan Bcrypt, dan data muncul di tabel.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-USER-02</td>
+        <td class="modul-col">Manajemen Pengguna</td>
+        <td><span class="badge-neg">[Negatif]</span> Tambah data manual dengan email yang sudah terdaftar di sistem.</td>
+        <td>Sistem menangkap pelanggaran kunci unik basis data (Unique Constraint Violation), membatalkan operasi, dan menampilkan notifikasi kesalahan.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-USER-03</td>
+        <td class="modul-col">Manajemen Pengguna</td>
+        <td><span class="badge-pos">[Positif]</span> Unduh berkas format impor contoh Excel (.xlsx) dan CSV pada modal tambah data.</td>
+        <td>Berkas contoh berhasil diunduh dengan struktur kolom header yang presisi (Kolom A, B, C) sesuai kebutuhan masing-masing peran.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-USER-04</td>
+        <td class="modul-col">Manajemen Pengguna</td>
+        <td><span class="badge-pos">[Positif]</span> Impor massal berkas Excel (.xlsx) dan CSV berisi data baru yang valid.</td>
+        <td>Seluruh baris data berhasil terbaca, di-insert ke tabel basis data, dan muncul pesan sukses: &quot;Impor selesai. Berhasil: X, Gagal: 0.&quot;</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-USER-05</td>
+        <td class="modul-col">Manajemen Pengguna</td>
+        <td><span class="badge-neg">[Negatif]</span> Impor massal berkas Excel yang di dalamnya terdapat baris dengan email duplikat.</td>
+        <td>Baris dengan email duplikat dihitung ke kolom Gagal, baris lain yang unik tetap tersimpan, dan pesan menampilkan: &quot;Berhasil: X, Gagal: Y.&quot;</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-USER-06</td>
+        <td class="modul-col">Manajemen Pengguna</td>
+        <td><span class="badge-neg">[Negatif]</span> Unggah berkas impor massal dengan format yang dilarang (misal .pdf, .docx, atau .exe).</td>
+        <td>Sistem menolak proses unggah berkas dan memunculkan peringatan format berkas tidak didukung (.xlsx/.csv).</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-USER-07</td>
+        <td class="modul-col">Manajemen Pengguna</td>
+        <td><span class="badge-pos">[Positif]</span> Verifikasi integritas pencatatan riwayat impor pada tabel log_impor.</td>
+        <td>Setiap kali eksekusi impor selesai, riwayat tercatat akurat (ID Admin, Nama Berkas, Jumlah Berhasil, Jumlah Gagal, dan Timestamp).</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-USER-08</td>
+        <td class="modul-col">Manajemen Pengguna</td>
+        <td><span class="badge-pos">[Positif]</span> Edit data profil pengguna (Nama, Email, Nomor Induk/Tahun Lulus/Instansi).</td>
+        <td>Data berhasil diperbarui di basis data tanpa mengubah hash kata sandi yang sudah ada.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-KURS-01</td>
+        <td class="modul-col">Kurikulum &amp; Kuesioner</td>
+        <td><span class="badge-pos">[Positif]</span> Penambahan periode evaluasi baru (misal: &quot;2026/2027 Ganjil&quot;) dengan status default draft.</td>
+        <td>Periode baru tersimpan di tabel periode_evaluasi dan muncul pada daftar seleksi periode admin.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-KURS-02</td>
+        <td class="modul-col">Kurikulum &amp; Kuesioner</td>
+        <td><span class="badge-pos">[Positif]</span> Mengubah status periode evaluasi dari draft menjadi buka, lalu menjadi tutup.</td>
+        <td>Status periode terupdate di DB. Saat status buka, responden dapat mengisi formulir; saat tutup, responden tidak dapat lagi mengisi.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-KURS-03</td>
+        <td class="modul-col">Kurikulum &amp; Kuesioner</td>
+        <td><span class="badge-pos">[Positif]</span> Tambah dan ubah data master Mata Kuliah dan Bahan Kajian kurikulum.</td>
+        <td>Data mata kuliah (Kode, Nama, SKS, Semester) dan bahan kajian tersimpan serta terelasi dengan benar di tabel relasi mata_kuliah_bk.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-KURS-04</td>
+        <td class="modul-col">Kurikulum &amp; Kuesioner</td>
+        <td><span class="badge-pos">[Positif]</span> Penambahan butir pertanyaan kuesioner baru dengan pemilihan target peran spesifik.</td>
+        <td>Pertanyaan tersimpan dengan tipe input yang sesuai (skala 1-5, pilihan ganda, atau esai) dan bagian sasaran (matkul atau kompetensi).</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-KURS-05</td>
+        <td class="modul-col">Kurikulum &amp; Kuesioner</td>
+        <td><span class="badge-pos">[Positif]</span> Logika Soft-Delete / Visibility On-Off: Penonaktifan butir pertanyaan kuesioner (aktif = 0).</td>
+        <td>Data pertanyaan TIDAK DIHAPUS PERMANEN dari tabel pertanyaan, melainkan hanya diubah statusnya menjadi tidak aktif (aktif = 0).</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-KURS-06</td>
+        <td class="modul-col">Kurikulum &amp; Kuesioner</td>
+        <td><span class="badge-pos">[Positif]</span> Pengujian visibilitas kuesioner responden terhadap pertanyaan yang telah dinonaktifkan (Soft-Deleted).</td>
+        <td>Responden yang membuka formulir evaluasi baru tidak melihat pertanyaan yang dinonaktifkan (WHERE aktif = TRUE).</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-KURS-07</td>
+        <td class="modul-col">Kurikulum &amp; Kuesioner</td>
+        <td><span class="badge-pos">[Positif]</span> Pengujian Integritas Relasional: Meninjau riwayat jawaban responden lama atas pertanyaan yang telah dinonaktifkan.</td>
+        <td>Jawaban pada evaluasi periode sebelumnya tetap utuh dan rekap nilai analitik tidak rusak karena ID pertanyaan tetap ada di database.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-KURS-08</td>
+        <td class="modul-col">Kurikulum &amp; Kuesioner</td>
+        <td><span class="badge-pos">[Positif]</span> Soft-Delete / Toggle aktif-nonaktif pada Kategori Kompetensi dan Bank Mata Kuliah.</td>
+        <td>Mata kuliah/kategori kompetensi yang dinonaktifkan tidak muncul pada pilihan aktif kuesioner baru, namun riwayat historis tetap aman.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-PORTAL-01</td>
+        <td class="modul-col">Portal Evaluasi</td>
+        <td><span class="badge-pos">[Positif]</span> Responden login dan mengakses formulir evaluasi pada saat periode berstatus buka.</td>
+        <td>Sistem memuat identitas responden, membuat baris sesi draf awal di tabel pengisian, dan menampilkan wizard kuesioner.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-PORTAL-02</td>
+        <td class="modul-col">Portal Evaluasi</td>
+        <td><span class="badge-neg">[Negatif]</span> Responden mencoba mengakses langsung URL formulir (responden/formulir.php) saat seluruh periode berstatus tutup.</td>
+        <td>Sistem mencegat aksi, memunculkan notifikasi &quot;Tidak ada periode evaluasi yang sedang dibuka&quot;, dan mengembalikan ke beranda.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-PORTAL-03</td>
+        <td class="modul-col">Portal Evaluasi</td>
+        <td><span class="badge-pos">[Positif]</span> Navigasi antar-tab form wizard (Tab 1: Mata Kuliah &amp; Tab 2: Kompetensi Lulusan).</td>
+        <td>Transisi wizard berjalan mulus, validasi sebelum pindah tab aktif, dan penanda tab aktif (tab_terakhir) tersimpan.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-PORTAL-04</td>
+        <td class="modul-col">Portal Evaluasi</td>
+        <td><span class="badge-pos">[Positif]</span> Algoritma Auto-Save Draf Otomatis via AJAX (api/simpan-draf.php) saat responden memilih nilai atau berpindah tab.</td>
+        <td>Nilai skala, opsi ganda, dan teks alasan langsung tersimpan ke tabel jawaban di latar belakang dengan indikator &quot;Draf tersimpan otomatis&quot;.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-PORTAL-05</td>
+        <td class="modul-col">Portal Evaluasi</td>
+        <td><span class="badge-pos">[Positif]</span> Recovery Data saat Sesi Browser Tertutup atau Koneksi Terputus sebelum Final Submit.</td>
+        <td>Saat responden membuka kembali formulir pada perangkat yang sama atau berbeda, seluruh jawaban sebelumnya otomatis terisi kembali (recovered).</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-PORTAL-06</td>
+        <td class="modul-col">Portal Evaluasi</td>
+        <td><span class="badge-pos">[Positif]</span> Interaktivitas Skala Likert: Responden memilih skor nilai rendah (skor 1, 2, atau 3).</td>
+        <td>Kotak input teks alasan secara otomatis muncul (conditional display) dan menjadi wajib diisi (required) sebelum responden melanjutkan.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-PORTAL-07</td>
+        <td class="modul-col">Portal Evaluasi</td>
+        <td><span class="badge-neg">[Negatif]</span> Responden memilih nilai rendah (skor 1, 2, atau 3) tetapi mengosongkan kotak input alasan wajib.</td>
+        <td>Sistem menampilkan peringatan validasi pada formulir dan memblokir perpindahan tab atau submit final hingga alasan diisi.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-PORTAL-08</td>
+        <td class="modul-col">Portal Evaluasi</td>
+        <td><span class="badge-pos">[Positif]</span> Pengumpulan Formulir Final (Final Submit) melalui api/submit-final.php.</td>
+        <td>Status pengisian berubah dari draft menjadi final, waktu submit dicatat, dan responden dialihkan ke beranda dengan pesan terima kasih.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-PORTAL-09</td>
+        <td class="modul-col">Portal Evaluasi</td>
+        <td><span class="badge-neg">[Negatif]</span> Responden mencoba mengisi kembali atau membuka form evaluasi yang statusnya sudah final.</td>
+        <td>Sistem menolak pengisian ulang dengan notifikasi &quot;Anda sudah mengumpulkan evaluasi untuk periode ini&quot; dan formulir dikunci.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-DASH-01</td>
+        <td class="modul-col">Dasbor Analitik</td>
+        <td><span class="badge-pos">[Positif]</span> Filter Dasbor Admin berdasarkan pemilihan Tahun Akademik / Periode Evaluasi.</td>
+        <td>Seluruh kartu metrik statistik, total responden, dan grafik visualisasi otomatis disegarkan sesuai periode yang dipilih.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-DASH-02</td>
+        <td class="modul-col">Dasbor Analitik</td>
+        <td><span class="badge-pos">[Positif]</span> Validasi visualisasi Radar Chart (Spider Chart) untuk Rekapitulasi Rata-rata Skor per Kategori Kompetensi.</td>
+        <td>Sumbu radar chart menampilkan seluruh kategori kompetensi prodi dengan skor 1-5 yang proporsional sesuai rata-rata skor responden.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-DASH-03</td>
+        <td class="modul-col">Dasbor Analitik</td>
+        <td><span class="badge-pos">[Positif]</span> Validasi visualisasi Doughnut Chart untuk Distribusi Partisipasi Responden.</td>
+        <td>Grafik donat memvisualisasikan persentase responden per peran (Mahasiswa, Dosen, Alumni, Mitra Perusahaan) secara akurat.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-DASH-04</td>
+        <td class="modul-col">Dasbor Analitik</td>
+        <td><span class="badge-pos">[Positif]</span> Ekspor data rekapitulasi mentah hasil evaluasi ke format Microsoft Excel (.xlsx / .csv) via admin/export-excel.php.</td>
+        <td>Berkas berhasil diunduh, dapat dibuka rapi di Excel tanpa korupsi berkas, dan memuat kolom responden anonim, peran, matkul, nilai, dan alasan esai.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-DASH-05</td>
+        <td class="modul-col">Dasbor Analitik</td>
+        <td><span class="badge-pos">[Positif]</span> Cetak Laporan Eksekutif PDF via admin/cetak-pdf.php menggunakan fitur Print Stylesheet.</td>
+        <td>Tampilan cetak PDF bersih tanpa elemen navigasi admin (no-print), grafik ter-render tajam, dan siap diarsip atau dicetak resmi.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr><tr>
+        <td class="id-col">QA-DASH-06</td>
+        <td class="modul-col">Dasbor Analitik</td>
+        <td><span class="badge-pos">[Positif]</span> Pengujian alur Tiket Bantuan: Responden mengirim pertanyaan/kendala dan Admin membalas via admin/tiket.php.</td>
+        <td>Responden menerima status respon tiket (Baru, Diproses, Selesai) beserta balasan resmi dari Administrator Prodi.</td>
+        <td class="status-col">[ ] Pass<br>[ ] Fail</td>
+    </tr>
+        </tbody>
+    </table>
+</body>
+</html>

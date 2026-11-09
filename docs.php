@@ -23,6 +23,9 @@ $diagrams = [
     <title><?= $page_title ?></title>
     <!-- Tailwind CSS Lokal (Anti-CDN) -->
     <link rel="stylesheet" href="<?= base_url('assets/css/output.css') ?>">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <script src="<?= base_url('assets/vendor/phosphor.js') ?>" onerror="this.onerror=null;this.src='https://unpkg.com/@phosphor-icons/web';"></script>
     <style>
         .diagram-container {

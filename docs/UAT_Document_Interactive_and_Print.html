@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumen User Acceptance Test (UAT) - Evaluasi Kurikulum</title>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 24px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 36px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .header-title h1 {
+            margin: 0 0 6px 0;
+            font-size: 26px;
+            color: #0f172a;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title h1 span {
+            color: #0ca14e;
+        }
+
+        .header-title p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .badge-verdict {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #15803d;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .score-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 18px;
+            border-radius: 12px;
+        }
+
+        .score-card .val {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .score-card.pass .val {
+            color: #16a34a;
+        }
+
+        .score-card.fail .val {
+            color: #dc2626;
+        }
+
+        .score-card .label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            background: #f1f5f9;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        .meta-info div strong {
+            color: #475569;
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            background: #f8fafc;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .role-filters {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            color: #475569;
+            transition: all 0.2s;
+        }
+
+        .btn-filter.active {
+            background: #0ca14e;
+            color: #fff;
+            border-color: #0ca14e;
+        }
+
+        .btn-filter:hover:not(.active) {
+            background: #f1f5f9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #0ca14e;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #09813e;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+        }
+
+        .btn-outline:hover {
+            background: #f1f5f9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #0ca14e;
+            color: #fff;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .col-id {
+            font-weight: 700;
+            width: 100px;
+            color: #0284c7;
+        }
+
+        .col-role {
+            width: 130px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .col-scenario {
+            min-width: 280px;
+            line-height: 1.55;
+        }
+
+        .col-criteria {
+            min-width: 270px;
+            color: #334155;
+            font-size: 12.5px;
+            line-height: 1.5;
+        }
+
+        .col-status {
+            width: 110px;
+            text-align: center;
+        }
+
+        .col-notes {
+            min-width: 240px;
+            font-size: 12.5px;
+            line-height: 1.5;
+            color: #334155;
+        }
+
+        .role-pill {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .role-mhs {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .role-dsn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .role-alm {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .role-prs {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .role-adm {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .status-accepted {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+        }
+
+        .interactive-status {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: flex-start;
+        }
+
+        .interactive-status label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .notes-input {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 12px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 50px;
+            background: #fff;
+        }
+
+        .conclusion-box {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .conclusion-box h3 {
+            margin: 0 0 8px 0;
+            color: #166534;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .conclusion-box p {
+            margin: 0;
+            color: #14532d;
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background: #fff;
+                color: #000;
+                font-size: 10.5px;
+            }
+
+            .container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .toolbar,
+            .btn,
+            .actions,
+            .role-filters {
+                display: none !important;
+            }
+
+            th {
+                background: #0ca14e !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            td,
+            th {
+                padding: 8px 6px;
+                font-size: 10px;
+            }
+
+            .notes-input {
+                border: none;
+                padding: 0;
+                background: transparent;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">
+                <h1>Dokumen User Acceptance Test (UAT) <span>Evaluasi Kurikulum</span></h1>
+                <p>Pengujian Penerimaan Pengguna Akhir - Sistem Informasi Evaluasi Kurikulum Program Studi</p>
+            </div>
+            <div>
+            </div>
+        </div>
+
+        <!-- Metadata Grid -->
+        <div class="meta-info">
+            <div>
+                <strong>Nama Aplikasi</strong>
+                Sistem Informasi Evaluasi Kurikulum Program Studi
+            </div>
+            <div>
+                <strong>Status Pengujian</strong>
+                Selesai Diuji
+            </div>
+            <div>
+                <strong>Total Skenario Uji</strong>
+                18 Skenario
+            </div>
+            <div>
+                <strong>Hasil Akhir</strong>
+                18 Diterima (100% Accepted)
+            </div>
+        </div>
+
+        <!-- Scorecards -->
+        <div class="scorecard-grid">
+            <div class="score-card">
+                <div class="val" id="statTotal">18</div>
+                <div class="label">Total Skenario</div>
+            </div>
+            <div class="score-card pass">
+                <div class="val" id="statAccepted">18</div>
+                <div class="label">Diterima</div>
+            </div>
+            <div class="score-card fail">
+                <div class="val" id="statRejected">0</div>
+                <div class="label">Ditolak</div>
+            </div>
+            <div class="score-card">
+                <div class="val" style="color:#0284c7;" id="statRate">100%</div>
+                <div class="label">Persentase Kelulusan</div>
+            </div>
+        </div>
+
+        <!-- Toolbar & Filter -->
+        <div class="toolbar">
+            <div class="role-filters">
+                <button class="btn-filter active" onclick="filterRole('all', this)">Semua Peran (18)</button>
+                <button class="btn-filter" onclick="filterRole('Mahasiswa', this)">Mahasiswa (4)</button>
+                <button class="btn-filter" onclick="filterRole('Dosen', this)">Dosen (3)</button>
+                <button class="btn-filter" onclick="filterRole('Alumni', this)">Alumni (3)</button>
+                <button class="btn-filter" onclick="filterRole('Mitra Industri', this)">Mitra Industri (3)</button>
+                <button class="btn-filter" onclick="filterRole('Admin Prodi', this)">Admin Prodi (5)</button>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-outline" onclick="toggleMode(this)" id="btnModeToggle">
+                    <i class="ph ph-note-pencil"></i> Ubah ke Mode Form Kosong
+                </button>
+                <button class="btn btn-outline" onclick="copyTableForWord()">
+                    <i class="ph ph-copy"></i> Salin untuk Word/Excel
+                </button>
+                <button class="btn btn-primary" onclick="window.print()">
+                    <i class="ph ph-printer"></i> Cetak / Simpan PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Table UAT -->
+        <table id="uatTable">
+            <thead>
+                <tr>
+                    <th class="col-id">ID UAT</th>
+                    <th class="col-role">Peran Pengguna</th>
+                    <th class="col-scenario">Skenario Penggunaan</th>
+                    <th class="col-criteria">Kriteria Penerimaan (Acceptance Criteria)</th>
+                    <th class="col-status">Status</th>
+                    <th class="col-notes">Catatan Pengguna</th>
+                </tr>
+            </thead>
+            <tbody id="uatTableBody">
+                <!-- Row 1: MHS-01 -->
+                <tr data-role="Mahasiswa" id="row-UAT-MHS-01">
+                    <td class="col-id">UAT-MHS-01</td>
+                    <td class="col-role"><span class="role-pill role-mhs">Mahasiswa</span></td>
+                    <td class="col-scenario">Pengguna membuka sistem melalui browser smartphone, melakukan login cepat
+                        via tombol demo Mahasiswa, melihat informasi periode aktif di beranda, lalu menekan tombol
+                        "Mulai Isi Kuesioner".</td>
+                    <td class="col-criteria">
+                        1. Pengguna berhasil masuk ke sistem tanpa kendala.<br>
+                        2. Antarmuka otomatis menyesuaikan layar ponsel (tanpa scroll horizontal).<br>
+                        3. Tombol dan teks nyaman dibaca dan diakses.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-MHS-01" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-MHS-01" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Sudah sesuai dan tampilan responsif di layar ponsel.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-MHS-01', this.value)">Sudah sesuai dan tampilan responsif di layar ponsel.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 2: MHS-02 -->
+                <tr data-role="Mahasiswa" id="row-UAT-MHS-02">
+                    <td class="col-id">UAT-MHS-02</td>
+                    <td class="col-role"><span class="role-pill role-mhs">Mahasiswa</span></td>
+                    <td class="col-scenario">Pengguna mengisi beberapa jawaban kuesioner pada langkah awal, kemudian
+                        memutuskan sambungan internet/merefresh peramban secara sengaja untuk menguji ketahanan data
+                        pengisian.</td>
+                    <td class="col-criteria">
+                        1. Sistem menyimpan draf jawaban secara otomatis via AJAX.<br>
+                        2. Muncul status bahwa draf telah tersimpan.<br>
+                        3. Saat halaman dimuat ulang, seluruh jawaban yang sudah dipilih sebelumnya kembali terisi
+                        otomatis (<em>draft recovery</em>).
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-MHS-02" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-MHS-02" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Fitur auto-save dan pemulihan draf berfungsi dengan baik.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-MHS-02', this.value)">Fitur auto-save dan pemulihan draf berfungsi dengan baik.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 3: MHS-03 -->
+                <tr data-role="Mahasiswa" id="row-UAT-MHS-03">
+                    <td class="col-id">UAT-MHS-03</td>
+                    <td class="col-role"><span class="role-pill role-mhs">Mahasiswa</span></td>
+                    <td class="col-scenario">Pengguna memberikan nilai rendah (skor 1, 2, atau 3) pada salah satu
+                        pertanyaan, lalu mencoba menekan tombol lanjut tanpa mengisi kotak alasan yang muncul. Setelah
+                        itu, pengguna mengisi teks alasan dan menekan tombol lanjut kembali.</td>
+                    <td class="col-criteria">
+                        1. Kotak isian alasan wajib muncul otomatis saat nilai &le; 3.<br>
+                        2. Sistem mencegah pengguna berpindah langkah jika alasan belum diisi.<br>
+                        3. Form mengizinkan lanjut ke langkah berikutnya setelah alasan terisi.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-MHS-03" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-MHS-03" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Validasi kewajiban mengisi alasan pada skor rendah berjalan normal.
+                        </div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-MHS-03', this.value)">Validasi kewajiban mengisi alasan pada skor rendah berjalan normal.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 4: MHS-04 -->
+                <tr data-role="Mahasiswa" id="row-UAT-MHS-04">
+                    <td class="col-id">UAT-MHS-04</td>
+                    <td class="col-role"><span class="role-pill role-mhs">Mahasiswa</span></td>
+                    <td class="col-scenario">Pengguna menyelesaikan seluruh pertanyaan hingga langkah akhir, melihat
+                        indikator progres pengisian, menekan tombol kirim kuesioner, mengonfirmasi pada dialog pop-up,
+                        lalu memeriksa status pada menu riwayat.</td>
+                    <td class="col-criteria">
+                        1. Indikator progres berjalan hingga 100%.<br>
+                        2. Muncul dialog konfirmasi sebelum submit.<br>
+                        3. Data tersimpan permanen dan status kuesioner berubah menjadi "Selesai" (terkunci dari
+                        pengisian ulang).
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-MHS-04" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-MHS-04" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Alur submit, konfirmasi, dan penguncian form kuesioner sudah sesuai.
+                        </div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-MHS-04', this.value)">Alur submit, konfirmasi, dan penguncian form kuesioner sudah sesuai.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 5: DSN-01 -->
+                <tr data-role="Dosen" id="row-UAT-DSN-01">
+                    <td class="col-id">UAT-DSN-01</td>
+                    <td class="col-role"><span class="role-pill role-dsn">Dosen</span></td>
+                    <td class="col-scenario">Pengguna melakukan login sebagai dosen melalui laptop/PC, membuka menu
+                        kuesioner evaluasi kurikulum, dan memeriksa kesesuaian daftar mata kuliah serta bahan kajian
+                        yang dievaluasi.</td>
+                    <td class="col-criteria">
+                        1. Sistem menampilkan kuesioner khusus dosen.<br>
+                        2. Daftar mata kuliah yang diampu tampil sesuai data master prodi.<br>
+                        3. Tabel pertanyaan dan skala nilai terbaca lapang dan mudah dipilih.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-DSN-01" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-DSN-01" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Tampilan form rapi dan instrumen pertanyaan sesuai untuk dosen.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-DSN-01', this.value)">Tampilan form rapi dan instrumen pertanyaan sesuai untuk dosen.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 6: DSN-02 -->
+                <tr data-role="Dosen" id="row-UAT-DSN-02">
+                    <td class="col-id">UAT-DSN-02</td>
+                    <td class="col-role"><span class="role-pill role-dsn">Dosen</span></td>
+                    <td class="col-scenario">Pengguna mengisi sebagian kuesioner pada kategori awal, keluar dari sistem
+                        (logout) atau menutup tab browser, kemudian login kembali selang beberapa waktu untuk
+                        melanjutkan pengisian.</td>
+                    <td class="col-criteria">
+                        1. Jawaban yang telah diisi sebelumnya tetap tersimpan sebagai draf.<br>
+                        2. Seluruh pilihan sebelumnya terisi otomatis saat form dibuka kembali.<br>
+                        3. Pengguna dapat langsung melanjutkan ke kategori berikutnya tanpa harus mengulang dari awal.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-DSN-02" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-DSN-02" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Penyimpanan draf bekerja dengan baik dan bisa dilanjutkan kembali.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-DSN-02', this.value)">Penyimpanan draf bekerja dengan baik dan bisa dilanjutkan kembali.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 7: DSN-03 -->
+                <tr data-role="Dosen" id="row-UAT-DSN-03">
+                    <td class="col-id">UAT-DSN-03</td>
+                    <td class="col-role"><span class="role-pill role-dsn">Dosen</span></td>
+                    <td class="col-scenario">Pengguna membuka menu bantuan, membuat tiket kendala baru untuk
+                        menyampaikan usulan materi kurikulum/RPS baru, mengisi form tiket, lalu mengirimkannya ke admin
+                        prodi.</td>
+                    <td class="col-criteria">
+                        1. Formulir tiket dapat dikirim dengan lancar.<br>
+                        2. Tiket baru tercatat di sistem dengan status "Buka".<br>
+                        3. Riwayat tiket tampil di akun dosen.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-DSN-03" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-DSN-03" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Fitur pengiriman tiket kendala dan usulan kurikulum berjalan normal.
+                        </div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-DSN-03', this.value)">Fitur pengiriman tiket kendala dan usulan kurikulum berjalan normal.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 8: ALM-01 -->
+                <tr data-role="Alumni" id="row-UAT-ALM-01">
+                    <td class="col-id">UAT-ALM-01</td>
+                    <td class="col-role"><span class="role-pill role-alm">Alumni</span></td>
+                    <td class="col-scenario">Pengguna membuka tautan kuesioner evaluasi kurikulum via perangkat seluler,
+                        login sebagai alumni, dan mengisi instrumen evaluasi keselarasan materi kuliah dengan kebutuhan
+                        kerja.</td>
+                    <td class="col-criteria">
+                        1. Form kuesioner dapat diakses cepat di ponsel.<br>
+                        2. Bahasa pertanyaan mudah dipahami.<br>
+                        3. Waktu pengisian efisien (&le; 5–7 menit).
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-ALM-01" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-ALM-01" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Sudah sesuai, pertanyaan ringkas dan tidak memakan waktu lama.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-ALM-01', this.value)">Sudah sesuai, pertanyaan ringkas dan tidak memakan waktu lama.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 9: ALM-02 -->
+                <tr data-role="Alumni" id="row-UAT-ALM-02">
+                    <td class="col-id">UAT-ALM-02</td>
+                    <td class="col-role"><span class="role-pill role-alm">Alumni</span></td>
+                    <td class="col-scenario">Pengguna mengisi kotak saran terbuka terkait teknologi atau kompetensi baru
+                        yang dibutuhkan di industri, memasukkan teks saran yang cukup panjang, lalu menyimpannya.</td>
+                    <td class="col-criteria">
+                        1. Kolom teks fleksibel dan tidak dibatasi karakter pendek.<br>
+                        2. Teks tersimpan utuh di basis data tanpa ada bagian yang terpotong.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-ALM-02" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-ALM-02" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Input saran terbuka dapat menampung teks panjang dengan baik.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-ALM-02', this.value)">Input saran terbuka dapat menampung teks panjang dengan baik.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 10: ALM-03 -->
+                <tr data-role="Alumni" id="row-UAT-ALM-03">
+                    <td class="col-id">UAT-ALM-03</td>
+                    <td class="col-role"><span class="role-pill role-alm">Alumni</span></td>
+                    <td class="col-scenario">Pengguna menyelesaikan seluruh kuesioner alumni, menekan tombol kirim, dan
+                        memeriksa halaman konfirmasi serta status penyelesaian di beranda.</td>
+                    <td class="col-criteria">
+                        1. Muncul pesan apresiasi terima kasih dari program studi.<br>
+                        2. Menu beranda menampilkan status kuesioner "Selesai".<br>
+                        3. Formulir beralih ke mode hanya-lihat (<em>read-only</em>).
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-ALM-03" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-ALM-03" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Konfirmasi berhasil submit dan status selesai tampil dengan jelas.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-ALM-03', this.value)">Konfirmasi berhasil submit dan status selesai tampil dengan jelas.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 11: PRS-01 -->
+                <tr data-role="Mitra Industri" id="row-UAT-PRS-01">
+                    <td class="col-id">UAT-PRS-01</td>
+                    <td class="col-role"><span class="role-pill role-prs">Mitra Industri</span></td>
+                    <td class="col-scenario">Pengguna membuka formulir melalui peramban PC, login sebagai mitra
+                        perusahaan, lalu mengisi penilaian kompetensi lulusan (etika kerja, komunikasi, kerja tim, dan
+                        kemampuan teknis).</td>
+                    <td class="col-criteria">
+                        1. Tampilan formulir formal dan bersih.<br>
+                        2. Kriteria penilaian relevan dengan standar evaluasi kinerja di industri.<br>
+                        3. Skala penilaian 1 s/d 5 disertai label yang jelas.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-PRS-01" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-PRS-01" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Format form formal dan kriteria penilaian sudah sesuai kebutuhan
+                            industri.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-PRS-01', this.value)">Format form formal dan kriteria penilaian sudah sesuai kebutuhan industri.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 12: PRS-02 -->
+                <tr data-role="Mitra Industri" id="row-UAT-PRS-02">
+                    <td class="col-id">UAT-PRS-02</td>
+                    <td class="col-role"><span class="role-pill role-prs">Mitra Industri</span></td>
+                    <td class="col-scenario">Pengguna mengisi kolom rekomendasi kompetensi masa depan dan sertifikasi
+                        profesional yang diharapkan dimiliki oleh lulusan program studi.</td>
+                    <td class="col-criteria">
+                        1. Masukan mitra industri tersimpan dengan aman ke sistem.<br>
+                        2. Data siap diolah oleh program studi untuk peninjauan kurikulum.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-PRS-02" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-PRS-02" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Kolom saran kebutuhan sertifikasi dan kompetensi tersimpan dengan baik.
+                        </div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-PRS-02', this.value)">Kolom saran kebutuhan sertifikasi dan kompetensi tersimpan dengan baik.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 13: PRS-03 -->
+                <tr data-role="Mitra Industri" id="row-UAT-PRS-03">
+                    <td class="col-id">UAT-PRS-03</td>
+                    <td class="col-role"><span class="role-pill role-prs">Mitra Industri</span></td>
+                    <td class="col-scenario">Pengguna menyelesaikan pengisian kuesioner mitra industri, menekan tombol
+                        kirim formulir, dan memeriksa respon akhir sistem.</td>
+                    <td class="col-criteria">
+                        1. Proses pengiriman formulir berlangsung cepat (&lt; 1 detik).<br>
+                        2. Tampil pesan konfirmasi resmi apresiasi kemitraan program studi.<br>
+                        3. Form otomatis terkunci dari perubahan sepihak.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-PRS-03" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-PRS-03" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Proses pengiriman formulir cepat dan form terkunci dengan baik.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-PRS-03', this.value)">Proses pengiriman formulir cepat dan form terkunci dengan baik.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 14: ADM-01 -->
+                <tr data-role="Admin Prodi" id="row-UAT-ADM-01">
+                    <td class="col-id">UAT-ADM-01</td>
+                    <td class="col-role"><span class="role-pill role-adm">Admin Prodi</span></td>
+                    <td class="col-scenario">Pengguna login sebagai admin prodi, membuka dasbor analitik, melihat
+                        ringkasan metrik responden, serta memeriksa visualisasi Radar Chart dan Doughnut Chart.</td>
+                    <td class="col-criteria">
+                        1. Angka ringkasan metrik terhitung akurat sesuai database.<br>
+                        2. Grafik Radar menampilkan sebaran nilai kompetensi lengkap dengan tooltip nilai saat
+                        di-hover.<br>
+                        3. Grafik Doughnut menyajikan proporsi responden dengan warna yang jelas.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-ADM-01" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-ADM-01" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Visualisasi grafik radar dan doughnut tampil jelas dan informatif.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-ADM-01', this.value)">Visualisasi grafik radar dan doughnut tampil jelas dan informatif.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 15: ADM-02 -->
+                <tr data-role="Admin Prodi" id="row-UAT-ADM-02">
+                    <td class="col-id">UAT-ADM-02</td>
+                    <td class="col-role"><span class="role-pill role-adm">Admin Prodi</span></td>
+                    <td class="col-scenario">Pengguna mengubah filter periode tahun akademik pada dropdown dasbor, lalu
+                        menekan tombol filter untuk melihat data semester yang berbeda.</td>
+                    <td class="col-criteria">
+                        1. Seluruh angka metrik, grafik radar, grafik doughnut, dan tabel rekapitulasi berganti secara
+                        sinkron sesuai periode terpilih.<br>
+                        2. Tidak ada kerancuan data antar semester.<br>
+                        3. URL halaman menyimpan parameter filter.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-ADM-02" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-ADM-02" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Filter periode semester berjalan normal dan data terbarui secara
+                            sinkron.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-ADM-02', this.value)">Filter periode semester berjalan normal dan data terbarui secara sinkron.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 16: ADM-03 -->
+                <tr data-role="Admin Prodi" id="row-UAT-ADM-03">
+                    <td class="col-id">UAT-ADM-03</td>
+                    <td class="col-role"><span class="role-pill role-adm">Admin Prodi</span></td>
+                    <td class="col-scenario">Pengguna membuka menu master data pengguna, mengunggah berkas Excel/CSV
+                        untuk impor akun massal yang sengaja disisipi beberapa email yang sudah terdaftar, lalu menekan
+                        tombol proses impor.</td>
+                    <td class="col-criteria">
+                        1. Sistem membaca file Excel/CSV dengan benar.<br>
+                        2. Akun baru yang valid berhasil dimasukkan.<br>
+                        3. Akun dengan email duplikat ditolak secara aman tanpa menggagalkan impor.<br>
+                        4. Muncul notifikasi rekapitulasi data berhasil dan data yang dilewati.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-ADM-03" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-ADM-03" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Fitur impor Excel berfungsi baik dan validasi duplikasi email berjalan
+                            akurat.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-ADM-03', this.value)">Fitur impor Excel berfungsi baik dan validasi duplikasi email berjalan akurat.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 17: ADM-04 -->
+                <tr data-role="Admin Prodi" id="row-UAT-ADM-04">
+                    <td class="col-id">UAT-ADM-04</td>
+                    <td class="col-role"><span class="role-pill role-adm">Admin Prodi</span></td>
+                    <td class="col-scenario">Pengguna menonaktifkan salah satu mata kuliah kurikulum lama pada menu bank
+                        mata kuliah (soft-delete), kemudian memeriksa form kuesioner periode baru dan dasbor periode
+                        lampau.</td>
+                    <td class="col-criteria">
+                        1. Mata kuliah nonaktif tidak lagi muncul pada kuesioner periode berjalan.<br>
+                        2. Data riwayat dan nilai pada dasbor periode sebelumnya tetap utuh tidak hilang
+                        (<em>referential integrity</em> terjaga).
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-ADM-04" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-ADM-04" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Fitur soft-delete berhasil menyembunyikan mata kuliah tanpa merusak data
+                            historis.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-ADM-04', this.value)">Fitur soft-delete berhasil menyembunyikan mata kuliah tanpa merusak data historis.</textarea>
+                    </td>
+                </tr>
+
+                <!-- Row 18: ADM-05 -->
+                <tr data-role="Admin Prodi" id="row-UAT-ADM-05">
+                    <td class="col-id">UAT-ADM-05</td>
+                    <td class="col-role"><span class="role-pill role-adm">Admin Prodi</span></td>
+                    <td class="col-scenario">Pengguna mengunduh laporan rekapitulasi evaluasi melalui tombol ekspor
+                        Excel, serta menekan tombol cetak PDF untuk memeriksa tampilan cetak laporan.</td>
+                    <td class="col-criteria">
+                        1. Berkas Excel terunduh dengan format tabel kolom yang rapi.<br>
+                        2. Tampilan dialog cetak PDF otomatis menyembunyikan navigasi sistem dan siap dicetak untuk
+                        pelaporan/akreditasi.
+                    </td>
+                    <td class="col-status">
+                        <div class="status-view">
+                            <span class="status-pill status-accepted"><i class="ph ph-check-circle"></i> Diterima</span>
+                        </div>
+                        <div class="interactive-status" style="display:none;">
+                            <label><input type="radio" name="st_UAT-ADM-05" value="accepted" checked
+                                    onchange="updateCounters()"> Diterima</label>
+                            <label><input type="radio" name="st_UAT-ADM-05" value="rejected"
+                                    onchange="updateCounters()"> Ditolak</label>
+                        </div>
+                    </td>
+                    <td class="col-notes">
+                        <div class="notes-view">Ekspor data Excel dan layout cetak PDF sudah rapi dan sesuai kebutuhan
+                            pelaporan.</div>
+                        <textarea class="notes-input" style="display:none;"
+                            oninput="saveNote('UAT-ADM-05', this.value)">Ekspor data Excel dan layout cetak PDF sudah rapi dan sesuai kebutuhan pelaporan.</textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Conclusion Box -->
+        <div class="conclusion-box">
+            <h3><i class="ph ph-seal-check text-xl"></i> Kesimpulan Akhir UAT</h3>
+            <p>
+                Berdasarkan seluruh skenario pengujian di atas, sistem telah memenuhi seluruh kriteria penerimaan
+                pengguna akhir. Seluruh fungsi utama berjalan dengan baik, tampilan antarmuka responsif dan mudah
+                digunakan, serta penanganan data berjalan akurat. Sistem dinyatakan <strong>DITERIMA</strong> dan siap
+                digunakan.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let isInteractiveMode = false;
+
+        function filterRole(role, btn) {
+            document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const rows = document.querySelectorAll('#uatTableBody tr');
+            rows.forEach(r => {
+                if (role === 'all' || r.getAttribute('data-role') === role) {
+                    r.style.display = '';
+                } else {
+                    r.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleMode(btn) {
+            isInteractiveMode = !isInteractiveMode;
+            const statusViews = document.querySelectorAll('.status-view');
+            const statusInputs = document.querySelectorAll('.interactive-status');
+            const notesViews = document.querySelectorAll('.notes-view');
+            const notesInputs = document.querySelectorAll('.notes-input');
+
+            if (isInteractiveMode) {
+                btn.innerHTML = '<i class="ph ph-eye"></i> Tampilkan Hasil Terisi (Laporan)';
+                statusViews.forEach(el => el.style.display = 'none');
+                statusInputs.forEach(el => el.style.display = 'flex');
+                notesViews.forEach(el => el.style.display = 'none');
+                notesInputs.forEach(el => el.style.display = 'block');
+            } else {
+                btn.innerHTML = '<i class="ph ph-note-pencil"></i> Ubah ke Mode Form Kosong';
+                statusViews.forEach(el => el.style.display = 'block');
+                statusInputs.forEach(el => el.style.display = 'none');
+                notesViews.forEach(el => el.style.display = 'block');
+                notesInputs.forEach(el => el.style.display = 'none');
+            }
+        }
+
+        function updateCounters() {
+            const total = 18;
+            let accepted = 0;
+            let rejected = 0;
+
+            for (let i = 1; i <= 4; i++) checkStatus('UAT-MHS-0' + i);
+            for (let i = 1; i <= 3; i++) checkStatus('UAT-DSN-0' + i);
+            for (let i = 1; i <= 3; i++) checkStatus('UAT-ALM-0' + i);
+            for (let i = 1; i <= 3; i++) checkStatus('UAT-PRS-0' + i);
+            for (let i = 1; i <= 5; i++) checkStatus('UAT-ADM-0' + i);
+
+            function checkStatus(id) {
+                const rad = document.querySelector(`input[name="st_${id}"]:checked`);
+                if (rad && rad.value === 'accepted') accepted++;
+                if (rad && rad.value === 'rejected') rejected++;
+            }
+
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statAccepted').innerText = accepted;
+            document.getElementById('statRejected').innerText = rejected;
+            const rate = Math.round((accepted / total) * 100);
+            document.getElementById('statRate').innerText = rate + '%';
+
+            const topBadge = document.getElementById('topVerdictBadge');
+            if (rejected === 0 && accepted === total) {
+                topBadge.innerHTML = '<i class="ph ph-check-circle text-lg"></i> HASIL UAT: 100% DITERIMA';
+                topBadge.className = 'badge-verdict';
+            } else {
+                topBadge.innerHTML = `<i class="ph ph-info text-lg"></i> HASIL UAT: ${accepted} Diterima, ${rejected} Ditolak`;
+                topBadge.className = 'badge-verdict';
+                topBadge.style.backgroundColor = rejected > 0 ? '#fee2e2' : '#fef3c7';
+                topBadge.style.color = rejected > 0 ? '#991b1b' : '#92400e';
+                topBadge.style.borderColor = rejected > 0 ? '#fca5a5' : '#fde68a';
+            }
+        }
+
+        function saveNote(id, val) {
+            localStorage.setItem('uat_note_' + id, val);
+        }
+
+        function copyTableForWord() {
+            const table = document.getElementById('uatTable');
+            const range = document.createRange();
+            range.selectNode(table);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            try {
+                document.execCommand('copy');
+                alert('Tabel UAT berhasil disalin ke clipboard! Silakan paste (Ctrl+V) langsung ke Microsoft Word atau Excel.');
+            } catch (err) {
+                alert('Gagal menyalin otomatis. Silakan pilih tabel secara manual lalu tekan Ctrl+C.');
+            }
+            window.getSelection().removeAllRanges();
+        }
+    </script>
+
+</body>
+
+</html>

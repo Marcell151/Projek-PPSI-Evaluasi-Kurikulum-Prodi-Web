@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir QA Checklist Interaktif - Evaluasi Kurikulum</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #1e293b; margin: 0; padding: 24px; line-height: 1.5; }
+        .container { max-width: 1300px; margin: 0 auto; background: #fff; padding: 32px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; }
+        
+        .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 24px; gap: 16px; }
+        .header h1 { margin: 0 0 6px 0; font-size: 24px; color: #0f172a; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .header h1 span { color: #0ca14e; }
+        .header p { margin: 0; color: #64748b; font-size: 14px; }
+        
+        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; background: #f1f5f9; padding: 16px; border-radius: 10px; margin-bottom: 24px; font-size: 13px; }
+        .meta-item strong { color: #475569; display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .meta-item input { width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 5px 8px; font-size: 13px; background: #fff; }
+
+        .toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; background: #f8fafc; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 20px; }
+        .stat-badges { display: flex; gap: 12px; font-size: 13px; font-weight: 600; align-items: center; flex-wrap: wrap; }
+        .badge { padding: 4px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; }
+        .badge-total { background: #e2e8f0; color: #334155; }
+        .badge-pass { background: #dcfce7; color: #166534; }
+        .badge-fail { background: #fee2e2; color: #991b1b; }
+        .badge-pending { background: #fef3c7; color: #92400e; }
+
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn { padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: #0ca14e; color: #fff; }
+        .btn-primary:hover { background: #09813e; }
+        .btn-secondary { background: #e2e8f0; color: #334155; }
+        .btn-secondary:hover { background: #cbd5e1; }
+        .btn-outline { background: #fff; border: 1px solid #cbd5e1; color: #475569; }
+        .btn-outline:hover { background: #f1f5f9; }
+
+        table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        th { background: #0ca14e; color: #fff; padding: 12px 10px; text-align: left; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 10px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background-color: #f8fafc; }
+        tr.row-passed { background-color: #f0fdf4 !important; }
+        tr.row-failed { background-color: #fef2f2 !important; }
+
+        .col-id { font-weight: 700; width: 110px; color: #0284c7; }
+        .col-modul { width: 150px; font-weight: 600; color: #475569; font-size: 12px; }
+        .col-skenario { min-width: 250px; }
+        .col-expected { min-width: 250px; color: #475569; font-size: 12.5px; }
+        .col-status { width: 140px; text-align: center; }
+        .col-notes { width: 200px; }
+
+        .tag-pos { background: #dcfce7; color: #15803d; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; margin-right: 4px; }
+        .tag-neg { background: #fee2e2; color: #b91c1c; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; margin-right: 4px; }
+
+        .status-options { display: flex; gap: 8px; justify-content: center; align-items: center; }
+        .status-label { cursor: pointer; display: inline-flex; align-items: center; gap: 3px; font-weight: 600; font-size: 12px; padding: 4px 8px; border-radius: 6px; border: 1px solid #e2e8f0; background: #fff; }
+        .status-label input { cursor: pointer; margin: 0; }
+        .status-label.active-pass { background: #dcfce7; border-color: #86efac; color: #166534; }
+        .status-label.active-fail { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+
+        .input-notes { width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 8px; font-size: 12px; resize: vertical; min-height: 48px; font-family: inherit; }
+        .input-notes:focus { outline: none; border-color: #0ca14e; box-shadow: 0 0 0 2px rgba(12,161,78,0.15); }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+            .toolbar, .btn-group { display: none !important; }
+            th { background: #e2e8f0 !important; color: #000 !important; }
+            .input-notes { border: none; padding: 0; resize: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1><span>Evaluasi Kurikulum</span> — Formulir QA Checklist</h1>
+                <p>Formulir Uji Black-Box Interaktif — Anda dapat memilih status, menginput catatan pengujian, dan menyimpan hasilnya.</p>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" onclick="simpanKeLocalStorage()">💾 Simpan Progres</button>
+                <button type="button" class="btn btn-secondary" onclick="window.print()">🖨️ Cetak / Ekspor PDF</button>
+                <button type="button" class="btn btn-outline" onclick="resetFormulir()">🔄 Reset</button>
+            </div>
+        </div>
+
+        <div class="meta-grid">
+            <div class="meta-item">
+                <strong>Nama Penguji (Tester)</strong>
+                <input type="text" id="meta-tester" placeholder="Contoh: Marcell / Tim QA" value="Marcell (QA Engineer)">
+            </div>
+            <div class="meta-item">
+                <strong>Tanggal Pengujian</strong>
+                <input type="date" id="meta-date" value="2026-11-09">
+            </div>
+            <div class="meta-item">
+                <strong>Target Lingkungan</strong>
+                <input type="text" id="meta-env" value="Localhost (XAMPP PHP 8.2 / MariaDB)">
+            </div>
+            <div class="meta-item">
+                <strong>Versi Sistem</strong>
+                <input type="text" id="meta-ver" value="v1.0-Release">
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <div class="stat-badges">
+                <span class="badge badge-total">Total: <span id="count-total">46</span></span>
+                <span class="badge badge-pass">Passed: <span id="count-pass">0</span></span>
+                <span class="badge badge-fail">Failed: <span id="count-fail">0</span></span>
+                <span class="badge badge-pending">Pending: <span id="count-pending">46</span></span>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline" style="font-size:12px; padding:6px 10px;" onclick="setAllStatus('PASS')">Centang Semua PASS</button>
+                <button type="button" class="btn btn-outline" style="font-size:12px; padding:6px 10px;" onclick="setAllStatus('CLEAR')">Kosongkan Status</button>
+            </div>
+        </div>
+
+        <form id="form-qa">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Uji</th>
+                        <th>Modul</th>
+                        <th>Skenario Pengujian</th>
+                        <th>Hasil yang Diharapkan</th>
+                        <th style="text-align: center;">Status Uji</th>
+                        <th>Catatan / Bukti Uji</th>
+                    </tr>
+                </thead>
+                <tbody><tr id="row-QA-AUTH-01">
+        <td class="col-id">QA-AUTH-01</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Administrator menggunakan email dan kata sandi valid (admin@machung.ac.id).</td>
+        <td class="col-expected">Sistem memvalidasi hash kata sandi, memperbarui sesi, dan mengarahkan pengguna ke halaman Dasbor Admin (admin/dashboard.php).</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-01">
+                    <input type="radio" name="status_QA-AUTH-01" value="PASS" onchange="updateRowStatus('QA-AUTH-01')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-01">
+                    <input type="radio" name="status_QA-AUTH-01" value="FAIL" onchange="updateRowStatus('QA-AUTH-01')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-01" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-02">
+        <td class="col-id">QA-AUTH-02</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Mahasiswa menggunakan email dan kata sandi valid (322310001@student.machung.ac.id).</td>
+        <td class="col-expected">Sistem berhasil masuk dan langsung mengarahkan responden ke Beranda Mahasiswa (responden/beranda.php).</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-02">
+                    <input type="radio" name="status_QA-AUTH-02" value="PASS" onchange="updateRowStatus('QA-AUTH-02')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-02">
+                    <input type="radio" name="status_QA-AUTH-02" value="FAIL" onchange="updateRowStatus('QA-AUTH-02')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-02" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-03">
+        <td class="col-id">QA-AUTH-03</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Dosen menggunakan kredensial valid (daniel.saputra@machung.ac.id).</td>
+        <td class="col-expected">Sistem memvalidasi peran dosen dan mengarahkan ke Beranda Responden dengan filter pertanyaan khusus pengajar.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-03">
+                    <input type="radio" name="status_QA-AUTH-03" value="PASS" onchange="updateRowStatus('QA-AUTH-03')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-03">
+                    <input type="radio" name="status_QA-AUTH-03" value="FAIL" onchange="updateRowStatus('QA-AUTH-03')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-03" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-04">
+        <td class="col-id">QA-AUTH-04</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Alumni menggunakan kredensial valid (andi.alumni@gmail.com).</td>
+        <td class="col-expected">Sistem mengidentifikasi peran alumni dan mengarahkan ke Beranda Responden dengan kuesioner evaluasi lulusan.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-04">
+                    <input type="radio" name="status_QA-AUTH-04" value="PASS" onchange="updateRowStatus('QA-AUTH-04')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-04">
+                    <input type="radio" name="status_QA-AUTH-04" value="FAIL" onchange="updateRowStatus('QA-AUTH-04')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-04" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-05">
+        <td class="col-id">QA-AUTH-05</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Login akun Mitra Perusahaan menggunakan kredensial valid (hrd@tekmaju.com).</td>
+        <td class="col-expected">Sistem memverifikasi peran perusahaan dan mengarahkan ke Beranda Responden kuesioner mitra industri.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-05">
+                    <input type="radio" name="status_QA-AUTH-05" value="PASS" onchange="updateRowStatus('QA-AUTH-05')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-05">
+                    <input type="radio" name="status_QA-AUTH-05" value="FAIL" onchange="updateRowStatus('QA-AUTH-05')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-05" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-06">
+        <td class="col-id">QA-AUTH-06</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Pengujian fitur Akses Demo Cepat (1-Click Login) untuk masing-masing peran.</td>
+        <td class="col-expected">Sekali klik tombol demo (Admin / Mahasiswa / Dosen / Alumni / Perusahaan), pengguna langsung terautentikasi tanpa harus mengetik kredensial.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-06">
+                    <input type="radio" name="status_QA-AUTH-06" value="PASS" onchange="updateRowStatus('QA-AUTH-06')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-06">
+                    <input type="radio" name="status_QA-AUTH-06" value="FAIL" onchange="updateRowStatus('QA-AUTH-06')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-06" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-07">
+        <td class="col-id">QA-AUTH-07</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Login dengan email terdaftar tetapi kata sandi salah.</td>
+        <td class="col-expected">Sistem menolak autentikasi, tidak membuka sesi, dan menampilkan pesan galat: &quot;Email atau kata sandi salah, atau akun Anda dinonaktifkan.&quot;</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-07">
+                    <input type="radio" name="status_QA-AUTH-07" value="PASS" onchange="updateRowStatus('QA-AUTH-07')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-07">
+                    <input type="radio" name="status_QA-AUTH-07" value="FAIL" onchange="updateRowStatus('QA-AUTH-07')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-07" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-08">
+        <td class="col-id">QA-AUTH-08</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Login menggunakan email yang tidak terdaftar di basis data.</td>
+        <td class="col-expected">Sistem menolak autentikasi dengan pesan kesalahan seragam untuk mencegah kebocoran informasi akun (user enumeration).</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-08">
+                    <input type="radio" name="status_QA-AUTH-08" value="PASS" onchange="updateRowStatus('QA-AUTH-08')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-08">
+                    <input type="radio" name="status_QA-AUTH-08" value="FAIL" onchange="updateRowStatus('QA-AUTH-08')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-08" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-09">
+        <td class="col-id">QA-AUTH-09</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Login dengan akun yang statusnya telah dinonaktifkan (aktif = 0).</td>
+        <td class="col-expected">Sistem menolak login meskipun kata sandi benar, dan menampilkan pesan galat bahwa akun dinonaktifkan.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-09">
+                    <input type="radio" name="status_QA-AUTH-09" value="PASS" onchange="updateRowStatus('QA-AUTH-09')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-09">
+                    <input type="radio" name="status_QA-AUTH-09" value="FAIL" onchange="updateRowStatus('QA-AUTH-09')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-09" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-10">
+        <td class="col-id">QA-AUTH-10</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Akses langsung melalui pengetikan URL ke halaman terproteksi (admin/dashboard.php) saat belum login.</td>
+        <td class="col-expected">Sistem mendeteksi ketiadaan sesi autentikasi via require_login() dan secara otomatis mengalihkan pengguna kembali ke auth/login.php.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-10">
+                    <input type="radio" name="status_QA-AUTH-10" value="PASS" onchange="updateRowStatus('QA-AUTH-10')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-10">
+                    <input type="radio" name="status_QA-AUTH-10" value="FAIL" onchange="updateRowStatus('QA-AUTH-10')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-10" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-11">
+        <td class="col-id">QA-AUTH-11</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Upaya Privilege Escalation: Akun responden (Mahasiswa/Dosen) mencoba mengakses langsung URL Admin (admin/periode.php).</td>
+        <td class="col-expected">Fungsi require_role(&quot;admin&quot;) mencegat permintaan, mengembalikan respons HTTP 403 Forbidden, dan menghentikan eksekusi script.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-11">
+                    <input type="radio" name="status_QA-AUTH-11" value="PASS" onchange="updateRowStatus('QA-AUTH-11')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-11">
+                    <input type="radio" name="status_QA-AUTH-11" value="FAIL" onchange="updateRowStatus('QA-AUTH-11')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-11" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-12">
+        <td class="col-id">QA-AUTH-12</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Pengiriman formulir login tanpa token CSRF atau token CSRF telah dimanipulasi.</td>
+        <td class="col-expected">Sistem menolak permintaan POST dengan pesan kesalahan &quot;Token CSRF tidak valid. Silakan coba lagi.&quot;</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-12">
+                    <input type="radio" name="status_QA-AUTH-12" value="PASS" onchange="updateRowStatus('QA-AUTH-12')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-12">
+                    <input type="radio" name="status_QA-AUTH-12" value="FAIL" onchange="updateRowStatus('QA-AUTH-12')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-12" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-13">
+        <td class="col-id">QA-AUTH-13</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Pengajuan Lupa Kata Sandi pada auth/lupa-sandi.php dengan email terdaftar.</td>
+        <td class="col-expected">Sistem membuat token reset 64 karakter heksadesimal acak yang berlaku selama 1 jam, menyimpannya di DB, dan menampilkan tautan konfirmasi.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-13">
+                    <input type="radio" name="status_QA-AUTH-13" value="PASS" onchange="updateRowStatus('QA-AUTH-13')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-13">
+                    <input type="radio" name="status_QA-AUTH-13" value="FAIL" onchange="updateRowStatus('QA-AUTH-13')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-13" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-14">
+        <td class="col-id">QA-AUTH-14</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Akses auth/atur-ulang-sandi.php dengan token acak yang salah atau sudah kedaluwarsa.</td>
+        <td class="col-expected">Sistem menolak token dan menampilkan pesan peringatan: &quot;Tautan reset kata sandi telah kedaluwarsa atau tidak valid.&quot;</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-14">
+                    <input type="radio" name="status_QA-AUTH-14" value="PASS" onchange="updateRowStatus('QA-AUTH-14')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-14">
+                    <input type="radio" name="status_QA-AUTH-14" value="FAIL" onchange="updateRowStatus('QA-AUTH-14')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-14" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-AUTH-15">
+        <td class="col-id">QA-AUTH-15</td>
+        <td class="col-modul">Autentikasi &amp; Sesi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Proses logout pengguna pada auth/logout.php.</td>
+        <td class="col-expected">Sesi dihancurkan seluruhnya (session_destroy), ID sesi dibersihkan, dan dialihkan ke auth/login.php disertai pesan sukses keluar.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-AUTH-15">
+                    <input type="radio" name="status_QA-AUTH-15" value="PASS" onchange="updateRowStatus('QA-AUTH-15')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-AUTH-15">
+                    <input type="radio" name="status_QA-AUTH-15" value="FAIL" onchange="updateRowStatus('QA-AUTH-15')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-AUTH-15" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-USER-01">
+        <td class="col-id">QA-USER-01</td>
+        <td class="col-modul">Manajemen Pengguna</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Tambah data master pengguna baru secara manual dengan data valid (NIM/NIDN, Nama, Email).</td>
+        <td class="col-expected">Akun berhasil disimpan di tabel pengguna dan profil_pengguna, kata sandi bawaan di-hash dengan Bcrypt, dan data muncul di tabel.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-USER-01">
+                    <input type="radio" name="status_QA-USER-01" value="PASS" onchange="updateRowStatus('QA-USER-01')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-USER-01">
+                    <input type="radio" name="status_QA-USER-01" value="FAIL" onchange="updateRowStatus('QA-USER-01')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-USER-01" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-USER-02">
+        <td class="col-id">QA-USER-02</td>
+        <td class="col-modul">Manajemen Pengguna</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Tambah data manual dengan email yang sudah terdaftar di sistem.</td>
+        <td class="col-expected">Sistem menangkap pelanggaran kunci unik basis data (Unique Constraint Violation), membatalkan operasi, dan menampilkan notifikasi kesalahan.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-USER-02">
+                    <input type="radio" name="status_QA-USER-02" value="PASS" onchange="updateRowStatus('QA-USER-02')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-USER-02">
+                    <input type="radio" name="status_QA-USER-02" value="FAIL" onchange="updateRowStatus('QA-USER-02')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-USER-02" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-USER-03">
+        <td class="col-id">QA-USER-03</td>
+        <td class="col-modul">Manajemen Pengguna</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Unduh berkas format impor contoh Excel (.xlsx) dan CSV pada modal tambah data.</td>
+        <td class="col-expected">Berkas contoh berhasil diunduh dengan struktur kolom header yang presisi (Kolom A, B, C) sesuai kebutuhan masing-masing peran.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-USER-03">
+                    <input type="radio" name="status_QA-USER-03" value="PASS" onchange="updateRowStatus('QA-USER-03')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-USER-03">
+                    <input type="radio" name="status_QA-USER-03" value="FAIL" onchange="updateRowStatus('QA-USER-03')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-USER-03" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-USER-04">
+        <td class="col-id">QA-USER-04</td>
+        <td class="col-modul">Manajemen Pengguna</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Impor massal berkas Excel (.xlsx) dan CSV berisi data baru yang valid.</td>
+        <td class="col-expected">Seluruh baris data berhasil terbaca, di-insert ke tabel basis data, dan muncul pesan sukses: &quot;Impor selesai. Berhasil: X, Gagal: 0.&quot;</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-USER-04">
+                    <input type="radio" name="status_QA-USER-04" value="PASS" onchange="updateRowStatus('QA-USER-04')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-USER-04">
+                    <input type="radio" name="status_QA-USER-04" value="FAIL" onchange="updateRowStatus('QA-USER-04')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-USER-04" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-USER-05">
+        <td class="col-id">QA-USER-05</td>
+        <td class="col-modul">Manajemen Pengguna</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Impor massal berkas Excel yang di dalamnya terdapat baris dengan email duplikat.</td>
+        <td class="col-expected">Baris dengan email duplikat dihitung ke kolom Gagal, baris lain yang unik tetap tersimpan, dan pesan menampilkan: &quot;Berhasil: X, Gagal: Y.&quot;</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-USER-05">
+                    <input type="radio" name="status_QA-USER-05" value="PASS" onchange="updateRowStatus('QA-USER-05')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-USER-05">
+                    <input type="radio" name="status_QA-USER-05" value="FAIL" onchange="updateRowStatus('QA-USER-05')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-USER-05" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-USER-06">
+        <td class="col-id">QA-USER-06</td>
+        <td class="col-modul">Manajemen Pengguna</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Unggah berkas impor massal dengan format yang dilarang (misal .pdf, .docx, atau .exe).</td>
+        <td class="col-expected">Sistem menolak proses unggah berkas dan memunculkan peringatan format berkas tidak didukung (.xlsx/.csv).</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-USER-06">
+                    <input type="radio" name="status_QA-USER-06" value="PASS" onchange="updateRowStatus('QA-USER-06')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-USER-06">
+                    <input type="radio" name="status_QA-USER-06" value="FAIL" onchange="updateRowStatus('QA-USER-06')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-USER-06" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-USER-07">
+        <td class="col-id">QA-USER-07</td>
+        <td class="col-modul">Manajemen Pengguna</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Verifikasi integritas pencatatan riwayat impor pada tabel log_impor.</td>
+        <td class="col-expected">Setiap kali eksekusi impor selesai, riwayat tercatat akurat (ID Admin, Nama Berkas, Jumlah Berhasil, Jumlah Gagal, dan Timestamp).</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-USER-07">
+                    <input type="radio" name="status_QA-USER-07" value="PASS" onchange="updateRowStatus('QA-USER-07')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-USER-07">
+                    <input type="radio" name="status_QA-USER-07" value="FAIL" onchange="updateRowStatus('QA-USER-07')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-USER-07" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-USER-08">
+        <td class="col-id">QA-USER-08</td>
+        <td class="col-modul">Manajemen Pengguna</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Edit data profil pengguna (Nama, Email, Nomor Induk/Tahun Lulus/Instansi).</td>
+        <td class="col-expected">Data berhasil diperbarui di basis data tanpa mengubah hash kata sandi yang sudah ada.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-USER-08">
+                    <input type="radio" name="status_QA-USER-08" value="PASS" onchange="updateRowStatus('QA-USER-08')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-USER-08">
+                    <input type="radio" name="status_QA-USER-08" value="FAIL" onchange="updateRowStatus('QA-USER-08')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-USER-08" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-KURS-01">
+        <td class="col-id">QA-KURS-01</td>
+        <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Penambahan periode evaluasi baru (misal: &quot;2026/2027 Ganjil&quot;) dengan status default draft.</td>
+        <td class="col-expected">Periode baru tersimpan di tabel periode_evaluasi dan muncul pada daftar seleksi periode admin.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-KURS-01">
+                    <input type="radio" name="status_QA-KURS-01" value="PASS" onchange="updateRowStatus('QA-KURS-01')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-KURS-01">
+                    <input type="radio" name="status_QA-KURS-01" value="FAIL" onchange="updateRowStatus('QA-KURS-01')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-KURS-01" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-KURS-02">
+        <td class="col-id">QA-KURS-02</td>
+        <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Mengubah status periode evaluasi dari draft menjadi buka, lalu menjadi tutup.</td>
+        <td class="col-expected">Status periode terupdate di DB. Saat status buka, responden dapat mengisi formulir; saat tutup, responden tidak dapat lagi mengisi.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-KURS-02">
+                    <input type="radio" name="status_QA-KURS-02" value="PASS" onchange="updateRowStatus('QA-KURS-02')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-KURS-02">
+                    <input type="radio" name="status_QA-KURS-02" value="FAIL" onchange="updateRowStatus('QA-KURS-02')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-KURS-02" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-KURS-03">
+        <td class="col-id">QA-KURS-03</td>
+        <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Tambah dan ubah data master Mata Kuliah dan Bahan Kajian kurikulum.</td>
+        <td class="col-expected">Data mata kuliah (Kode, Nama, SKS, Semester) dan bahan kajian tersimpan serta terelasi dengan benar di tabel relasi mata_kuliah_bk.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-KURS-03">
+                    <input type="radio" name="status_QA-KURS-03" value="PASS" onchange="updateRowStatus('QA-KURS-03')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-KURS-03">
+                    <input type="radio" name="status_QA-KURS-03" value="FAIL" onchange="updateRowStatus('QA-KURS-03')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-KURS-03" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-KURS-04">
+        <td class="col-id">QA-KURS-04</td>
+        <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Penambahan butir pertanyaan kuesioner baru dengan pemilihan target peran spesifik.</td>
+        <td class="col-expected">Pertanyaan tersimpan dengan tipe input yang sesuai (skala 1-5, pilihan ganda, atau esai) dan bagian sasaran (matkul atau kompetensi).</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-KURS-04">
+                    <input type="radio" name="status_QA-KURS-04" value="PASS" onchange="updateRowStatus('QA-KURS-04')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-KURS-04">
+                    <input type="radio" name="status_QA-KURS-04" value="FAIL" onchange="updateRowStatus('QA-KURS-04')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-KURS-04" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-KURS-05">
+        <td class="col-id">QA-KURS-05</td>
+        <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Logika Soft-Delete / Visibility On-Off: Penonaktifan butir pertanyaan kuesioner (aktif = 0).</td>
+        <td class="col-expected">Data pertanyaan TIDAK DIHAPUS PERMANEN dari tabel pertanyaan, melainkan hanya diubah statusnya menjadi tidak aktif (aktif = 0).</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-KURS-05">
+                    <input type="radio" name="status_QA-KURS-05" value="PASS" onchange="updateRowStatus('QA-KURS-05')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-KURS-05">
+                    <input type="radio" name="status_QA-KURS-05" value="FAIL" onchange="updateRowStatus('QA-KURS-05')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-KURS-05" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-KURS-06">
+        <td class="col-id">QA-KURS-06</td>
+        <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Pengujian visibilitas kuesioner responden terhadap pertanyaan yang telah dinonaktifkan (Soft-Deleted).</td>
+        <td class="col-expected">Responden yang membuka formulir evaluasi baru tidak melihat pertanyaan yang dinonaktifkan (WHERE aktif = TRUE).</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-KURS-06">
+                    <input type="radio" name="status_QA-KURS-06" value="PASS" onchange="updateRowStatus('QA-KURS-06')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-KURS-06">
+                    <input type="radio" name="status_QA-KURS-06" value="FAIL" onchange="updateRowStatus('QA-KURS-06')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-KURS-06" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-KURS-07">
+        <td class="col-id">QA-KURS-07</td>
+        <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Pengujian Integritas Relasional: Meninjau riwayat jawaban responden lama atas pertanyaan yang telah dinonaktifkan.</td>
+        <td class="col-expected">Jawaban pada evaluasi periode sebelumnya tetap utuh dan rekap nilai analitik tidak rusak karena ID pertanyaan tetap ada di database.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-KURS-07">
+                    <input type="radio" name="status_QA-KURS-07" value="PASS" onchange="updateRowStatus('QA-KURS-07')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-KURS-07">
+                    <input type="radio" name="status_QA-KURS-07" value="FAIL" onchange="updateRowStatus('QA-KURS-07')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-KURS-07" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-KURS-08">
+        <td class="col-id">QA-KURS-08</td>
+        <td class="col-modul">Kurikulum &amp; Kuesioner</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Soft-Delete / Toggle aktif-nonaktif pada Kategori Kompetensi dan Bank Mata Kuliah.</td>
+        <td class="col-expected">Mata kuliah/kategori kompetensi yang dinonaktifkan tidak muncul pada pilihan aktif kuesioner baru, namun riwayat historis tetap aman.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-KURS-08">
+                    <input type="radio" name="status_QA-KURS-08" value="PASS" onchange="updateRowStatus('QA-KURS-08')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-KURS-08">
+                    <input type="radio" name="status_QA-KURS-08" value="FAIL" onchange="updateRowStatus('QA-KURS-08')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-KURS-08" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-PORTAL-01">
+        <td class="col-id">QA-PORTAL-01</td>
+        <td class="col-modul">Portal Evaluasi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Responden login dan mengakses formulir evaluasi pada saat periode berstatus buka.</td>
+        <td class="col-expected">Sistem memuat identitas responden, membuat baris sesi draf awal di tabel pengisian, dan menampilkan wizard kuesioner.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-PORTAL-01">
+                    <input type="radio" name="status_QA-PORTAL-01" value="PASS" onchange="updateRowStatus('QA-PORTAL-01')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-PORTAL-01">
+                    <input type="radio" name="status_QA-PORTAL-01" value="FAIL" onchange="updateRowStatus('QA-PORTAL-01')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-PORTAL-01" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-PORTAL-02">
+        <td class="col-id">QA-PORTAL-02</td>
+        <td class="col-modul">Portal Evaluasi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Responden mencoba mengakses langsung URL formulir (responden/formulir.php) saat seluruh periode berstatus tutup.</td>
+        <td class="col-expected">Sistem mencegat aksi, memunculkan notifikasi &quot;Tidak ada periode evaluasi yang sedang dibuka&quot;, dan mengembalikan ke beranda.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-PORTAL-02">
+                    <input type="radio" name="status_QA-PORTAL-02" value="PASS" onchange="updateRowStatus('QA-PORTAL-02')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-PORTAL-02">
+                    <input type="radio" name="status_QA-PORTAL-02" value="FAIL" onchange="updateRowStatus('QA-PORTAL-02')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-PORTAL-02" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-PORTAL-03">
+        <td class="col-id">QA-PORTAL-03</td>
+        <td class="col-modul">Portal Evaluasi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Navigasi antar-tab form wizard (Tab 1: Mata Kuliah &amp; Tab 2: Kompetensi Lulusan).</td>
+        <td class="col-expected">Transisi wizard berjalan mulus, validasi sebelum pindah tab aktif, dan penanda tab aktif (tab_terakhir) tersimpan.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-PORTAL-03">
+                    <input type="radio" name="status_QA-PORTAL-03" value="PASS" onchange="updateRowStatus('QA-PORTAL-03')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-PORTAL-03">
+                    <input type="radio" name="status_QA-PORTAL-03" value="FAIL" onchange="updateRowStatus('QA-PORTAL-03')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-PORTAL-03" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-PORTAL-04">
+        <td class="col-id">QA-PORTAL-04</td>
+        <td class="col-modul">Portal Evaluasi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Algoritma Auto-Save Draf Otomatis via AJAX (api/simpan-draf.php) saat responden memilih nilai atau berpindah tab.</td>
+        <td class="col-expected">Nilai skala, opsi ganda, dan teks alasan langsung tersimpan ke tabel jawaban di latar belakang dengan indikator &quot;Draf tersimpan otomatis&quot;.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-PORTAL-04">
+                    <input type="radio" name="status_QA-PORTAL-04" value="PASS" onchange="updateRowStatus('QA-PORTAL-04')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-PORTAL-04">
+                    <input type="radio" name="status_QA-PORTAL-04" value="FAIL" onchange="updateRowStatus('QA-PORTAL-04')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-PORTAL-04" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-PORTAL-05">
+        <td class="col-id">QA-PORTAL-05</td>
+        <td class="col-modul">Portal Evaluasi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Recovery Data saat Sesi Browser Tertutup atau Koneksi Terputus sebelum Final Submit.</td>
+        <td class="col-expected">Saat responden membuka kembali formulir pada perangkat yang sama atau berbeda, seluruh jawaban sebelumnya otomatis terisi kembali (recovered).</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-PORTAL-05">
+                    <input type="radio" name="status_QA-PORTAL-05" value="PASS" onchange="updateRowStatus('QA-PORTAL-05')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-PORTAL-05">
+                    <input type="radio" name="status_QA-PORTAL-05" value="FAIL" onchange="updateRowStatus('QA-PORTAL-05')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-PORTAL-05" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-PORTAL-06">
+        <td class="col-id">QA-PORTAL-06</td>
+        <td class="col-modul">Portal Evaluasi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Interaktivitas Skala Likert: Responden memilih skor nilai rendah (skor 1, 2, atau 3).</td>
+        <td class="col-expected">Kotak input teks alasan secara otomatis muncul (conditional display) dan menjadi wajib diisi (required) sebelum responden melanjutkan.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-PORTAL-06">
+                    <input type="radio" name="status_QA-PORTAL-06" value="PASS" onchange="updateRowStatus('QA-PORTAL-06')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-PORTAL-06">
+                    <input type="radio" name="status_QA-PORTAL-06" value="FAIL" onchange="updateRowStatus('QA-PORTAL-06')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-PORTAL-06" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-PORTAL-07">
+        <td class="col-id">QA-PORTAL-07</td>
+        <td class="col-modul">Portal Evaluasi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Responden memilih nilai rendah (skor 1, 2, atau 3) tetapi mengosongkan kotak input alasan wajib.</td>
+        <td class="col-expected">Sistem menampilkan peringatan validasi pada formulir dan memblokir perpindahan tab atau submit final hingga alasan diisi.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-PORTAL-07">
+                    <input type="radio" name="status_QA-PORTAL-07" value="PASS" onchange="updateRowStatus('QA-PORTAL-07')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-PORTAL-07">
+                    <input type="radio" name="status_QA-PORTAL-07" value="FAIL" onchange="updateRowStatus('QA-PORTAL-07')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-PORTAL-07" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-PORTAL-08">
+        <td class="col-id">QA-PORTAL-08</td>
+        <td class="col-modul">Portal Evaluasi</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Pengumpulan Formulir Final (Final Submit) melalui api/submit-final.php.</td>
+        <td class="col-expected">Status pengisian berubah dari draft menjadi final, waktu submit dicatat, dan responden dialihkan ke beranda dengan pesan terima kasih.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-PORTAL-08">
+                    <input type="radio" name="status_QA-PORTAL-08" value="PASS" onchange="updateRowStatus('QA-PORTAL-08')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-PORTAL-08">
+                    <input type="radio" name="status_QA-PORTAL-08" value="FAIL" onchange="updateRowStatus('QA-PORTAL-08')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-PORTAL-08" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-PORTAL-09">
+        <td class="col-id">QA-PORTAL-09</td>
+        <td class="col-modul">Portal Evaluasi</td>
+        <td class="col-skenario"><span class="tag-neg">Negatif</span> Responden mencoba mengisi kembali atau membuka form evaluasi yang statusnya sudah final.</td>
+        <td class="col-expected">Sistem menolak pengisian ulang dengan notifikasi &quot;Anda sudah mengumpulkan evaluasi untuk periode ini&quot; dan formulir dikunci.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-PORTAL-09">
+                    <input type="radio" name="status_QA-PORTAL-09" value="PASS" onchange="updateRowStatus('QA-PORTAL-09')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-PORTAL-09">
+                    <input type="radio" name="status_QA-PORTAL-09" value="FAIL" onchange="updateRowStatus('QA-PORTAL-09')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-PORTAL-09" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-DASH-01">
+        <td class="col-id">QA-DASH-01</td>
+        <td class="col-modul">Dasbor Analitik</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Filter Dasbor Admin berdasarkan pemilihan Tahun Akademik / Periode Evaluasi.</td>
+        <td class="col-expected">Seluruh kartu metrik statistik, total responden, dan grafik visualisasi otomatis disegarkan sesuai periode yang dipilih.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-DASH-01">
+                    <input type="radio" name="status_QA-DASH-01" value="PASS" onchange="updateRowStatus('QA-DASH-01')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-DASH-01">
+                    <input type="radio" name="status_QA-DASH-01" value="FAIL" onchange="updateRowStatus('QA-DASH-01')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-DASH-01" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-DASH-02">
+        <td class="col-id">QA-DASH-02</td>
+        <td class="col-modul">Dasbor Analitik</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Validasi visualisasi Radar Chart (Spider Chart) untuk Rekapitulasi Rata-rata Skor per Kategori Kompetensi.</td>
+        <td class="col-expected">Sumbu radar chart menampilkan seluruh kategori kompetensi prodi dengan skor 1-5 yang proporsional sesuai rata-rata skor responden.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-DASH-02">
+                    <input type="radio" name="status_QA-DASH-02" value="PASS" onchange="updateRowStatus('QA-DASH-02')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-DASH-02">
+                    <input type="radio" name="status_QA-DASH-02" value="FAIL" onchange="updateRowStatus('QA-DASH-02')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-DASH-02" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-DASH-03">
+        <td class="col-id">QA-DASH-03</td>
+        <td class="col-modul">Dasbor Analitik</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Validasi visualisasi Doughnut Chart untuk Distribusi Partisipasi Responden.</td>
+        <td class="col-expected">Grafik donat memvisualisasikan persentase responden per peran (Mahasiswa, Dosen, Alumni, Mitra Perusahaan) secara akurat.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-DASH-03">
+                    <input type="radio" name="status_QA-DASH-03" value="PASS" onchange="updateRowStatus('QA-DASH-03')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-DASH-03">
+                    <input type="radio" name="status_QA-DASH-03" value="FAIL" onchange="updateRowStatus('QA-DASH-03')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-DASH-03" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-DASH-04">
+        <td class="col-id">QA-DASH-04</td>
+        <td class="col-modul">Dasbor Analitik</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Ekspor data rekapitulasi mentah hasil evaluasi ke format Microsoft Excel (.xlsx / .csv) via admin/export-excel.php.</td>
+        <td class="col-expected">Berkas berhasil diunduh, dapat dibuka rapi di Excel tanpa korupsi berkas, dan memuat kolom responden anonim, peran, matkul, nilai, dan alasan esai.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-DASH-04">
+                    <input type="radio" name="status_QA-DASH-04" value="PASS" onchange="updateRowStatus('QA-DASH-04')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-DASH-04">
+                    <input type="radio" name="status_QA-DASH-04" value="FAIL" onchange="updateRowStatus('QA-DASH-04')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-DASH-04" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-DASH-05">
+        <td class="col-id">QA-DASH-05</td>
+        <td class="col-modul">Dasbor Analitik</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Cetak Laporan Eksekutif PDF via admin/cetak-pdf.php menggunakan fitur Print Stylesheet.</td>
+        <td class="col-expected">Tampilan cetak PDF bersih tanpa elemen navigasi admin (no-print), grafik ter-render tajam, dan siap diarsip atau dicetak resmi.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-DASH-05">
+                    <input type="radio" name="status_QA-DASH-05" value="PASS" onchange="updateRowStatus('QA-DASH-05')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-DASH-05">
+                    <input type="radio" name="status_QA-DASH-05" value="FAIL" onchange="updateRowStatus('QA-DASH-05')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-DASH-05" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr><tr id="row-QA-DASH-06">
+        <td class="col-id">QA-DASH-06</td>
+        <td class="col-modul">Dasbor Analitik</td>
+        <td class="col-skenario"><span class="tag-pos">Positif</span> Pengujian alur Tiket Bantuan: Responden mengirim pertanyaan/kendala dan Admin membalas via admin/tiket.php.</td>
+        <td class="col-expected">Responden menerima status respon tiket (Baru, Diproses, Selesai) beserta balasan resmi dari Administrator Prodi.</td>
+        <td class="col-status">
+            <div class="status-options">
+                <label class="status-label" id="label-pass-QA-DASH-06">
+                    <input type="radio" name="status_QA-DASH-06" value="PASS" onchange="updateRowStatus('QA-DASH-06')"> Pass
+                </label>
+                <label class="status-label" id="label-fail-QA-DASH-06">
+                    <input type="radio" name="status_QA-DASH-06" value="FAIL" onchange="updateRowStatus('QA-DASH-06')"> Fail
+                </label>
+            </div>
+        </td>
+        <td class="col-notes">
+            <textarea class="input-notes" id="notes-QA-DASH-06" placeholder="Catatan hasil / bukti..."></textarea>
+        </td>
+    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <script>
+        const testIds = ["QA-AUTH-01","QA-AUTH-02","QA-AUTH-03","QA-AUTH-04","QA-AUTH-05","QA-AUTH-06","QA-AUTH-07","QA-AUTH-08","QA-AUTH-09","QA-AUTH-10","QA-AUTH-11","QA-AUTH-12","QA-AUTH-13","QA-AUTH-14","QA-AUTH-15","QA-USER-01","QA-USER-02","QA-USER-03","QA-USER-04","QA-USER-05","QA-USER-06","QA-USER-07","QA-USER-08","QA-KURS-01","QA-KURS-02","QA-KURS-03","QA-KURS-04","QA-KURS-05","QA-KURS-06","QA-KURS-07","QA-KURS-08","QA-PORTAL-01","QA-PORTAL-02","QA-PORTAL-03","QA-PORTAL-04","QA-PORTAL-05","QA-PORTAL-06","QA-PORTAL-07","QA-PORTAL-08","QA-PORTAL-09","QA-DASH-01","QA-DASH-02","QA-DASH-03","QA-DASH-04","QA-DASH-05","QA-DASH-06"];
+
+        function updateRowStatus(id) {
+            const row = document.getElementById("row-" + id);
+            const passRadio = document.querySelector(`input[name="status_${id}"][value="PASS"]`);
+            const failRadio = document.querySelector(`input[name="status_${id}"][value="FAIL"]`);
+            const passLabel = document.getElementById("label-pass-" + id);
+            const failLabel = document.getElementById("label-fail-" + id);
+
+            passLabel.classList.remove("active-pass");
+            failLabel.classList.remove("active-fail");
+            row.classList.remove("row-passed", "row-failed");
+
+            if (passRadio && passRadio.checked) {
+                passLabel.classList.add("active-pass");
+                row.classList.add("row-passed");
+            } else if (failRadio && failRadio.checked) {
+                failLabel.classList.add("active-fail");
+                row.classList.add("row-failed");
+            }
+            updateCounters();
+        }
+
+        function updateCounters() {
+            let pass = 0, fail = 0;
+            testIds.forEach(id => {
+                const p = document.querySelector(`input[name="status_${id}"][value="PASS"]`);
+                const f = document.querySelector(`input[name="status_${id}"][value="FAIL"]`);
+                if (p && p.checked) pass++;
+                if (f && f.checked) fail++;
+            });
+            const total = testIds.length;
+            document.getElementById("count-pass").innerText = pass;
+            document.getElementById("count-fail").innerText = fail;
+            document.getElementById("count-pending").innerText = (total - pass - fail);
+        }
+
+        function setAllStatus(type) {
+            testIds.forEach(id => {
+                const pass = document.querySelector(`input[name="status_${id}"][value="PASS"]`);
+                const fail = document.querySelector(`input[name="status_${id}"][value="FAIL"]`);
+                if (type === "PASS") {
+                    if (pass) pass.checked = true;
+                } else {
+                    if (pass) pass.checked = false;
+                    if (fail) fail.checked = false;
+                }
+                updateRowStatus(id);
+            });
+        }
+
+        function simpanKeLocalStorage() {
+            const data = {
+                tester: document.getElementById("meta-tester").value,
+                date: document.getElementById("meta-date").value,
+                env: document.getElementById("meta-env").value,
+                ver: document.getElementById("meta-ver").value,
+                tests: {}
+            };
+            testIds.forEach(id => {
+                const pass = document.querySelector(`input[name="status_${id}"][value="PASS"]`);
+                const fail = document.querySelector(`input[name="status_${id}"][value="FAIL"]`);
+                const notes = document.getElementById("notes-" + id).value;
+                let status = "";
+                if (pass && pass.checked) status = "PASS";
+                if (fail && fail.checked) status = "FAIL";
+                data.tests[id] = { status, notes };
+            });
+            localStorage.setItem("qa_checklist_progress", JSON.stringify(data));
+            alert("Progres formulir QA berhasil disimpan di browser (LocalStorage)!");
+        }
+
+        function muatDariLocalStorage() {
+            const raw = localStorage.getItem("qa_checklist_progress");
+            if (!raw) return;
+            try {
+                const data = JSON.parse(raw);
+                if (data.tester) document.getElementById("meta-tester").value = data.tester;
+                if (data.date) document.getElementById("meta-date").value = data.date;
+                if (data.env) document.getElementById("meta-env").value = data.env;
+                if (data.ver) document.getElementById("meta-ver").value = data.ver;
+                if (data.tests) {
+                    testIds.forEach(id => {
+                        const item = data.tests[id];
+                        if (item) {
+                            if (item.status === "PASS") {
+                                const el = document.querySelector(`input[name="status_${id}"][value="PASS"]`);
+                                if (el) el.checked = true;
+                            } else if (item.status === "FAIL") {
+                                const el = document.querySelector(`input[name="status_${id}"][value="FAIL"]`);
+                                if (el) el.checked = true;
+                            }
+                            if (item.notes) {
+                                document.getElementById("notes-" + id).value = item.notes;
+                            }
+                            updateRowStatus(id);
+                        }
+                    });
+                }
+            } catch(e) {}
+        }
+
+        function resetFormulir() {
+            if (confirm("Apakah Anda yakin ingin mengosongkan seluruh formulir pengujian?")) {
+                setAllStatus("CLEAR");
+                testIds.forEach(id => {
+                    document.getElementById("notes-" + id).value = "";
+                });
+                localStorage.removeItem("qa_checklist_progress");
+            }
+        }
+
+        window.onload = muatDariLocalStorage;
+    </script>
+</body>
+</html>

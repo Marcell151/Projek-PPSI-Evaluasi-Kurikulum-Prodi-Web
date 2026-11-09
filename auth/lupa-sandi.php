@@ -58,6 +58,9 @@ $page_title = 'Lupa Kata Sandi';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $page_title ?> - <?= defined('APP_NAME') ? escape(APP_NAME) : 'Evaluasi Kurikulum' ?></title>
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css?v=' . filemtime(__DIR__ . '/../assets/css/style.css')) ?>">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <script src="<?= base_url('assets/vendor/phosphor.js') ?>" onerror="this.onerror=null;this.src='https://unpkg.com/@phosphor-icons/web';"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #111827; }
