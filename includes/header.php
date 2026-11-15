@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <script src="<?= base_url('assets/vendor/phosphor.js') ?>" onerror="this.onerror=null;this.src='https://unpkg.com/@phosphor-icons/web';"></script>
+    <script>const BASE_URL = '<?= base_url() ?>';</script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #111827; }
     </style>

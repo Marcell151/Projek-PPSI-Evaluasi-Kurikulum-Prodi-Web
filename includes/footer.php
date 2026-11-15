@@ -5,7 +5,7 @@
         </div>
     </footer>
     <script>
-        const BASE_URL = '<?= base_url() ?>';
+        if (typeof BASE_URL === 'undefined') { window.BASE_URL = '<?= base_url() ?>'; }
     </script>
 </body>
 </html>
