@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>MS Project - Evaluasi Kurikulum Prodi (Terbaru)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff;
+            padding: 24px;
+            font-size: 11px;
+            color: #000;
+        }
+        h3 {
+            font-size: 13px;
+            margin-top: 26px;
+            margin-bottom: 8px;
+            color: #333;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 4px;
+        }
+        .instruction {
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+            font-size: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            width: fit-content;
+            margin-bottom: 24px;
+            border: 1px solid #c8c8c8;
+            background: #fff;
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 3px 6px;
+            text-align: left;
+            white-space: nowrap;
+            height: 21px;
+        }
+        th {
+            background-color: #333333;
+            color: #ffffff;
+            font-weight: normal;
+            position: relative;
+            border: 1px solid #444;
+            padding-right: 15px;
+        }
+        th::after {
+            content: '▼';
+            font-size: 7px;
+            position: absolute;
+            right: 4px;
+            top: 8px;
+            color: #aaa;
+        }
+        .row-num {
+            background-color: #f4f4f4;
+            text-align: center;
+            color: #333;
+            border-right: 1px solid #ccc;
+            width: 24px;
+        }
+        .icon-col { text-align: center; width: 22px; }
+        .bold-row { font-weight: bold; background-color: #fafafa; }
+        .indent-1 { padding-left: 16px !important; }
+        .indent-2 { padding-left: 32px !important; }
+        .wrap-text {
+            white-space: normal;
+            max-width: 340px;
+            line-height: 1.3;
+        }
+        .num-col { text-align: right; }
+
+        /* MS Project Icons */
+        .icon-task {
+            display: inline-block;
+            width: 11px; height: 8px;
+            background-color: #0078D7;
+            position: relative;
+        }
+        .icon-task::after {
+            content: '➔';
+            font-size: 8px;
+            color: #0078D7;
+            position: absolute;
+            right: -8px;
+            top: -2px;
+        }
+        .icon-expanded {
+            display: inline-block;
+            width: 0; height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid #333;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        /* Visual Gantt Chart (1 Sep - 30 Nov 2026 = 91 days) */
+        .gantt-container {
+            width: 860px;
+            border: 1px solid #333;
+            background: #fff;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+        .gantt-header {
+            background-color: #1a1a1a;
+            color: #eee;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #555;
+        }
+        .gantt-months {
+            display: flex;
+            border-bottom: 1px solid #444;
+        }
+        .gantt-month {
+            text-align: center;
+            padding: 3px 0;
+            border-right: 1px solid #555;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .gantt-days { display: flex; }
+        .gantt-day {
+            flex: 1;
+            text-align: center;
+            padding: 2px 0;
+            border-right: 1px dotted #444;
+            font-size: 9px;
+            color: #bbb;
+        }
+        .gantt-body {
+            position: relative;
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 3.25%, #f2f4f7 3.25%, #f2f4f7 3.33%);
+            padding-top: 6px;
+            padding-bottom: 8px;
+        }
+        .gantt-row {
+            height: 17px;
+            position: relative;
+            margin-bottom: 2px;
+            border-bottom: 1px solid #f7f7f7;
+        }
+        .bar-summary {
+            position: absolute;
+            height: 5px;
+            background-color: #111;
+            top: 5px;
+        }
+        .bar-summary::before, .bar-summary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0; height: 8px;
+            border-top: 5px solid #111;
+        }
+        .bar-summary::before { left: 0; border-right: 4px solid transparent; border-left: 4px solid #111; }
+        .bar-summary::after { right: 0; border-left: 4px solid transparent; border-right: 4px solid #111; }
+        .bar-task {
+            position: absolute;
+            height: 9px;
+            top: 4px;
+            background-color: #0078D7;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.25);
+        }
+        .bar-critical { background-color: #D13438; }
+        .gantt-label {
+            position: absolute;
+            top: 2px;
+            font-size: 9px;
+            color: #111;
+            white-space: nowrap;
+        }
+
+        /* Org Chart */
+        .org-container {
+            background: #f3f6f9;
+            padding: 24px 32px;
+            text-align: center;
+            border: 1px solid #ccc;
+            width: fit-content;
+        }
+        .org-box {
+            background: #fff;
+            border: 1px solid #b8c4d0;
+            border-top: 3px solid #0078D7;
+            padding: 10px 16px;
+            font-weight: bold;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            color: #222;
+            min-width: 155px;
+        }
+        .org-sub { font-size: 10px; font-weight: normal; color: #555; display: block; margin-top: 2px; }
+        .org-line-v { width: 2px; height: 20px; background: #0078D7; margin: 0 auto; }
+        .org-branches { display: flex; justify-content: center; gap: 28px; margin-top: 0; position: relative; }
+        .org-branch { display: flex; flex-direction: column; align-items: center; position: relative; }
+        .org-branch::before { content: ''; position: absolute; top: 0; height: 2px; background: #0078D7; left: -14px; right: -14px; }
+        .org-branch:first-child::before { left: 50%; }
+        .org-branch:last-child::before { right: 50%; }
+    </style>
+</head>
+<body>
+
+    <h3>Gambar 3.1 &amp; 4.1: Task Sheet (Time &amp; Cost Management — Sesuai Logbook Terbaru)</h3>
+    <div class="instruction">Disinkronkan dengan PPSI (Logbook).xlsx: 20 tugas proyek (07 September s.d. 27 November 2026).</div>
+    <table id="tbl-task">
+        <thead>
+            <tr>
+                <th></th>
+                <th>i</th>
+                <th>Task Mode</th>
+                <th>Task Name</th>
+                <th>Duration</th>
+                <th>Start</th>
+                <th>Finish</th>
+                <th>Predecessors</th>
+                <th>Resource Names</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="bold-row">
+                <td class="row-num">1</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td><span class="icon-expanded"></span> Pengembangan Sistem Informasi Evaluasi Kurikulum Prodi</td>
+                <td>51 days</td><td>Mon 07/09/26</td><td>Fri 27/11/26</td><td></td><td></td><td class="num-col">Rp21,500,000</td>
+            </tr>
+            <tr class="bold-row">
+                <td class="row-num">2</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-1"><span class="icon-expanded"></span> Initiating</td>
+                <td>4 days</td><td>Mon 07/09/26</td><td>Tue 08/09/26</td><td></td><td></td><td class="num-col">Rp3,200,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">3</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Internal Meeting &amp; Kickoff</td>
+                <td>1 day</td><td>Mon 07/09/26</td><td>Mon 07/09/26</td><td></td><td>PM/SA, UI/UX, FD, QA/DC</td><td class="num-col">Rp950,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">4</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Partner Meeting (Stakeholder)</td>
+                <td>1 day</td><td>Tue 08/09/26</td><td>Tue 08/09/26</td><td>3</td><td>PM/SA, UI/UX, FD, QA/DC</td><td class="num-col">Rp950,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">5</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Pembagian Jobdesk</td>
+                <td>1 day</td><td>Tue 08/09/26</td><td>Tue 08/09/26</td><td>4SS</td><td>PM/SA, UI/UX, FD, QA/DC</td><td class="num-col">Rp950,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">6</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Persetujuan Ruang Lingkup &amp; Project Charter</td>
+                <td>1 day</td><td>Tue 08/09/26</td><td>Tue 08/09/26</td><td>5FF</td><td>PM/SA</td><td class="num-col">Rp350,000</td>
+            </tr>
+            <tr class="bold-row">
+                <td class="row-num">7</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-1"><span class="icon-expanded"></span> Planning</td>
+                <td>4 days</td><td>Wed 09/09/26</td><td>Fri 11/09/26</td><td></td><td></td><td class="num-col">Rp1,450,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">8</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Penyusunan Rencana Waktu &amp; Anggaran</td>
+                <td>2 days</td><td>Wed 09/09/26</td><td>Fri 11/09/26</td><td>6</td><td>PM/SA</td><td class="num-col">Rp700,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">9</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Penyusunan Rencana Sumber Daya</td>
+                <td>1 day</td><td>Wed 09/09/26</td><td>Wed 09/09/26</td><td>8SS</td><td>PM/SA</td><td class="num-col">Rp350,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">10</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Persiapan Tools &amp; Infrastruktur</td>
+                <td>1 day</td><td>Thu 10/09/26</td><td>Thu 10/09/26</td><td>9</td><td>UI/UX, FD</td><td class="num-col">Rp400,000</td>
+            </tr>
+            <tr class="bold-row">
+                <td class="row-num">11</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-1"><span class="icon-expanded"></span> Executing</td>
+                <td>27 days</td><td>Tue 29/09/26</td><td>Fri 30/10/26</td><td></td><td></td><td class="num-col">Rp7,050,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">12</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Perencanaan Kebutuhan Sistem (SRS)</td>
+                <td>3 days</td><td>Tue 29/09/26</td><td>Thu 01/10/26</td><td>8</td><td>PM/SA, QA/DC</td><td class="num-col">Rp1,650,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">13</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Desain Antarmuka (UI/UX)</td>
+                <td>4 days</td><td>Fri 02/10/26</td><td>Wed 07/10/26</td><td>12</td><td>UI/UX</td><td class="num-col">Rp800,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">14</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Perancangan Modul Autentikasi &amp; Data Master</td>
+                <td>4 days</td><td>Mon 05/10/26</td><td>Thu 08/10/26</td><td>13SS+1 day</td><td>FD</td><td class="num-col">Rp800,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">15</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Perancangan Modul Kuesioner (CRUD)</td>
+                <td>4 days</td><td>Fri 09/10/26</td><td>Wed 14/10/26</td><td>14</td><td>FD</td><td class="num-col">Rp800,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">16</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Perancangan Portal Evaluasi Responden</td>
+                <td>4 days</td><td>Wed 14/10/26</td><td>Mon 19/10/26</td><td>15FF</td><td>FD</td><td class="num-col">Rp800,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">17</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Perancangan Modul Dashboard Analitik</td>
+                <td>5 days</td><td>Tue 20/10/26</td><td>Mon 26/10/26</td><td>16</td><td>FD</td><td class="num-col">Rp1,000,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">18</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Integrasi Frontend-Backend &amp; Konfigurasi Basis Data</td>
+                <td>3 days</td><td>Tue 27/10/26</td><td>Fri 30/10/26</td><td>17</td><td>UI/UX, FD</td><td class="num-col">Rp1,200,000</td>
+            </tr>
+            <tr class="bold-row">
+                <td class="row-num">19</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-1"><span class="icon-expanded"></span> Monitoring</td>
+                <td>5 days</td><td>Mon 02/11/26</td><td>Fri 06/11/26</td><td></td><td></td><td class="num-col">Rp2,450,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">20</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Tinjauan Kesiapan Sistem</td>
+                <td>1 day</td><td>Mon 02/11/26</td><td>Mon 02/11/26</td><td>18</td><td>PM/SA, UI/UX, FD, QA/DC</td><td class="num-col">Rp950,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">21</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Pengujian Internal (QA)</td>
+                <td>2 days</td><td>Mon 02/11/26</td><td>Tue 03/11/26</td><td>20SS</td><td>QA/DC</td><td class="num-col">Rp400,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">22</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">User Acceptance Test (UAT)</td>
+                <td>2 days</td><td>Wed 04/11/26</td><td>Fri 06/11/26</td><td>21</td><td>PM/SA, QA/DC</td><td class="num-col">Rp1,100,000</td>
+            </tr>
+            <tr class="bold-row">
+                <td class="row-num">23</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-1"><span class="icon-expanded"></span> Closing</td>
+                <td>11 days</td><td>Fri 06/11/26</td><td>Fri 27/11/26</td><td></td><td></td><td class="num-col">Rp7,350,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">24</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Evaluasi &amp; Perbaikan</td>
+                <td>3 days</td><td>Fri 06/11/26</td><td>Mon 09/11/26</td><td>22FF</td><td>PM/SA, UI/UX, FD, QA/DC</td><td class="num-col">Rp2,850,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">25</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Laporan Proyek</td>
+                <td>3 days</td><td>Tue 10/11/26</td><td>Fri 20/11/26</td><td>24</td><td>PM/SA, QA/DC, CJ</td><td class="num-col">Rp1,750,000</td>
+            </tr>
+            <tr>
+                <td class="row-num">26</td><td class="icon-col"></td><td class="icon-col"><span class="icon-task"></span></td>
+                <td class="indent-2">Artikel Proyek (23-27 Nov)</td>
+                <td>5 days</td><td>Mon 23/11/26</td><td>Fri 27/11/26</td><td>25</td><td>PM/SA, QA/DC</td><td class="num-col">Rp2,750,000</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Gambar 3.2: Durasi Total Proyek (Visual Gantt Chart — Sep s.d. Nov 2026)</h3>
+    <!-- Skala total: 1 Sep - 30 Nov 2026 = 91 hari (Sep 30 + Okt 31 + Nov 30) -->
+    <div class="gantt-container" id="gantt-chart">
+        <div class="gantt-header">
+            <div class="gantt-months">
+                <div class="gantt-month" style="width:32.97%;">September 2026</div>
+                <div class="gantt-month" style="width:34.07%;">October 2026</div>
+                <div class="gantt-month" style="width:32.96%; border-right:none;">November 2026</div>
+            </div>
+            <div class="gantt-days" id="gantt-days-row"></div>
+        </div>
+        <div class="gantt-body">
+            <!-- Summary: 7 Sep (day 6 = 6.6%) to 27 Nov (day 87 = 95.6%, width 89%) -->
+            <div class="gantt-row"><div class="bar-summary" style="left: 6.6%; width: 89.0%;"></div></div>
+            <!-- Initiating: 7-8 Sep (6.6% - 8.8%) -->
+            <div class="gantt-row"><div class="bar-summary" style="left: 6.6%; width: 2.8%;"></div></div>
+            <div class="gantt-row"><div class="bar-task" style="left: 6.6%; width: 1.3%;"></div><div class="gantt-label" style="left: 8.6%;">Internal Meeting (7 Sep) — PM/SA, UI/UX, FD, QA/DC</div></div>
+            <div class="gantt-row"><div class="bar-task" style="left: 7.7%; width: 1.3%;"></div><div class="gantt-label" style="left: 9.7%;">Partner Meeting (8 Sep) — Seluruh Tim</div></div>
+            <div class="gantt-row"><div class="bar-task" style="left: 7.7%; width: 1.3%;"></div><div class="gantt-label" style="left: 9.7%;">Pembagian Jobdesk (8 Sep) — Seluruh Tim</div></div>
+            <div class="gantt-row"><div class="bar-task" style="left: 7.7%; width: 1.3%;"></div><div class="gantt-label" style="left: 9.7%;">Persetujuan Project Charter (8 Sep) — PM/SA</div></div>
+            <!-- Planning: 9-11 Sep (8.8% - 12.1%) -->
+            <div class="gantt-row"><div class="bar-summary" style="left: 8.8%; width: 3.3%;"></div></div>
+            <div class="gantt-row"><div class="bar-task" style="left: 8.8%; width: 3.3%;"></div><div class="gantt-label" style="left: 12.8%;">Rencana Waktu &amp; Anggaran (9-11 Sep) — PM/SA</div></div>
+            <div class="gantt-row"><div class="bar-task" style="left: 8.8%; width: 1.3%;"></div><div class="gantt-label" style="left: 10.8%;">Rencana Sumber Daya / ERD (9 Sep) — SA</div></div>
+            <div class="gantt-row"><div class="bar-task" style="left: 9.9%; width: 1.3%;"></div><div class="gantt-label" style="left: 11.9%;">Persiapan XAMPP, GitHub, Figma (10 Sep) — UI/UX, FD</div></div>
+            <!-- Executing: 29 Sep (28 = 30.8%) to 30 Oct (59 = 64.8%) -->
+            <div class="gantt-row"><div class="bar-summary" style="left: 30.8%; width: 34.0%;"></div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 30.8%; width: 3.3%;"></div><div class="gantt-label" style="left: 34.8%;">SRS (29 Sep-1 Okt) — SA, DC</div></div>
+            <div class="gantt-row"><div class="bar-task" style="left: 34.1%; width: 6.6%;"></div><div class="gantt-label" style="left: 41.4%;">Desain UI/UX Figma (2-7 Okt) — UI/UX</div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 37.4%; width: 4.4%;"></div><div class="gantt-label" style="left: 42.5%;">Autentikasi &amp; Data Master (5-8 Okt) — FD</div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 41.8%; width: 6.6%;"></div><div class="gantt-label" style="left: 49.1%;">Modul Kuesioner CRUD (9-14 Okt) — FD</div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 47.3%; width: 6.6%;"></div><div class="gantt-label" style="left: 54.6%;">Portal Evaluasi Save &amp; Recovery (14-19 Okt) — FD</div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 53.8%; width: 7.7%;"></div><div class="gantt-label" style="left: 62.2%;">Dashboard Analitik (20-26 Okt) — FD</div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 61.5%; width: 4.4%;"></div><div class="gantt-label" style="left: 66.6%;">Integrasi &amp; Rilis Web (27-30 Okt) — UI/UX, FD</div></div>
+            <!-- Monitoring: 2 Nov (62 = 68.1%) to 6 Nov (66 = 72.5%) -->
+            <div class="gantt-row"><div class="bar-summary" style="left: 68.1%; width: 5.5%;"></div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 68.1%; width: 1.3%;"></div><div class="gantt-label" style="left: 70.1%;">Tinjauan Kesiapan (2 Nov)</div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 68.1%; width: 2.2%;"></div><div class="gantt-label" style="left: 71.0%;">Pengujian QA (2-3 Nov)</div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 70.3%; width: 3.3%;"></div><div class="gantt-label" style="left: 74.3%;">UAT 5 Peran (4-6 Nov)</div></div>
+            <!-- Closing: 6 Nov (72.5%) to 27 Nov (95.6%) -->
+            <div class="gantt-row"><div class="bar-summary" style="left: 72.5%; width: 23.1%;"></div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 72.5%; width: 4.4%;"></div><div class="gantt-label" style="left: 77.6%;">Evaluasi &amp; Perbaikan (6-9 Nov)</div></div>
+            <div class="gantt-row"><div class="bar-task bar-critical" style="left: 76.9%; width: 12.1%;"></div><div class="gantt-label" style="left: 52.0%;">Laporan Proyek (10-20 Nov) — PM/SA, QA/DC</div></div>
+            <div class="gantt-row"><div class="bar-task" style="left: 90.1%; width: 5.5%;"></div><div class="gantt-label" style="left: 66.0%;">Artikel Proyek (23-27 Nov) — PM/SA, QA/DC</div></div>
+        </div>
+    </div>
+
+    <h3>Gambar 4.2 &amp; 5.1: Resource Sheet (Cost &amp; HR)</h3>
+    <div class="instruction">Pembagian peran sesuai catatan Jobdesk Logbook: Marcell merangkap PM &amp; SA; anggota tim lain menangani UI/UX, Fullstack, dan QA/DC.</div>
+    <table id="tbl-resource">
+        <thead>
+            <tr>
+                <th></th>
+                <th>i</th>
+                <th>Resource Name</th>
+                <th>Type</th>
+                <th>Material</th>
+                <th>Initials</th>
+                <th>Group</th>
+                <th>Max.</th>
+                <th>Std. Rate</th>
+                <th>Cost/Use</th>
+                <th>Accrue</th>
+                <th>Base Calendar</th>
+                <th>Jobdesk</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="row-num">1</td><td class="icon-col"></td>
+                <td>Project Manager &amp; System Analyst (Marcell)</td><td>Work</td><td></td><td>PM/SA</td><td></td><td>100%</td><td>Rp350,000/day</td><td>Rp0</td><td>Prorated</td><td>Kalender 2026</td>
+                <td class="wrap-text">Memimpin proyek, menyusun jadwal &amp; anggaran, menganalisis kebutuhan (SRS), serta merancang ERD 15 tabel database.</td>
+            </tr>
+            <tr>
+                <td class="row-num">2</td><td class="icon-col"></td>
+                <td>Fullstack Developer</td><td>Work</td><td></td><td>FD</td><td></td><td>100%</td><td>Rp200,000/day</td><td>Rp0</td><td>Prorated</td><td>Kalender 2026</td>
+                <td class="wrap-text">Menulis kode PHP Native 8.x &amp; MySQL, portal auto-save, impor Excel, Dashboard Analitik, dan penayangan ke kmw.my.id.</td>
+            </tr>
+            <tr>
+                <td class="row-num">3</td><td class="icon-col"></td>
+                <td>UI/UX Designer</td><td>Work</td><td></td><td>UI/UX</td><td></td><td>100%</td><td>Rp200,000/day</td><td>Rp0</td><td>Prorated</td><td>Kalender 2026</td>
+                <td class="wrap-text">Merancang wireframe dan prototipe interaktif sistem di Figma serta membantu integrasi tampilan responsif.</td>
+            </tr>
+            <tr>
+                <td class="row-num">4</td><td class="icon-col"></td>
+                <td>Quality Assurance &amp; Document Control</td><td>Work</td><td></td><td>QA/DC</td><td></td><td>100%</td><td>Rp200,000/day</td><td>Rp0</td><td>Prorated</td><td>Kalender 2026</td>
+                <td class="wrap-text">Menjalankan 46 pengujian Black-Box (QA), 18 skenario UAT, serta menyusun Laporan Proyek dan Artikel Ilmiah.</td>
+            </tr>
+            <tr>
+                <td class="row-num">5</td><td class="icon-col"></td>
+                <td>Cetak &amp; Jilid Laporan</td><td>Material</td><td></td><td>CJ</td><td></td><td></td><td></td><td>Rp100,000</td><td>Prorated</td><td></td>
+                <td class="wrap-text">Kebutuhan cetak dan penjilidan dokumen pelaporan akhir proyek.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Gambar 5.2: Diagram Struktur Organisasi Proyek</h3>
+    <div class="org-container" id="org-chart">
+        <div style="margin-bottom: 20px; font-weight: bold; color: #444; font-size: 13px;">Diagram Struktur Organisasi Proyek Evaluasi Kurikulum</div>
+        <div class="org-box">Project Manager &amp; System Analyst<span class="org-sub">Marcell Chandra Kenchana (322310015)</span></div>
+        <div class="org-line-v"></div>
+        <div class="org-branches">
+            <div class="org-branch">
+                <div class="org-line-v"></div>
+                <div class="org-box">UI/UX Designer<span class="org-sub">Tim Pelaksana Teknis</span></div>
+            </div>
+            <div class="org-branch">
+                <div class="org-line-v"></div>
+                <div class="org-box">Fullstack Developer<span class="org-sub">Tim Pelaksana Teknis</span></div>
+            </div>
+            <div class="org-branch">
+                <div class="org-line-v"></div>
+                <div class="org-box">Quality Assurance &amp;<br>Document Control<span class="org-sub">Tim Pelaksana Teknis</span></div>
+            </div>
+        </div>
+        <div style="margin-top: 14px; font-size: 10px; color: #555;">Anggota Tim Pelaksana: Kevin Christian D.P.A. (322110005), Kurniawan Michael B. (322310013), William Christopher L. (322310020)</div>
+    </div>
+
+    <script>
+        const daysRow = document.getElementById('gantt-days-row');
+        const marks = [1, 7, 13, 19, 25, 1, 7, 13, 19, 25, 1, 7, 13, 19, 25, 30];
+        marks.forEach(d => {
+            const div = document.createElement('div');
+            div.className = 'gantt-day';
+            div.textContent = d;
+            daysRow.appendChild(div);
+        });
+    </script>
+</body>
+</html>
