@@ -3,6 +3,7 @@
 require_once '../config/app.php';
 require_once '../config/database.php';
 require_once '../includes/helpers.php';
+require_once '../includes/csrf.php';
 require_once '../includes/auth.php';
 
 require_role('admin');
@@ -75,9 +76,19 @@ require_once '../includes/header.php';
                     <i class="ph ph-file-xls"></i> Excel
                 </button>
             </div>
+
+            <form action="<?= base_url('api/reset-demo.php') ?>" method="POST" class="border-l border-gray-200 pl-2" onsubmit="return confirm('Kembalikan seluruh data ke kondisi awal? Perubahan atau pengisian percobaan terakhir akan direset.');">
+                <?= csrf_field() ?>
+                <input type="hidden" name="redirect_to" value="admin/dashboard.php">
+                <button type="submit" class="inline-flex items-center justify-center bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-gray-800 rounded-lg transition-colors border border-gray-200 cursor-pointer" style="width: 38px; height: 38px;" title="Kembalikan data awal" aria-label="Kembalikan data awal">
+                    <i class="ph ph-arrows-clockwise text-base"></i>
+                </button>
+            </form>
         </div>
     </div>
 </div>
+
+<?= display_flash_message() ?>
 
 <!-- Summary Cards -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

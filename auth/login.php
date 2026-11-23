@@ -13,6 +13,36 @@ if (is_logged_in()) {
     }
 }
 
+// Daftar akun demo (termasuk alias lama untuk kompatibilitas QA/UAT)
+$demo_accounts = [
+    'admin'                => 'admin@machung.ac.id',
+
+    // Mahasiswa (1 Sudah Isi, 1 Draf Save & Recovery, 2 Belum Isi)
+    'mahasiswa'            => '322310001@student.machung.ac.id',
+    'mahasiswa_carlo'      => '322310001@student.machung.ac.id',
+    'mahasiswa_marcell'    => '322310015@student.machung.ac.id',
+    'mahasiswa_kevin'      => '322110005@student.machung.ac.id',
+    'mahasiswa_william'    => '322310020@student.machung.ac.id',
+
+    // Dosen (1 Sudah Isi, 2 Belum Isi)
+    'dosen'                => 'daniel.saputra@machung.ac.id',
+    'dosen_yosef'          => 'yosef.setiawan@machung.ac.id',
+    'dosen_daniel'         => 'daniel.saputra@machung.ac.id',
+    'dosen_ratna'          => 'ratna.kusumawati@machung.ac.id',
+
+    // Alumni (1 Sudah Isi, 2 Belum Isi)
+    'alumni'               => 'andi.alumni@gmail.com',
+    'alumni_reza'          => 'reza.alumni@yahoo.com',
+    'alumni_andi'          => 'andi.alumni@gmail.com',
+    'alumni_maya'          => 'maya.alumni@hotmail.com',
+
+    // Perusahaan (1 Sudah Isi, 2 Belum Isi)
+    'perusahaan'           => 'hrd@indomarco.co.id',
+    'perusahaan_bca'       => 'hr@bca.co.id',
+    'perusahaan_indomarco' => 'hrd@indomarco.co.id',
+    'perusahaan_gojek'     => 'talent@gojek.com',
+];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         set_flash_message('error', 'Token CSRF tidak valid. Silakan coba lagi.');
@@ -22,15 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 1-Click Demo Login Handler
     $demo_role = $_POST['demo_role'] ?? '';
     if (!empty($demo_role)) {
-        $demo_accounts = [
-            'admin' => 'admin@machung.ac.id',
-            'mahasiswa' => '322310001@student.machung.ac.id', // Carlo Imanuel
-            'mahasiswa_marcell' => '322310015@student.machung.ac.id', // Marcell Chandra
-            'dosen' => 'daniel.saputra@machung.ac.id', // Daniel Saputra
-            'alumni' => 'andi.alumni@gmail.com', // Andi Gunawan
-            'perusahaan' => 'hrd@tekmaju.com' // HRD PT Teknologi Maju
-        ];
-
         if (isset($demo_accounts[$demo_role])) {
             $email = $demo_accounts[$demo_role];
             $stmt = $pdo->prepare("SELECT * FROM pengguna WHERE email = ? AND aktif = TRUE");
@@ -52,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     redirect('responden/beranda.php');
                 }
             } else {
-                set_flash_message('error', 'Akun demo tidak ditemukan di database.');
+                set_flash_message('error', 'Akun demo tidak ditemukan di database. Coba tekan Reset Data Demo.');
                 redirect('auth/login.php');
             }
         }
@@ -77,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_role'] = $user['peran'];
         $_SESSION['user_name'] = $user['nama'];
         $_SESSION['wajib_ganti_sandi'] = $user['wajib_ganti_sandi'];
-        
+
         if ($user['wajib_ganti_sandi']) {
             redirect('auth/profil.php');
         } elseif ($user['peran'] === 'admin') {
@@ -90,6 +111,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('auth/login.php');
     }
 }
+
+// Ambil status pengisian periode aktif secara real-time untuk label dropdown demo
+$status_by_email = [];
+try {
+    $periode_aktif_id = $pdo->query("SELECT id FROM periode_evaluasi WHERE status = 'buka' ORDER BY id DESC LIMIT 1")->fetchColumn();
+    if ($periode_aktif_id) {
+        $stmt_st = $pdo->prepare("
+            SELECT u.email, pg.status
+            FROM pengguna u
+            LEFT JOIN pengisian pg ON pg.pengguna_id = u.id AND pg.periode_id = ?
+        ");
+        $stmt_st->execute([$periode_aktif_id]);
+        foreach ($stmt_st->fetchAll() as $row) {
+            $status_by_email[$row['email']] = $row['status'] ?: 'belum';
+        }
+    }
+} catch (Throwable $e) {
+    $status_by_email = [];
+}
+
+function demo_status_label(string $status): string {
+    if ($status === 'final') return 'Sudah Mengisi';
+    if ($status === 'draft') return 'Draf / Lanjut Isi';
+    return 'Belum Mengisi';
+}
+
+$demo_catalog = [
+    'admin' => [
+        ['key' => 'admin', 'name' => 'Administrator Prodi', 'sub' => 'admin@machung.ac.id', 'status' => ''],
+    ],
+    'mahasiswa' => [
+        ['key' => 'mahasiswa_carlo',   'name' => 'Carlo Imanuel Suryahasilaga',      'sub' => '322310001', 'status' => demo_status_label($status_by_email['322310001@student.machung.ac.id'] ?? 'belum')],
+        ['key' => 'mahasiswa_marcell', 'name' => 'Marcell Chandra Kenchana',         'sub' => '322310015', 'status' => demo_status_label($status_by_email['322310015@student.machung.ac.id'] ?? 'belum')],
+        ['key' => 'mahasiswa_kevin',   'name' => 'Kevin Christian Dwi Putra Astawa', 'sub' => '322110005', 'status' => demo_status_label($status_by_email['322110005@student.machung.ac.id'] ?? 'belum')],
+        ['key' => 'mahasiswa_william', 'name' => 'William Christopher Linardi',      'sub' => '322310020', 'status' => demo_status_label($status_by_email['322310020@student.machung.ac.id'] ?? 'belum')],
+    ],
+    'dosen' => [
+        ['key' => 'dosen_yosef',  'name' => 'Yosef Setiawan',   'sub' => 'Dosen SI', 'status' => demo_status_label($status_by_email['yosef.setiawan@machung.ac.id'] ?? 'belum')],
+        ['key' => 'dosen_daniel', 'name' => 'Daniel Saputra',   'sub' => 'Dosen SI', 'status' => demo_status_label($status_by_email['daniel.saputra@machung.ac.id'] ?? 'belum')],
+        ['key' => 'dosen_ratna',  'name' => 'Ratna Kusumawati', 'sub' => 'Dosen SI', 'status' => demo_status_label($status_by_email['ratna.kusumawati@machung.ac.id'] ?? 'belum')],
+    ],
+    'alumni' => [
+        ['key' => 'alumni_reza', 'name' => 'Reza Pratama', 'sub' => 'PT Tokopedia',            'status' => demo_status_label($status_by_email['reza.alumni@yahoo.com'] ?? 'belum')],
+        ['key' => 'alumni_andi', 'name' => 'Andi Gunawan', 'sub' => 'PT Indomarco Prismatama', 'status' => demo_status_label($status_by_email['andi.alumni@gmail.com'] ?? 'belum')],
+        ['key' => 'alumni_maya', 'name' => 'Maya Sari',    'sub' => 'Gojek',                   'status' => demo_status_label($status_by_email['maya.alumni@hotmail.com'] ?? 'belum')],
+    ],
+    'perusahaan' => [
+        ['key' => 'perusahaan_bca',       'name' => 'IT Recruitment Bank BCA',     'sub' => 'Bank BCA',                'status' => demo_status_label($status_by_email['hr@bca.co.id'] ?? 'belum')],
+        ['key' => 'perusahaan_indomarco', 'name' => 'HRD PT Indomarco Prismatama', 'sub' => 'PT Indomarco Prismatama', 'status' => demo_status_label($status_by_email['hrd@indomarco.co.id'] ?? 'belum')],
+        ['key' => 'perusahaan_gojek',     'name' => 'Talent Acquisition Gojek',    'sub' => 'Gojek',                   'status' => demo_status_label($status_by_email['talent@gojek.com'] ?? 'belum')],
+    ],
+];
 
 $page_title = 'Masuk';
 require_once '../includes/header.php';
@@ -109,7 +182,7 @@ require_once '../includes/header.php';
     <!-- Form Login Utama -->
     <form action="<?= base_url('auth/login.php') ?>" method="POST" class="space-y-4">
         <?= csrf_field() ?>
-        
+
         <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <div class="relative">
@@ -138,18 +211,66 @@ require_once '../includes/header.php';
         </button>
     </form>
 
-    <!-- Tombol Akun Demo Minimalis (Kecil, Rapi, Netral) -->
-    <div class="mt-6 pt-5 border-t border-gray-100 text-center">
-        <p class="text-xs text-gray-400 mb-2.5">Akses Cepat Demo:</p>
-        <form action="<?= base_url('auth/login.php') ?>" method="POST" class="flex flex-wrap justify-center gap-1.5">
+    <!-- Panel Akses Cepat Demo (Rapi dengan Dropdown Peran & Akun + Reset Demo) -->
+    <div class="mt-6 pt-5 border-t border-gray-100">
+        <div class="flex items-center justify-between mb-3">
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Akses Cepat Demo</p>
+            <form action="<?= base_url('api/reset-demo.php') ?>" method="POST" onsubmit="return confirm('Kembalikan data ke kondisi awal? Pengisian percobaan terakhir akan direset.');">
+                <?= csrf_field() ?>
+                <input type="hidden" name="redirect_to" value="auth/login.php">
+                <button type="submit" class="inline-flex items-center justify-center rounded-lg text-gray-500 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-colors cursor-pointer" style="width: 28px; height: 28px;" title="Kembalikan data awal" aria-label="Kembalikan data awal">
+                    <i class="ph ph-arrows-clockwise text-sm"></i>
+                </button>
+            </form>
+        </div>
+
+        <form action="<?= base_url('auth/login.php') ?>" method="POST">
             <?= csrf_field() ?>
-            <button type="submit" name="demo_role" value="admin" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Admin (admin@machung.ac.id)">Admin</button>
-            <button type="submit" name="demo_role" value="mahasiswa" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Mahasiswa (Carlo Imanuel)">Mahasiswa</button>
-            <button type="submit" name="demo_role" value="dosen" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Dosen (Daniel Saputra)">Dosen</button>
-            <button type="submit" name="demo_role" value="alumni" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Alumni (Andi Gunawan)">Alumni</button>
-            <button type="submit" name="demo_role" value="perusahaan" class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 transition-colors cursor-pointer" title="Mitra Industri (HRD PT Teknologi Maju)">Perusahaan</button>
+
+            <div class="mb-3">
+                <label for="demo-peran" class="block text-xs font-medium text-gray-600 mb-1">Peran</label>
+                <select id="demo-peran" onchange="updateDemoAccounts()" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs text-gray-800 bg-gray-50 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
+                    <option value="mahasiswa" selected>Mahasiswa</option>
+                    <option value="dosen">Dosen</option>
+                    <option value="alumni">Alumni</option>
+                    <option value="perusahaan">Perusahaan</option>
+                    <option value="admin">Admin Prodi</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="demo-akun" class="block text-xs font-medium text-gray-600 mb-1">Pilih Akun</label>
+                <select id="demo-akun" name="demo_role" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs text-gray-800 bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none">
+                </select>
+            </div>
+
+            <button type="submit" class="w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-lg text-xs font-semibold bg-gray-100 hover:bg-gray-200 text-gray-800 border border-gray-200 transition-colors cursor-pointer" style="margin-top: 4px;">
+                <i class="ph ph-sign-in text-sm"></i> Masuk sebagai Akun Demo
+            </button>
         </form>
     </div>
 </div>
+
+<script>
+const DEMO_CATALOG = <?= json_encode($demo_catalog, JSON_UNESCAPED_UNICODE) ?>;
+
+function updateDemoAccounts() {
+    const peran = document.getElementById('demo-peran').value;
+    const selectAkun = document.getElementById('demo-akun');
+    const list = DEMO_CATALOG[peran] || [];
+    selectAkun.innerHTML = '';
+
+    list.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.key;
+        opt.textContent = item.status
+            ? `${item.name} — [${item.status}]`
+            : `${item.name} (${item.sub})`;
+        selectAkun.appendChild(opt);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', updateDemoAccounts);
+</script>
 
 <?php require_once '../includes/footer.php'; ?>
