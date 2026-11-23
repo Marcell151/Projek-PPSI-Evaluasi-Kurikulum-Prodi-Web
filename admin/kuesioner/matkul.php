@@ -73,6 +73,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE mata_kuliah SET aktif = ? WHERE id = ?");
         $stmt->execute([$status, $id]);
         set_flash_message('success', 'Status mata kuliah diperbarui.');
+    } elseif ($action === 'hapus') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            try {
+                $pdo->beginTransaction();
+                $pdo->prepare("DELETE FROM mata_kuliah_bk WHERE mata_kuliah_id = ?")->execute([$id]);
+                $pdo->prepare("DELETE FROM mata_kuliah WHERE id = ?")->execute([$id]);
+                $pdo->commit();
+                set_flash_message('success', 'Mata kuliah berhasil dihapus.');
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                set_flash_message('error', 'Tidak dapat menghapus mata kuliah karena sudah memiliki data evaluasi. Gunakan tombol nonaktif.');
+            }
+        }
     }
     
     redirect('admin/kuesioner/matkul.php');
@@ -235,10 +249,18 @@ require_once '../../includes/header.php';
                                         </button>
                                     </form>
                                 </td>
-                                <td class="px-4 py-3 text-center">
+                                <td class="px-4 py-3 text-center whitespace-nowrap">
                                     <button type="button" onclick="editData(<?= htmlspecialchars(json_encode($mk)) ?>)" class="text-blue-500 hover:text-blue-700 bg-blue-50 p-1.5 rounded transition-colors inline-block" title="Edit">
                                         <i class="ph ph-pencil-simple text-base"></i>
                                     </button>
+                                    <form action="" method="POST" class="inline-block ml-1" onsubmit="return confirm('Hapus mata kuliah ini secara permanen?')">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="action" value="hapus">
+                                        <input type="hidden" name="id" value="<?= $mk['id'] ?>">
+                                        <button type="submit" class="text-red-500 hover:text-red-700 bg-red-50 p-1.5 rounded transition-colors inline-block" title="Hapus">
+                                            <i class="ph ph-trash text-base"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

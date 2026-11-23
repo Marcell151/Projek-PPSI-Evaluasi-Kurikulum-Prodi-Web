@@ -60,6 +60,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE pertanyaan SET aktif = ? WHERE id = ?");
         $stmt->execute([$status, $id]);
         set_flash_message('success', 'Status pertanyaan diperbarui.');
+    } elseif ($action === 'hapus') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            try {
+                $pdo->beginTransaction();
+                $pdo->prepare("DELETE FROM opsi_pertanyaan WHERE pertanyaan_id = ?")->execute([$id]);
+                $pdo->prepare("DELETE FROM pertanyaan WHERE id = ?")->execute([$id]);
+                $pdo->commit();
+                set_flash_message('success', 'Pertanyaan berhasil dihapus.');
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                set_flash_message('error', 'Tidak dapat menghapus pertanyaan karena sudah memiliki jawaban responden. Gunakan sakelar nonaktif.');
+            }
+        }
     }
     
     redirect('admin/kuesioner/pertanyaan.php');
@@ -193,6 +207,16 @@ function renderRowPertanyaan($p) {
             <button type="button" onclick="bukaModalEdit(<?= $p['id'] ?>, `<?= htmlspecialchars($p['teks'], ENT_QUOTES) ?>`, `<?= $p['kategori_kompetensi_id'] ?>`, <?= $p['wajib'] ?>)" class="p-2 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors" title="Edit Pertanyaan">
                 <i class="ph ph-pencil-simple text-lg"></i>
             </button>
+
+            <!-- Tombol Hapus -->
+            <form action="" method="POST" class="m-0 p-0 flex items-center" onsubmit="return confirm('Hapus pertanyaan ini secara permanen?')">
+                <?= csrf_field() ?>
+                <input type="hidden" name="action" value="hapus">
+                <input type="hidden" name="id" value="<?= $p['id'] ?>">
+                <button type="submit" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Hapus Pertanyaan">
+                    <i class="ph ph-trash text-lg"></i>
+                </button>
+            </form>
             
             <!-- Toggle Sakelar -->
             <form action="" method="POST" class="m-0 p-0 flex items-center">

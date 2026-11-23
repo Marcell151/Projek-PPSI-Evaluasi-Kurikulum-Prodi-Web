@@ -39,6 +39,7 @@
                                         <a href="<?= base_url('admin/master/dosen.php') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-500">Dosen</a>
                                         <a href="<?= base_url('admin/master/alumni.php') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-500">Alumni</a>
                                         <a href="<?= base_url('admin/master/perusahaan.php') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-500">Perusahaan</a>
+                                        <a href="<?= base_url('admin/master/log_impor.php') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-500 border-t border-gray-100 mt-1 pt-2">Log Impor</a>
                                     </div>
                                 </div>
                             </div>
@@ -107,6 +108,7 @@
                         <a href="<?= base_url('admin/master/dosen.php') ?>" class="block pl-6 pr-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-brand-500 hover:bg-gray-50">Dosen</a>
                         <a href="<?= base_url('admin/master/alumni.php') ?>" class="block pl-6 pr-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-brand-500 hover:bg-gray-50">Alumni</a>
                         <a href="<?= base_url('admin/master/perusahaan.php') ?>" class="block pl-6 pr-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-brand-500 hover:bg-gray-50">Perusahaan</a>
+                        <a href="<?= base_url('admin/master/log_impor.php') ?>" class="block pl-6 pr-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-brand-500 hover:bg-gray-50">Log Impor</a>
                         <p class="px-3 py-2 mt-2 text-xs font-semibold text-gray-500 uppercase">Kuesioner</p>
                         <a href="<?= base_url('admin/kuesioner/matkul.php') ?>" class="block pl-6 pr-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-brand-500 hover:bg-gray-50">Bank Mata Kuliah</a>
                         <a href="<?= base_url('admin/kuesioner/bahan_kajian.php') ?>" class="block pl-6 pr-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-brand-500 hover:bg-gray-50">Bahan Kajian</a>

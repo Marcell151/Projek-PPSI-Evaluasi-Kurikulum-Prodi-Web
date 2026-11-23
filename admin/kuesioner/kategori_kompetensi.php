@@ -43,6 +43,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE kategori_kompetensi SET aktif = ? WHERE id = ?");
         $stmt->execute([$status, $id]);
         set_flash_message('success', 'Status diperbarui.');
+    } elseif ($action === 'hapus') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            try {
+                $stmt = $pdo->prepare("DELETE FROM kategori_kompetensi WHERE id = ?");
+                $stmt->execute([$id]);
+                set_flash_message('success', 'Kategori Kompetensi berhasil dihapus.');
+            } catch (Exception $e) {
+                set_flash_message('error', 'Tidak dapat menghapus kategori ini karena masih digunakan oleh pertanyaan atau opsi.');
+            }
+        }
     }
     
     redirect('admin/kuesioner/kategori_kompetensi.php');
@@ -117,10 +128,18 @@ require_once '../../includes/header.php';
                                         </button>
                                     </form>
                                 </td>
-                                <td class="px-6 py-3 text-center">
+                                <td class="px-6 py-3 text-center whitespace-nowrap">
                                     <button type="button" onclick="editData(<?= htmlspecialchars(json_encode($kat)) ?>)" class="text-blue-500 hover:text-blue-700 bg-blue-50 p-2 rounded-lg transition-colors inline-block" title="Edit">
                                         <i class="ph ph-pencil-simple"></i>
                                     </button>
+                                    <form action="" method="POST" class="inline-block ml-1" onsubmit="return confirm('Hapus kategori kompetensi ini?')">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="action" value="hapus">
+                                        <input type="hidden" name="id" value="<?= $kat['id'] ?>">
+                                        <button type="submit" class="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg transition-colors inline-block" title="Hapus">
+                                            <i class="ph ph-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

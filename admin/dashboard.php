@@ -11,6 +11,9 @@ require_role('admin');
 $stmt = $pdo->query("SELECT id, tahun_akademik, status FROM periode_evaluasi ORDER BY id DESC");
 $list_periode = $stmt->fetchAll();
 
+// Ambil daftar tahun lulus alumni untuk filter
+$list_tahun_lulus = $pdo->query("SELECT DISTINCT tahun_lulus FROM profil_pengguna WHERE tahun_lulus IS NOT NULL ORDER BY tahun_lulus DESC")->fetchAll(PDO::FETCH_COLUMN);
+
 // Cari ID periode buka untuk default filter
 $periode_aktif_id = null;
 foreach ($list_periode as $p) {
@@ -30,43 +33,85 @@ require_once '../includes/header.php';
 <!-- Chart.js -->
 <script src="<?= base_url('assets/vendor/chart.js') ?>" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/chart.js';"></script>
 
+<!-- Header & Panel Multi-Filter -->
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-gray-100">
         <div class="flex items-center gap-4">
             <div class="w-16 h-16 bg-brand-50 text-brand-500 rounded-full flex items-center justify-center text-3xl">
                 <i class="ph ph-chart-pie-slice"></i>
             </div>
             <div>
                 <h2 class="text-2xl font-bold text-gray-900">Dashboard Evaluasi</h2>
-                <p class="text-gray-500">Ringkasan hasil evaluasi kurikulum.</p>
+                <p class="text-gray-500">Ringkasan hasil evaluasi kurikulum &amp; Tracer Study Prodi Sistem Informasi.</p>
             </div>
         </div>
-        
-        <div class="flex flex-col sm:flex-row items-center gap-3">
-            <div class="flex items-center">
-                <label class="text-sm font-medium text-gray-700 mr-2">Filter Periode:</label>
-                <select id="filter-periode" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none bg-gray-50">
-                    <?php foreach ($list_periode as $p): ?>
-                        <option value="<?= $p['id'] ?>" <?= $p['id'] == $periode_aktif_id ? 'selected' : '' ?>>
-                            <?= escape($p['tahun_akademik']) ?> <?= $p['status'] === 'buka' ? '(Aktif)' : '' ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="flex items-center gap-2 border-l border-gray-200 pl-3">
-                <button type="button" onclick="unduhLaporan('pdf')" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors border border-red-200">
-                    <i class="ph ph-file-pdf"></i> PDF
-                </button>
-                <button type="button" onclick="unduhLaporan('excel')" class="bg-green-50 hover:bg-green-100 text-green-600 px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors border border-green-200">
-                    <i class="ph ph-file-xls"></i> Excel
-                </button>
-            </div>
+
+        <div class="flex items-center gap-2">
+            <button type="button" onclick="resetDashboardFilters()" class="bg-gray-50 hover:bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors border border-gray-200">
+                <i class="ph ph-arrow-counter-clockwise"></i> Reset Filter
+            </button>
+            <button type="button" onclick="unduhLaporan('pdf')" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors border border-red-200">
+                <i class="ph ph-file-pdf"></i> PDF
+            </button>
+            <button type="button" onclick="unduhLaporan('excel')" class="bg-green-50 hover:bg-green-100 text-green-600 px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 transition-colors border border-green-200">
+                <i class="ph ph-file-xls"></i> Excel
+            </button>
+        </div>
+    </div>
+
+    <!-- Beragam Filter Interaktif -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-5">
+        <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Periode Evaluasi</label>
+            <select id="filter-periode" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none bg-gray-50">
+                <?php foreach ($list_periode as $p): ?>
+                    <option value="<?= $p['id'] ?>" <?= $p['id'] == $periode_aktif_id ? 'selected' : '' ?>>
+                        <?= escape($p['tahun_akademik']) ?> <?= $p['status'] === 'buka' ? '(Aktif)' : '' ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Peran Responden</label>
+            <select id="filter-peran" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none bg-gray-50">
+                <option value="">Semua Peran</option>
+                <option value="mahasiswa">Mahasiswa</option>
+                <option value="dosen">Dosen</option>
+                <option value="alumni">Alumni</option>
+                <option value="perusahaan">Perusahaan</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Kelompok Matkul</label>
+            <select id="filter-kelompok" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none bg-gray-50">
+                <option value="">Semua Kelompok</option>
+                <option value="prodi">Prodi</option>
+                <option value="fakultas">Fakultas</option>
+                <option value="universitas">Universitas</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Jenis Matkul</label>
+            <select id="filter-jenis" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none bg-gray-50">
+                <option value="">Semua Jenis</option>
+                <option value="wajib">Wajib</option>
+                <option value="pilihan">Pilihan</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Tahun Lulus Alumni</label>
+            <select id="filter-tahun" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none bg-gray-50">
+                <option value="">Semua Tahun Lulus</option>
+                <?php foreach ($list_tahun_lulus as $th): ?>
+                    <option value="<?= escape($th) ?>">Lulusan <?= escape($th) ?></option>
+                <?php endforeach; ?>
+            </select>
         </div>
     </div>
 </div>
 
 <!-- Summary Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center gap-4">
         <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center text-2xl">
             <i class="ph ph-users"></i>
@@ -97,14 +142,48 @@ require_once '../includes/header.php';
     </div>
 </div>
 
+<!-- Indikator Tracer Study Alumni -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center justify-between">
+        <div>
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Waktu Tunggu &lt; 6 Bulan</p>
+            <p class="text-2xl font-bold text-emerald-600 mt-1" id="stat-waktu-tunggu">0%</p>
+            <p class="text-xs text-gray-400 mt-0.5">Alumni bekerja (Tracer Study)</p>
+        </div>
+        <div class="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center text-2xl">
+            <i class="ph ph-clock-countdown"></i>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center justify-between">
+        <div>
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Kesesuaian Bidang SI/TI</p>
+            <p class="text-2xl font-bold text-blue-600 mt-1" id="stat-kesesuaian">0%</p>
+            <p class="text-xs text-gray-400 mt-0.5">Selaras latar belakang prodi</p>
+        </div>
+        <div class="w-11 h-11 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center text-2xl">
+            <i class="ph ph-seal-check"></i>
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center justify-between">
+        <div>
+            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Gaji Di Atas UMP</p>
+            <p class="text-2xl font-bold text-amber-600 mt-1" id="stat-gaji-ump">0%</p>
+            <p class="text-xs text-gray-400 mt-0.5">Alumni bekerja &amp; wiraswasta</p>
+        </div>
+        <div class="w-11 h-11 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center text-2xl">
+            <i class="ph ph-currency-circle-dollar"></i>
+        </div>
+    </div>
+</div>
+
 <!-- Grafik dan Tabel (Warna Prodi) -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-    
+
     <!-- Radar Chart -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <h3 class="font-bold text-gray-900 mb-1 flex items-center gap-2"><i class="ph ph-target text-brand-500 text-xl"></i> Tren Warna Prodi</h3>
-        <p class="text-sm text-gray-500 mb-6">Penilaian relevansi kompetensi dari sisi Alumni & Perusahaan.</p>
-        
+        <p class="text-sm text-gray-500 mb-6">Penilaian relevansi kompetensi dari sisi Alumni &amp; Perusahaan.</p>
+
         <div class="relative h-80 w-full flex justify-center items-center">
             <canvas id="radarChart"></canvas>
             <div id="radar-empty" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 hidden">
@@ -117,14 +196,14 @@ require_once '../includes/header.php';
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <h3 class="font-bold text-gray-900 mb-1 flex items-center gap-2"><i class="ph ph-table text-brand-500 text-xl"></i> Tabel Perbandingan Kompetensi</h3>
         <p class="text-sm text-gray-500 mb-6">Persentase pilihan responden.</p>
-        
+
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-gray-50 border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wider">
                         <th class="px-4 py-3 font-medium">Kategori</th>
-                        <th class="px-4 py-3 font-medium text-center">Alumni<br><span class="text-gray-400">(Jml & %)</span></th>
-                        <th class="px-4 py-3 font-medium text-center">Perusahaan<br><span class="text-gray-400">(Jml & %)</span></th>
+                        <th class="px-4 py-3 font-medium text-center">Alumni<br><span class="text-gray-400">(Jml &amp; %)</span></th>
+                        <th class="px-4 py-3 font-medium text-center">Perusahaan<br><span class="text-gray-400">(Jml &amp; %)</span></th>
                     </tr>
                 </thead>
                 <tbody id="tabel-kompetensi" class="divide-y divide-gray-100 text-sm">
@@ -135,13 +214,13 @@ require_once '../includes/header.php';
     </div>
 </div>
 
-<!-- Tambahan Metrik Baru: Top/Bottom Matkul & Sebaran Alumni -->
+<!-- Top/Bottom Matkul & Sebaran Alumni -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-    
+
     <!-- Top 5 & Bottom 5 Mata Kuliah -->
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:col-span-2">
         <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2"><i class="ph ph-ranking text-brand-500 text-xl"></i> Peringkat Mata Kuliah</h3>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Top 5 -->
             <div>
@@ -164,7 +243,7 @@ require_once '../includes/header.php';
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <h3 class="font-bold text-gray-900 mb-1 flex items-center gap-2"><i class="ph ph-briefcase text-brand-500 text-xl"></i> Sebaran Alumni</h3>
         <p class="text-xs text-gray-500 mb-4">Berdasarkan profil posisi dan instansi.</p>
-        
+
         <div class="grid grid-cols-2 gap-4">
             <div class="relative h-48 w-full flex flex-col justify-center items-center">
                 <span class="text-xs font-semibold text-gray-600 mb-2">Posisi / Profesi</span>
@@ -184,15 +263,37 @@ require_once '../includes/header.php';
     </div>
 </div>
 
-<!-- Tabel Rekapitulasi Ulasan -->
-<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 overflow-hidden">
-    <div class="flex justify-between items-center mb-4">
-        <div>
-            <h3 class="font-bold text-gray-900 flex items-center gap-2"><i class="ph ph-chat-text text-brand-500 text-xl"></i> Rekapitulasi Ulasan & Masukan</h3>
-            <p class="text-xs text-gray-500">Tanggapan deskriptif dan alasan skor rendah dari responden.</p>
+<!-- Grafik Tracer Study: Status Pekerjaan & Level Perusahaan -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 class="font-bold text-gray-900 mb-1 flex items-center gap-2"><i class="ph ph-chart-bar text-brand-500 text-xl"></i> Status Pekerjaan Alumni</h3>
+        <p class="text-xs text-gray-500 mb-4">Distribusi aktivitas lulusan berdasarkan Tracer Study.</p>
+        <div class="relative h-56 w-full">
+            <canvas id="barStatusTracer"></canvas>
         </div>
     </div>
-    
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 class="font-bold text-gray-900 mb-1 flex items-center gap-2"><i class="ph ph-buildings text-brand-500 text-xl"></i> Level Perusahaan Alumni</h3>
+        <p class="text-xs text-gray-500 mb-4">Skala perusahaan tempat alumni bekerja / berwirausaha.</p>
+        <div class="relative h-56 w-full">
+            <canvas id="barLevelTracer"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Tabel Rekapitulasi Ulasan -->
+<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 overflow-hidden">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
+        <div>
+            <h3 class="font-bold text-gray-900 flex items-center gap-2"><i class="ph ph-chat-text text-brand-500 text-xl"></i> Rekapitulasi Ulasan &amp; Masukan</h3>
+            <p class="text-xs text-gray-500">Tanggapan deskriptif dan alasan skor rendah dari responden.</p>
+        </div>
+        <div class="relative w-full sm:w-64">
+            <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-gray-400"></i>
+            <input type="text" id="filter-search-ulasan" placeholder="Cari topik atau kata kunci..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none bg-gray-50">
+        </div>
+    </div>
+
     <div class="overflow-x-auto">
         <table class="min-w-full text-sm text-left">
             <thead class="text-xs text-gray-500 bg-gray-50 border-b border-gray-100">
@@ -208,7 +309,7 @@ require_once '../includes/header.php';
             </tbody>
         </table>
     </div>
-    
+
     <!-- Pagination Controls -->
     <div class="mt-4 flex items-center justify-between border-t border-gray-200 pt-4" id="pagination-controls" style="display:none;">
         <div class="text-sm text-gray-500">
@@ -227,32 +328,50 @@ require_once '../includes/header.php';
 
 <script>
 let radarChartInstance = null;
+let barStatusInstance = null;
+let barLevelInstance = null;
+let ulasanRawData = [];
 let ulasanData = [];
 let currentUlasanPage = 1;
 const itemsPerPage = 5;
+
+function applyUlasanSearch() {
+    const q = (document.getElementById('filter-search-ulasan').value || '').toLowerCase().trim();
+    if (!q) {
+        ulasanData = ulasanRawData.slice();
+    } else {
+        ulasanData = ulasanRawData.filter(u =>
+            (u.topik || '').toLowerCase().includes(q) ||
+            (u.isi || '').toLowerCase().includes(q) ||
+            (u.peran || '').toLowerCase().includes(q)
+        );
+    }
+    currentUlasanPage = 1;
+    renderUlasanTable();
+}
 
 function renderUlasanTable() {
     const tUlasan = document.getElementById('tabel-ulasan');
     const pControls = document.getElementById('pagination-controls');
     tUlasan.innerHTML = '';
-    
+
     if (!ulasanData || ulasanData.length === 0) {
-        tUlasan.innerHTML = `<tr><td colspan="4" class="px-4 py-8 text-center text-gray-500">Belum ada ulasan atau masukan teks.</td></tr>`;
+        tUlasan.innerHTML = `<tr><td colspan="4" class="px-4 py-8 text-center text-gray-500">Belum ada ulasan atau masukan teks sesuai filter.</td></tr>`;
         pControls.style.display = 'none';
         return;
     }
-    
+
     pControls.style.display = 'flex';
-    
+
     const totalPages = Math.ceil(ulasanData.length / itemsPerPage);
     if (currentUlasanPage > totalPages) currentUlasanPage = totalPages;
     if (currentUlasanPage < 1) currentUlasanPage = 1;
-    
+
     const startIdx = (currentUlasanPage - 1) * itemsPerPage;
     const endIdx = Math.min(startIdx + itemsPerPage, ulasanData.length);
-    
+
     const pageData = ulasanData.slice(startIdx, endIdx);
-    
+
     pageData.forEach(u => {
         const tr = document.createElement('tr');
         tr.className = 'hover:bg-gray-50';
@@ -264,11 +383,11 @@ function renderUlasanTable() {
         `;
         tUlasan.appendChild(tr);
     });
-    
+
     document.getElementById('page-info-start').textContent = startIdx + 1;
     document.getElementById('page-info-end').textContent = endIdx;
     document.getElementById('page-info-total').textContent = ulasanData.length;
-    
+
     document.getElementById('btn-prev-page').disabled = currentUlasanPage === 1;
     document.getElementById('btn-next-page').disabled = currentUlasanPage === totalPages;
 }
@@ -278,33 +397,60 @@ function changeUlasanPage(direction) {
     renderUlasanTable();
 }
 
-function loadDashboardData(periodeId) {
-    fetch(BASE_URL + '/api/data-dashboard.php?periode_id=' + periodeId)
+function getDashboardQueryString() {
+    const params = new URLSearchParams({
+        periode_id:  document.getElementById('filter-periode').value,
+        peran:       document.getElementById('filter-peran').value,
+        kelompok:    document.getElementById('filter-kelompok').value,
+        jenis:       document.getElementById('filter-jenis').value,
+        tahun_lulus: document.getElementById('filter-tahun').value
+    });
+    return params.toString();
+}
+
+function resetDashboardFilters() {
+    document.getElementById('filter-peran').value = '';
+    document.getElementById('filter-kelompok').value = '';
+    document.getElementById('filter-jenis').value = '';
+    document.getElementById('filter-tahun').value = '';
+    document.getElementById('filter-search-ulasan').value = '';
+    loadDashboardData();
+}
+
+function loadDashboardData() {
+    fetch(BASE_URL + '/api/data-dashboard.php?' + getDashboardQueryString())
         .then(res => res.json())
         .then(data => {
             // Update Summary
             document.getElementById('stat-responden').textContent = data.summary.total_responden;
             document.getElementById('stat-selesai').textContent = data.summary.pengisian_selesai;
             document.getElementById('stat-matkul').textContent = data.summary.matkul_aktif;
-            
+
             const b = data.summary.role_breakdown;
-            document.getElementById('stat-role-breakdown').innerHTML = 
-                `MHS: <span class="font-semibold text-gray-700">${b.mahasiswa}</span> &bull; 
-                 ALM: <span class="font-semibold text-gray-700">${b.alumni}</span> &bull; 
-                 PRS: <span class="font-semibold text-gray-700">${b.perusahaan}</span> &bull; 
+            document.getElementById('stat-role-breakdown').innerHTML =
+                `MHS: <span class="font-semibold text-gray-700">${b.mahasiswa}</span> &bull;
+                 ALM: <span class="font-semibold text-gray-700">${b.alumni}</span> &bull;
+                 PRS: <span class="font-semibold text-gray-700">${b.perusahaan}</span> &bull;
                  DSN: <span class="font-semibold text-gray-700">${b.dosen}</span>`;
+
+            // Indikator Tracer Study
+            if (data.tracer) {
+                document.getElementById('stat-waktu-tunggu').textContent = data.tracer.waktu_tunggu_cepat_pct + '%';
+                document.getElementById('stat-kesesuaian').textContent   = data.tracer.sesuai_bidang_pct + '%';
+                document.getElementById('stat-gaji-ump').textContent     = data.tracer.gaji_atas_ump_pct + '%';
+            }
 
             // Update Radar Chart
             const ctx = document.getElementById('radarChart').getContext('2d');
             const emptyState = document.getElementById('radar-empty');
-            
+
             if (data.radar.labels.length === 0) {
                 emptyState.classList.remove('hidden');
                 if (radarChartInstance) radarChartInstance.destroy();
             } else {
                 emptyState.classList.add('hidden');
                 if (radarChartInstance) radarChartInstance.destroy();
-                
+
                 radarChartInstance = new Chart(ctx, {
                     type: 'radar',
                     data: data.radar,
@@ -324,7 +470,7 @@ function loadDashboardData(periodeId) {
                 });
             }
 
-            // Update Tabel
+            // Update Tabel Kompetensi
             const tbody = document.getElementById('tabel-kompetensi');
             tbody.innerHTML = '';
             if (data.tabel.length === 0) {
@@ -352,14 +498,14 @@ function loadDashboardData(periodeId) {
             const topList = document.getElementById('list-top-matkul');
             const bottomList = document.getElementById('list-bottom-matkul');
             topList.innerHTML = ''; bottomList.innerHTML = '';
-            
+
             if (data.matkul_ranking.top.length === 0) {
-                topList.innerHTML = '<li class="text-sm text-gray-500">Belum ada penilaian.</li>';
-                bottomList.innerHTML = '<li class="text-sm text-gray-500">Belum ada penilaian.</li>';
+                topList.innerHTML = '<li class="text-sm text-gray-500">Belum ada penilaian untuk filter ini.</li>';
+                bottomList.innerHTML = '<li class="text-sm text-gray-500">Belum ada penilaian untuk filter ini.</li>';
             } else {
                 data.matkul_ranking.top.forEach((m, idx) => {
-                    const limited = m.jumlah_penilai < 3 ? '<span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded ml-2">Data terbatas</span>' : '';
-                    const badge = `<span class="text-[10px] bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded ml-2 uppercase">${m.kelompok}</span>`;
+                    const limited = m.jumlah_penilai < 3 ? '<span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded ml-1">Data terbatas</span>' : '';
+                    const badge = `<span class="text-[10px] bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded ml-1 uppercase">${m.kelompok}</span>`;
                     topList.innerHTML += `<li class="flex justify-between items-center bg-gray-50 px-3 py-2 rounded-lg border border-gray-100">
                         <span class="text-sm font-medium text-gray-800"><span class="text-gray-400 mr-2">#${idx+1}</span> ${m.nama} ${badge} ${limited}</span>
                         <div class="text-right">
@@ -369,8 +515,8 @@ function loadDashboardData(periodeId) {
                     </li>`;
                 });
                 data.matkul_ranking.bottom.forEach((m, idx) => {
-                    const limited = m.jumlah_penilai < 3 ? '<span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded ml-2">Data terbatas</span>' : '';
-                    const badge = `<span class="text-[10px] bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded ml-2 uppercase">${m.kelompok}</span>`;
+                    const limited = m.jumlah_penilai < 3 ? '<span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded ml-1">Data terbatas</span>' : '';
+                    const badge = `<span class="text-[10px] bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded ml-1 uppercase">${m.kelompok}</span>`;
                     bottomList.innerHTML += `<li class="flex justify-between items-center bg-gray-50 px-3 py-2 rounded-lg border border-gray-100">
                         <span class="text-sm font-medium text-gray-800"><span class="text-gray-400 mr-2">#${idx+1}</span> ${m.nama} ${badge} ${limited}</span>
                         <div class="text-right">
@@ -384,15 +530,15 @@ function loadDashboardData(periodeId) {
             // Update Pie Chart Profesi
             const ctxProfesi = document.getElementById('pieChartProfesi').getContext('2d');
             const emptyProfesi = document.getElementById('pie-profesi-empty');
-            
+
             let profLabels = data.alumni_profesi.labels;
             let profData = data.alumni_profesi.data;
-            let profColors = ['#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#14b8a6'];
-            
+            let profColors = ['#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#14b8a6', '#0ea5e9', '#ec4899', '#84cc16', '#f97316', '#6366f1'];
+
             if (profLabels.length === 0) {
                 profLabels = ['Belum ada data'];
                 profData = [1];
-                profColors = ['#e5e7eb']; // abu-abu
+                profColors = ['#e5e7eb'];
             }
             emptyProfesi.classList.add('hidden');
             if (window.pieChartProfesiInstance) window.pieChartProfesiInstance.destroy();
@@ -401,19 +547,19 @@ function loadDashboardData(periodeId) {
                 data: { labels: profLabels, datasets: [{ data: profData, backgroundColor: profColors }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '60%' }
             });
-            
+
             // Update Pie Chart Instansi
             const ctxInstansi = document.getElementById('pieChartInstansi').getContext('2d');
             const emptyInstansi = document.getElementById('pie-instansi-empty');
-            
+
             let instLabels = data.alumni_instansi.labels;
             let instData = data.alumni_instansi.data;
-            let instColors = ['#0CA14E', '#f43f5e', '#6366f1', '#ec4899', '#84cc16'];
-            
+            let instColors = ['#0CA14E', '#f43f5e', '#6366f1', '#ec4899', '#84cc16', '#06b6d4', '#f59e0b', '#8b5cf6', '#10b981', '#ef4444', '#3b82f6', '#a855f7'];
+
             if (instLabels.length === 0) {
                 instLabels = ['Belum ada data'];
                 instData = [1];
-                instColors = ['#e5e7eb']; // abu-abu
+                instColors = ['#e5e7eb'];
             }
             emptyInstansi.classList.add('hidden');
             if (window.pieChartInstansiInstance) window.pieChartInstansiInstance.destroy();
@@ -422,21 +568,66 @@ function loadDashboardData(periodeId) {
                 data: { labels: instLabels, datasets: [{ data: instData, backgroundColor: instColors }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, cutout: '60%' }
             });
-            
+
+            // Bar Chart Tracer Study: Status Pekerjaan
+            const ctxStatus = document.getElementById('barStatusTracer').getContext('2d');
+            if (barStatusInstance) barStatusInstance.destroy();
+            barStatusInstance = new Chart(ctxStatus, {
+                type: 'bar',
+                data: {
+                    labels: (data.tracer && data.tracer.status.labels.length) ? data.tracer.status.labels : ['Belum ada data'],
+                    datasets: [{
+                        label: 'Jumlah Alumni',
+                        data: (data.tracer && data.tracer.status.data.length) ? data.tracer.status.data : [0],
+                        backgroundColor: ['#0CA14E', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#64748b'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+
+            // Bar Chart Tracer Study: Level Perusahaan
+            const ctxLevel = document.getElementById('barLevelTracer').getContext('2d');
+            if (barLevelInstance) barLevelInstance.destroy();
+            barLevelInstance = new Chart(ctxLevel, {
+                type: 'bar',
+                data: {
+                    labels: (data.tracer && data.tracer.level.labels.length) ? data.tracer.level.labels : ['Belum ada data'],
+                    datasets: [{
+                        label: 'Jumlah Alumni',
+                        data: (data.tracer && data.tracer.level.data.length) ? data.tracer.level.data : [0],
+                        backgroundColor: ['#ef4444', '#f59e0b', '#0CA14E'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+
             // Update Tabel Ulasan
-            ulasanData = data.ulasan || [];
-            currentUlasanPage = 1;
-            renderUlasanTable();
+            ulasanRawData = data.ulasan || [];
+            applyUlasanSearch();
         });
 }
 
-// Event Listener Filter
-document.getElementById('filter-periode').addEventListener('change', function() {
-    loadDashboardData(this.value);
+// Event Listeners untuk Semua Filter
+['filter-periode', 'filter-peran', 'filter-kelompok', 'filter-jenis', 'filter-tahun'].forEach(id => {
+    document.getElementById(id).addEventListener('change', loadDashboardData);
 });
+document.getElementById('filter-search-ulasan').addEventListener('input', applyUlasanSearch);
 
 // Load awal
-loadDashboardData(document.getElementById('filter-periode').value);
+loadDashboardData();
 
 function unduhLaporan(jenis) {
     const periodeId = document.getElementById('filter-periode').value;

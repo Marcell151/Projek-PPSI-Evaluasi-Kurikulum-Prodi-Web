@@ -3,11 +3,26 @@ require_once '../config/app.php';
 require_once '../config/database.php';
 require_once '../includes/helpers.php';
 require_once '../includes/auth.php';
+require_once '../includes/csrf.php';
 
 require_role('admin');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $tiket_id = $_POST['tiket_id'] ?? '';
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        set_flash_message('error', 'Token CSRF tidak valid.');
+        redirect('admin/tiket.php');
+    }
+
+    $action = $_POST['action'] ?? 'update';
+    $tiket_id = (int)($_POST['tiket_id'] ?? 0);
+
+    if ($action === 'hapus' && $tiket_id) {
+        $stmt = $pdo->prepare("DELETE FROM tiket WHERE id = ?");
+        $stmt->execute([$tiket_id]);
+        set_flash_message('success', 'Tiket berhasil dihapus.');
+        redirect('admin/tiket.php');
+    }
+
     $status = $_POST['status'] ?? '';
     $balasan = $_POST['balasan_admin'] ?? '';
     
@@ -86,10 +101,18 @@ require_once '../includes/header.php';
                                     <p class="text-xs text-blue-800 bg-blue-50 p-2 rounded line-clamp-2" title="<?= escape($t['balasan_admin']) ?>"><?= escape($t['balasan_admin']) ?></p>
                                 <?php endif; ?>
                             </td>
-                            <td class="px-6 py-4 text-right">
+                            <td class="px-6 py-4 text-right whitespace-nowrap">
                                 <button onclick="openModal(<?= htmlspecialchars(json_encode($t)) ?>)" class="text-brand-600 hover:text-brand-800 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition-colors font-medium text-xs inline-flex items-center gap-1">
                                     <i class="ph ph-pencil-simple"></i> Kelola
                                 </button>
+                                <form action="" method="POST" class="inline-block ml-1" onsubmit="return confirm('Hapus tiket ini?')">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="action" value="hapus">
+                                    <input type="hidden" name="tiket_id" value="<?= $t['id'] ?>">
+                                    <button type="submit" class="text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors font-medium text-xs inline-flex items-center gap-1">
+                                        <i class="ph ph-trash"></i> Hapus
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -109,6 +132,8 @@ require_once '../includes/header.php';
             </button>
         </div>
         <form action="" method="POST" class="p-6">
+            <?= csrf_field() ?>
+            <input type="hidden" name="action" value="update">
             <input type="hidden" name="tiket_id" id="form-tiket-id">
             
             <div class="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-200">

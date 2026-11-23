@@ -63,6 +63,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 set_flash_message('error', 'Gagal memperbarui: Email mungkin bentrok.');
             }
         }
+    } elseif ($action === 'hapus') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            try {
+                $pdo->beginTransaction();
+                $pdo->prepare("DELETE FROM profil_pengguna WHERE pengguna_id = ?")->execute([$id]);
+                $pdo->prepare("DELETE FROM pengguna WHERE id = ? AND peran = 'perusahaan'")->execute([$id]);
+                $pdo->commit();
+                set_flash_message('success', 'Data Perusahaan berhasil dihapus.');
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                set_flash_message('error', 'Tidak dapat menghapus perusahaan ini karena sudah memiliki riwayat evaluasi atau tiket.');
+            }
+        }
     } elseif ($action === 'impor_excel') {
         $raw_default_password = $_POST['default_password'] ?? '123456';
         $default_password = password_hash($raw_default_password, PASSWORD_DEFAULT);
@@ -148,8 +162,14 @@ require_once '../../includes/header.php';
                             <td class="px-6 py-4 text-gray-900 font-medium"><?= escape($pt['instansi'] ?? '-') ?></td>
                             <td class="px-6 py-4 text-gray-700"><?= escape($pt['nama']) ?></td>
                             <td class="px-6 py-4 text-gray-500"><?= escape($pt['email']) ?></td>
-                            <td class="px-6 py-4 text-right">
+                            <td class="px-6 py-4 text-right whitespace-nowrap">
                                 <button type="button" onclick="bukaModalEdit(<?= $pt['id'] ?>, '<?= htmlspecialchars(escape($pt['nama'])) ?>', '<?= htmlspecialchars(escape($pt['email'])) ?>', '<?= htmlspecialchars(escape($pt['instansi'] ?? '')) ?>')" class="text-brand-600 hover:text-brand-800 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg text-sm font-medium inline-flex items-center gap-1"><i class="ph ph-pencil-simple"></i> Edit</button>
+                                <form action="" method="POST" class="inline-block ml-1" onsubmit="return confirm('Hapus data perusahaan ini?')">
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="action" value="hapus">
+                                    <input type="hidden" name="id" value="<?= $pt['id'] ?>">
+                                    <button type="submit" class="text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg text-sm font-medium inline-flex items-center gap-1"><i class="ph ph-trash"></i> Hapus</button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
