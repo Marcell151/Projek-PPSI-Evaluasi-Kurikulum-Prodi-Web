@@ -64,6 +64,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 set_flash_message('error', 'Gagal memperbarui: Email mungkin bentrok.');
             }
         }
+    } elseif ($action === 'soft_delete') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            $pdo->prepare("UPDATE pengguna SET aktif = 0 WHERE id = ? AND peran = 'mahasiswa'")->execute([$id]);
+            set_flash_message('success', 'Akun Mahasiswa berhasil dinonaktifkan (Soft Delete).');
+        }
+    } elseif ($action === 'restore') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            $pdo->prepare("UPDATE pengguna SET aktif = 1 WHERE id = ? AND peran = 'mahasiswa'")->execute([$id]);
+            set_flash_message('success', 'Akun Mahasiswa berhasil diaktifkan kembali.');
+        }
     } elseif ($action === 'hapus') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id) {
@@ -72,10 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pdo->prepare("DELETE FROM profil_pengguna WHERE pengguna_id = ?")->execute([$id]);
                 $pdo->prepare("DELETE FROM pengguna WHERE id = ? AND peran = 'mahasiswa'")->execute([$id]);
                 $pdo->commit();
-                set_flash_message('success', 'Data Mahasiswa berhasil dihapus.');
+                set_flash_message('success', 'Data Mahasiswa berhasil dihapus permanen (Hard Delete).');
             } catch (Exception $e) {
                 $pdo->rollBack();
-                set_flash_message('error', 'Tidak dapat menghapus mahasiswa ini karena sudah memiliki riwayat evaluasi atau tiket.');
+                set_flash_message('error', 'Tidak dapat menghapus permanen karena mahasiswa ini sudah memiliki riwayat evaluasi/tiket. Gunakan opsi Nonaktifkan (Soft Delete).');
             }
         }
     } elseif ($action === 'impor_excel') {
@@ -128,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     redirect('admin/master/mahasiswa.php');
 }
 
-$stmt = $pdo->query("SELECT u.id, u.nama, u.email, p.nomor_induk FROM pengguna u LEFT JOIN profil_pengguna p ON u.id = p.pengguna_id WHERE u.peran = 'mahasiswa' ORDER BY u.nama ASC");
+$stmt = $pdo->query("SELECT u.id, u.nama, u.email, u.aktif, p.nomor_induk FROM pengguna u LEFT JOIN profil_pengguna p ON u.id = p.pengguna_id WHERE u.peran = 'mahasiswa' ORDER BY u.aktif DESC, u.nama ASC");
 $mahasiswa_list = $stmt->fetchAll();
 
 require_once '../../includes/header.php';
@@ -164,30 +176,43 @@ require_once '../../includes/header.php';
                     <th class="px-6 py-4 font-medium">NIM</th>
                     <th class="px-6 py-4 font-medium">Nama Lengkap</th>
                     <th class="px-6 py-4 font-medium">Email</th>
+                    <th class="px-6 py-4 font-medium text-center">Status</th>
                     <th class="px-6 py-4 font-medium text-right">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
                 <?php if (count($mahasiswa_list) === 0): ?>
-                    <tr><td colspan="4" class="px-6 py-8 text-center text-gray-500">Belum ada data mahasiswa.</td></tr>
+                    <tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Belum ada data mahasiswa.</td></tr>
                 <?php else: ?>
                     <?php foreach ($mahasiswa_list as $mhs): ?>
-                        <tr class="hover:bg-gray-50 transition-colors">
+                        <tr class="hover:bg-gray-50 transition-colors <?= $mhs['aktif'] ? '' : 'opacity-60 bg-gray-50' ?>">
                             <td class="px-6 py-4 text-gray-900 font-medium"><?= escape($mhs['nomor_induk'] ?? '-') ?></td>
                             <td class="px-6 py-4 text-gray-700"><?= escape($mhs['nama']) ?></td>
                             <td class="px-6 py-4 text-gray-500"><?= escape($mhs['email']) ?></td>
+                            <td class="px-6 py-4 text-center">
+                                <?php if ($mhs['aktif']): ?>
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Aktif</span>
+                                <?php else: ?>
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-600">Nonaktif</span>
+                                <?php endif; ?>
+                            </td>
                             <td class="px-6 py-4 text-right whitespace-nowrap">
-                                <button type="button" onclick="bukaModalEdit(<?= $mhs['id'] ?>, '<?= htmlspecialchars(escape($mhs['nama'])) ?>', '<?= htmlspecialchars(escape($mhs['email'])) ?>', '<?= htmlspecialchars(escape($mhs['nomor_induk'] ?? '')) ?>')" class="text-brand-600 hover:text-brand-800 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1">
+                                <button type="button" onclick="bukaModalEdit(<?= $mhs['id'] ?>, '<?= htmlspecialchars(escape($mhs['nama']), ENT_QUOTES) ?>', '<?= htmlspecialchars(escape($mhs['email']), ENT_QUOTES) ?>', '<?= htmlspecialchars(escape($mhs['nomor_induk'] ?? ''), ENT_QUOTES) ?>')" class="text-brand-600 hover:text-brand-800 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1">
                                     <i class="ph ph-pencil-simple"></i> Edit
                                 </button>
-                                <form action="" method="POST" class="inline-block ml-1" onsubmit="return confirm('Hapus data mahasiswa ini?')">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="action" value="hapus">
-                                    <input type="hidden" name="id" value="<?= $mhs['id'] ?>">
-                                    <button type="submit" class="text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1">
-                                        <i class="ph ph-trash"></i> Hapus
-                                    </button>
-                                </form>
+                                <?php if (!$mhs['aktif']): ?>
+                                    <form action="" method="POST" class="inline-block ml-1">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="action" value="restore">
+                                        <input type="hidden" name="id" value="<?= $mhs['id'] ?>">
+                                        <button type="submit" class="text-green-700 hover:text-green-900 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1">
+                                            <i class="ph ph-arrow-counter-clockwise"></i> Aktifkan
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                                <button type="button" onclick="bukaModalHapus(<?= $mhs['id'] ?>, '<?= htmlspecialchars(escape($mhs['nama']), ENT_QUOTES) ?>', <?= $mhs['aktif'] ? 'false' : 'true' ?>)" class="ml-1 text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1">
+                                    <i class="ph ph-trash"></i> Hapus
+                                </button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -296,4 +321,5 @@ function bukaModalEdit(id, nama, email, nim) {
 }
 </script>
 
+<?php require_once '../../includes/modal_hapus.php'; ?>
 <?php require_once '../../includes/footer.php'; ?>

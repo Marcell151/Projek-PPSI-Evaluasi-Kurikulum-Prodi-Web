@@ -60,6 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE pertanyaan SET aktif = ? WHERE id = ?");
         $stmt->execute([$status, $id]);
         set_flash_message('success', 'Status pertanyaan diperbarui.');
+    } elseif ($action === 'soft_delete') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            $pdo->prepare("UPDATE pertanyaan SET aktif = 0 WHERE id = ?")->execute([$id]);
+            set_flash_message('success', 'Pertanyaan berhasil dinonaktifkan (Soft Delete).');
+        }
     } elseif ($action === 'hapus') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id) {
@@ -68,10 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pdo->prepare("DELETE FROM opsi_pertanyaan WHERE pertanyaan_id = ?")->execute([$id]);
                 $pdo->prepare("DELETE FROM pertanyaan WHERE id = ?")->execute([$id]);
                 $pdo->commit();
-                set_flash_message('success', 'Pertanyaan berhasil dihapus.');
+                set_flash_message('success', 'Pertanyaan berhasil dihapus permanen (Hard Delete).');
             } catch (Exception $e) {
                 $pdo->rollBack();
-                set_flash_message('error', 'Tidak dapat menghapus pertanyaan karena sudah memiliki jawaban responden. Gunakan sakelar nonaktif.');
+                set_flash_message('error', 'Tidak dapat menghapus permanen karena pertanyaan sudah memiliki jawaban responden. Gunakan opsi Nonaktifkan (Soft Delete).');
             }
         }
     }
@@ -208,15 +214,10 @@ function renderRowPertanyaan($p) {
                 <i class="ph ph-pencil-simple text-lg"></i>
             </button>
 
-            <!-- Tombol Hapus -->
-            <form action="" method="POST" class="m-0 p-0 flex items-center" onsubmit="return confirm('Hapus pertanyaan ini secara permanen?')">
-                <?= csrf_field() ?>
-                <input type="hidden" name="action" value="hapus">
-                <input type="hidden" name="id" value="<?= $p['id'] ?>">
-                <button type="submit" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Hapus Pertanyaan">
-                    <i class="ph ph-trash text-lg"></i>
-                </button>
-            </form>
+            <!-- Tombol Hapus / Nonaktifkan -->
+            <button type="button" onclick="bukaModalHapus(<?= $p['id'] ?>, `<?= htmlspecialchars(mb_strimwidth($p['teks'], 0, 80, '...'), ENT_QUOTES) ?>`, <?= $p['aktif'] ? 'false' : 'true' ?>)" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Hapus / Nonaktifkan Pertanyaan">
+                <i class="ph ph-trash text-lg"></i>
+            </button>
             
             <!-- Toggle Sakelar -->
             <form action="" method="POST" class="m-0 p-0 flex items-center">
@@ -404,4 +405,5 @@ function bukaModalEdit(id, teks, kategoriId, wajib) {
 }
 </script>
 
+<?php require_once '../../includes/modal_hapus.php'; ?>
 <?php require_once '../../includes/footer.php'; ?>

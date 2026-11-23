@@ -43,15 +43,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE kategori_kompetensi SET aktif = ? WHERE id = ?");
         $stmt->execute([$status, $id]);
         set_flash_message('success', 'Status diperbarui.');
+    } elseif ($action === 'soft_delete') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            $pdo->prepare("UPDATE kategori_kompetensi SET aktif = 0 WHERE id = ?")->execute([$id]);
+            set_flash_message('success', 'Kategori Kompetensi berhasil dinonaktifkan (Soft Delete).');
+        }
     } elseif ($action === 'hapus') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id) {
             try {
                 $stmt = $pdo->prepare("DELETE FROM kategori_kompetensi WHERE id = ?");
                 $stmt->execute([$id]);
-                set_flash_message('success', 'Kategori Kompetensi berhasil dihapus.');
+                set_flash_message('success', 'Kategori Kompetensi berhasil dihapus permanen (Hard Delete).');
             } catch (Exception $e) {
-                set_flash_message('error', 'Tidak dapat menghapus kategori ini karena masih digunakan oleh pertanyaan atau opsi.');
+                set_flash_message('error', 'Tidak dapat menghapus permanen karena kategori masih digunakan pertanyaan/opsi. Gunakan opsi Nonaktifkan (Soft Delete).');
             }
         }
     }
@@ -132,14 +138,9 @@ require_once '../../includes/header.php';
                                     <button type="button" onclick="editData(<?= htmlspecialchars(json_encode($kat)) ?>)" class="text-blue-500 hover:text-blue-700 bg-blue-50 p-2 rounded-lg transition-colors inline-block" title="Edit">
                                         <i class="ph ph-pencil-simple"></i>
                                     </button>
-                                    <form action="" method="POST" class="inline-block ml-1" onsubmit="return confirm('Hapus kategori kompetensi ini?')">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="action" value="hapus">
-                                        <input type="hidden" name="id" value="<?= $kat['id'] ?>">
-                                        <button type="submit" class="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg transition-colors inline-block" title="Hapus">
-                                            <i class="ph ph-trash"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" onclick="bukaModalHapus(<?= $kat['id'] ?>, '<?= htmlspecialchars(escape($kat['nama']), ENT_QUOTES) ?>', <?= $kat['aktif'] ? 'false' : 'true' ?>)" class="ml-1 text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg transition-colors inline-block" title="Hapus / Nonaktifkan">
+                                        <i class="ph ph-trash"></i>
+                                    </button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -174,4 +175,5 @@ function resetForm() {
 }
 </script>
 
+<?php require_once '../../includes/modal_hapus.php'; ?>
 <?php require_once '../../includes/footer.php'; ?>

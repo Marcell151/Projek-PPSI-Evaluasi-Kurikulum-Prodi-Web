@@ -73,6 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE mata_kuliah SET aktif = ? WHERE id = ?");
         $stmt->execute([$status, $id]);
         set_flash_message('success', 'Status mata kuliah diperbarui.');
+    } elseif ($action === 'soft_delete') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id) {
+            $pdo->prepare("UPDATE mata_kuliah SET aktif = 0 WHERE id = ?")->execute([$id]);
+            set_flash_message('success', 'Mata kuliah berhasil dinonaktifkan (Soft Delete).');
+        }
     } elseif ($action === 'hapus') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id) {
@@ -81,10 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $pdo->prepare("DELETE FROM mata_kuliah_bk WHERE mata_kuliah_id = ?")->execute([$id]);
                 $pdo->prepare("DELETE FROM mata_kuliah WHERE id = ?")->execute([$id]);
                 $pdo->commit();
-                set_flash_message('success', 'Mata kuliah berhasil dihapus.');
+                set_flash_message('success', 'Mata kuliah berhasil dihapus permanen (Hard Delete).');
             } catch (Exception $e) {
                 $pdo->rollBack();
-                set_flash_message('error', 'Tidak dapat menghapus mata kuliah karena sudah memiliki data evaluasi. Gunakan tombol nonaktif.');
+                set_flash_message('error', 'Tidak dapat menghapus permanen karena mata kuliah sudah memiliki data evaluasi. Gunakan opsi Nonaktifkan (Soft Delete).');
             }
         }
     }
@@ -253,14 +259,9 @@ require_once '../../includes/header.php';
                                     <button type="button" onclick="editData(<?= htmlspecialchars(json_encode($mk)) ?>)" class="text-blue-500 hover:text-blue-700 bg-blue-50 p-1.5 rounded transition-colors inline-block" title="Edit">
                                         <i class="ph ph-pencil-simple text-base"></i>
                                     </button>
-                                    <form action="" method="POST" class="inline-block ml-1" onsubmit="return confirm('Hapus mata kuliah ini secara permanen?')">
-                                        <?= csrf_field() ?>
-                                        <input type="hidden" name="action" value="hapus">
-                                        <input type="hidden" name="id" value="<?= $mk['id'] ?>">
-                                        <button type="submit" class="text-red-500 hover:text-red-700 bg-red-50 p-1.5 rounded transition-colors inline-block" title="Hapus">
-                                            <i class="ph ph-trash text-base"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button" onclick="bukaModalHapus(<?= $mk['id'] ?>, '<?= htmlspecialchars(escape($mk['kode'] . ' - ' . $mk['nama']), ENT_QUOTES) ?>', <?= $mk['aktif'] ? 'false' : 'true' ?>)" class="ml-1 text-red-500 hover:text-red-700 bg-red-50 p-1.5 rounded transition-colors inline-block" title="Hapus / Nonaktifkan">
+                                        <i class="ph ph-trash text-base"></i>
+                                    </button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -311,4 +312,5 @@ function resetForm() {
 }
 </script>
 
+<?php require_once '../../includes/modal_hapus.php'; ?>
 <?php require_once '../../includes/footer.php'; ?>
