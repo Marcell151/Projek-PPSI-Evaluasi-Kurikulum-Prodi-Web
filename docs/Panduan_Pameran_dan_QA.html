@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Pameran, Alur Demo &amp; Kumpulan Q&amp;A — SI Evaluasi Kurikulum</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 28px 24px 60px;
+            background: #f9fafb;
+        }
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .toolbar button {
+            background: #059669;
+            color: #ffffff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .toolbar button.secondary {
+            background: #f3f4f6;
+            color: #1f2937;
+            border: 1px solid #d1d5db;
+        }
+        .toolbar button:hover { opacity: 0.92; }
+        .doc-container {
+            background: #ffffff;
+            padding: 36px 40px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+        h1 {
+            color: #065f46;
+            font-size: 22px;
+            margin: 0 0 6px;
+            border-bottom: 3px solid #10b981;
+            padding-bottom: 10px;
+        }
+        .subtitle {
+            color: #4b5563;
+            font-size: 13.5px;
+            margin: 0 0 22px;
+        }
+        h2 {
+            color: #065f46;
+            font-size: 17px;
+            margin-top: 28px;
+            margin-bottom: 10px;
+            border-left: 4px solid #10b981;
+            padding-left: 10px;
+        }
+        h3 {
+            color: #111827;
+            font-size: 14.5px;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 18px;
+            font-size: 13.5px;
+        }
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #ecfdf5;
+            color: #065f46;
+            font-weight: 700;
+        }
+        .box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 12px 0 18px;
+            font-size: 13.5px;
+        }
+        .qa-item {
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .qa-q {
+            font-weight: 700;
+            color: #065f46;
+            margin: 0 0 4px;
+            font-size: 14px;
+        }
+        .qa-a {
+            margin: 0;
+            color: #1f2937;
+            font-size: 13.5px;
+        }
+        ul, ol {
+            margin: 6px 0 14px;
+            padding-left: 22px;
+            font-size: 13.5px;
+        }
+        li { margin-bottom: 5px; }
+        code {
+            background: #f3f4f6;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 12.5px;
+        }
+        @media print {
+            body { background: #fff; padding: 0; }
+            .toolbar { display: none; }
+            .doc-container { border: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="toolbar">
+    <span style="font-size:13px; color:#4b5563;"><strong>Siap Copy ke Word / Cetak</strong> — Klik tombol di kanan untuk salin isi atau cetak PDF.</span>
+    <div style="display:flex; gap:8px;">
+        <button type="button" onclick="copyToWord()">Salin Semua untuk Word</button>
+        <button type="button" class="secondary" onclick="window.print()">Cetak / Save PDF</button>
+    </div>
+</div>
+
+<div class="doc-container" id="doc-content">
+    <h1>PANDUAN PAMERAN, ALUR DEMO &amp; KUMPULAN Q&amp;A</h1>
+    <p class="subtitle">
+        <strong>Aplikasi:</strong> Sistem Informasi Evaluasi Kurikulum Program Studi Berbasis Web Terintegrasi Dashboard Analitik<br>
+        <strong>Tim Pameran:</strong> Kurniawan Michael Bimantara (322310013) &bull; Marcell Chandra Kenchana (322310015) &bull; William Christopher Linardi (322310020)<br>
+        <strong>Jadwal:</strong> Senin, 30 November 2026 &bull; Persiapan 10.00 WIB &bull; Pameran 11.00–14.00 WIB &bull; Target minimal 15 pengunjung
+    </p>
+
+    <div class="box">
+        <strong>Tautan Penting Pameran:</strong><br>
+        &bull; <strong>Website Live Demo:</strong> <a href="https://evaluasi-kurikulum.kmw.my.id/auth/login.php" target="_blank">https://evaluasi-kurikulum.kmw.my.id/auth/login.php</a><br>
+        &bull; <strong>Backup Lokal (Offline):</strong> <code>http://localhost/evaluasi_kurikulum_web/auth/login.php</code> (XAMPP)<br>
+        &bull; <strong>Google Form Rekap Pengunjung:</strong> <a href="https://docs.google.com/forms/d/e/1FAIpQLSeYVvh-xd-bSz2UlhDum05bz53NnIwYaPtE8iR2VdeTfAcPDQ/viewform" target="_blank">https://docs.google.com/forms/d/e/1FAIpQLSeYVvh-xd-bSz2UlhDum05bz53NnIwYaPtE8iR2VdeTfAcPDQ/viewform</a>
+    </div>
+
+    <h2>1. Alur Demo Cepat Pameran (Durasi 2–3 Menit per Pengunjung)</h2>
+    <p style="font-size:13.5px; margin-top:0;">Gunakan alur 5 langkah ini agar penjelasan ketiga anggota tim seragam, singkat, dan pengunjung langsung merasakan manfaat aplikasinya.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:14%;">Tahap</th>
+                <th style="width:28%;">Halaman / Menu</th>
+                <th>Poin yang Dijelaskan &amp; Didemokan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>1. Pembukaan</strong><br>(30 detik)</td>
+                <td>Halaman Login<br>(<code>auth/login.php</code>)</td>
+                <td>
+                    "Halo, ini <strong>SI Evaluasi Kurikulum</strong> untuk Prodi Sistem Informasi Ma Chung. Sebelumnya evaluasi kurikulum &amp; tracer study pakai Google Forms terpisah-pisah sehingga rekapnya lama dan manual. Di sistem ini, semua peran—<strong>Mahasiswa, Dosen, Alumni, dan Perusahaan</strong>—terpusat di satu web dan hasilnya langsung jadi grafik otomatis."
+                </td>
+            </tr>
+            <tr>
+                <td><strong>2. Demo Pengisian &amp; Auto-Save</strong><br>(60 detik)</td>
+                <td>Akses Cepat Demo &rarr; Pilih peran (misal <em>Mahasiswa</em> / <em>Alumni</em> yang statusnya <strong>[Belum Mengisi]</strong> atau <strong>[Draf]</strong>) &rarr; <em>Formulir Evaluasi</em></td>
+                <td>
+                    Tunjukkan fitur unggulan untuk responden:<br>
+                    &bull; <strong>Tab 1 (Evaluasi Mata Kuliah):</strong> bisa cari nama/kode matkul atau filter berdasarkan <em>Semester, 15 Bahan Kajian, &amp; Jenis</em>.<br>
+                    &bull; <strong>Tab 2 (Kompetensi Umum):</strong> pertanyaan otomatis menyesuaikan peran; jika responden memberi <strong>nilai rendah (1 atau 2)</strong>, otomatis muncul kolom alasan wajib (min. 10 karakter).<br>
+                    &bull; <strong>Save &amp; Recovery:</strong> tunjukkan indikator <em>"Terakhir disimpan..."</em>. Ajak pengunjung klik 1–2 jawaban atau langsung klik <strong>Submit Final</strong> supaya terasa interaktif.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>3. Demo Dashboard Analitik</strong><br>(60 detik)</td>
+                <td>Logout &rarr; Login Demo sebagai <strong>Admin Prodi</strong> &rarr; <em>Dashboard Evaluasi</em></td>
+                <td>
+                    Tunjukkan hasil pengisian langsung terbaca real-time:<br>
+                    &bull; <strong>3 Kartu KPI:</strong> Total Responden Akun, Pengisian Selesai (dengan rincian per peran), dan Mata Kuliah Aktif.<br>
+                    &bull; <strong>Grafik Radar "Tren Warna Prodi" &amp; Tabel Perbandingan Kompetensi:</strong> membandingkan penilaian Alumni vs Perusahaan (bisa difilter per peran &amp; periode).<br>
+                    &bull; <strong>Peringkat Mata Kuliah:</strong> Top 5 nilai tertinggi &amp; terendah (bisa difilter Prodi/Fakultas/Universitas &amp; Wajib/Pilihan).<br>
+                    &bull; <strong>Ringkasan Tracer Study Alumni:</strong> 3 KPI (waktu tunggu &lt; 6 bulan, kesesuaian bidang SI/TI, gaji di atas UMP), grafik batang status &amp; level perusahaan, grafik pie profesi &amp; instansi, serta <strong>Tabel Rekapitulasi Ulasan &amp; Masukan</strong> (termasuk alasan skor rendah).
+                </td>
+            </tr>
+            <tr>
+                <td><strong>4. Fitur Admin &amp; Ekspor</strong><br>(20 detik)</td>
+                <td>Tombol <em>PDF / Excel</em> &amp; Menu <em>Master / Kuesioner</em></td>
+                <td>
+                    &bull; Tunjukkan tombol <strong>Ekspor PDF &amp; Excel</strong> sekali klik untuk keperluan rapat/akreditasi prodi.<br>
+                    &bull; Jelaskan singkat bahwa Admin bisa <strong>Impor akun massal via Excel/CSV</strong>, kelola pertanyaan secara dinamis tanpa ubah kode, dan ada <strong>Tiket Bantuan</strong> untuk responden.
+                </td>
+            </tr>
+            <tr>
+                <td><strong>5. Tanya Jawab &amp; GForm</strong><br>(30 detik)</td>
+                <td>Daftar Q&amp;A + QR Google Form Pameran</td>
+                <td>
+                    Ajak pengunjung bertanya (jika bingung mau tanya apa, boleh pilih dari daftar Q&amp;A yang disiapkan), jawab singkat, lalu arahkan untuk <strong>scan QR Google Form rekap pameran</strong> dan ambil 1 foto dokumentasi bersama pengunjung.
+                    <br><em>Tips: Jika banyak akun demo sudah habis diisi pengunjung, klik tombol ikon panah putar (Reset) di halaman Login/Dashboard untuk mengembalikan data awal.</em>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>2. Peta Pemahaman Fitur (Bekal Hafalan Tim)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:24%;">Modul / Aspek</th>
+                <th>Ringkasan Fungsi Utama yang Wajib Dipahami Tim</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Portal Responden (4 Peran)</strong></td>
+                <td>Melayani <strong>Mahasiswa, Dosen, Alumni, dan Perusahaan</strong>. Tiap peran otomatis mendapat daftar pertanyaan yang relevan dengan posisinya. Responden punya menu <em>Beranda</em>, <em>Formulir Evaluasi</em>, <em>Riwayat Pengisian</em>, dan <em>Tiket Bantuan</em>.</td>
+            </tr>
+            <tr>
+                <td><strong>Save &amp; Recovery (Auto-Save)</strong></td>
+                <td>Setiap jawaban yang diisi langsung tersimpan otomatis sebagai <strong>Draf</strong> ke database melalui AJAX (<code>api/simpan-draf.php</code>) sekaligus mencatat posisi tab terakhir. Jika browser tertutup atau koneksi putus, responden bisa lanjut dari bagian terakhir tanpa mengulang.</td>
+            </tr>
+            <tr>
+                <td><strong>Dashboard Analitik &amp; Tracer Study</strong></td>
+                <td>Menampilkan KPI real-time, <strong>Grafik Radar Tren Warna Prodi</strong> (5 kategori kompetensi K1–K5), <strong>Peringkat Top 5 &amp; Bottom 5 Mata Kuliah</strong>, <strong>Indikator Tracer Study</strong> (waktu tunggu kerja &lt; 6 bulan, kesesuaian bidang SI/TI, gaji di atas UMP, grafik status/level perusahaan &amp; profesi), serta <strong>Tabel Rekapitulasi Ulasan</strong>. Semua bisa difilter per periode, peran, kelompok/jenis matkul, dan tahun lulus.</td>
+            </tr>
+            <tr>
+                <td><strong>Manajemen Kuesioner Dinamis</strong></td>
+                <td>Admin dapat mengelola <strong>Periode Evaluasi</strong> (buka/tutup), <strong>Bahan Kajian</strong>, <strong>Kategori Kompetensi</strong>, <strong>Mata Kuliah</strong>, dan <strong>Pertanyaan</strong> (termasuk menentukan target peran dan status aktif) langsung dari antarmuka web tanpa perlu mengubah kode program.</td>
+            </tr>
+            <tr>
+                <td><strong>Data Master &amp; Impor Excel</strong></td>
+                <td>Admin mengelola akun 4 peran secara satuan maupun massal via unggah file <strong>Excel/CSV</strong> (dilengkapi <strong>Log Impor</strong>). Menggunakan mekanisme <strong>Soft Delete &amp; Restore</strong> sehingga akun yang sudah pernah mengisi evaluasi tidak merusak riwayat data historis.</td>
+            </tr>
+            <tr>
+                <td><strong>Ekspor Laporan</strong></td>
+                <td>Rekap hasil evaluasi dan ringkasan dashboard dapat langsung dicetak ke format <strong>PDF</strong> maupun diunduh ke <strong>Excel</strong> untuk bahan rapat evaluasi kurikulum atau dokumen akreditasi Prodi.</td>
+            </tr>
+            <tr>
+                <td><strong>Keamanan &amp; Teknologi</strong></td>
+                <td>Dibangun dengan <strong>PHP Native (PDO)</strong>, <strong>MySQL (15 tabel relasional)</strong>, <strong>Tailwind CSS</strong>, dan <strong>Chart.js</strong>. Dilengkapi hashing kata sandi (<em>bcrypt</em>), proteksi <strong>CSRF Token</strong> di setiap form, <strong>PDO Prepared Statement</strong> (anti SQL Injection), sanitasi output (anti XSS), serta pembatasan hak akses berbasis peran (<em>RBAC</em>).</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. Kumpulan Pertanyaan &amp; Jawaban (Q&amp;A) Pameran</h2>
+    <p style="font-size:13.5px; margin-top:0;">Daftar ini disusun berurutan langsung <strong>Pertanyaan &rarr; Jawaban</strong> agar mudah dipilih pengunjung dan langsung bisa dicatat ke Google Form rekap kegiatan.</p>
+
+    <h3>A. Latar Belakang &amp; Manfaat Sistem</h3>
+
+    <div class="qa-item">
+        <p class="qa-q">1. Apa masalah utama yang ingin diselesaikan oleh aplikasi SI Evaluasi Kurikulum ini?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Sebelumnya evaluasi kurikulum dan tracer study di Prodi masih menggunakan Google Forms yang terpisah-pisah tiap semester dan tiap peran. Akibatnya data menumpuk secara terpecah, proses rekap di Excel memakan waktu lama, dan sulit membandingkan tren antar periode secara cepat. Aplikasi ini menyatukan seluruh proses pengisian hingga visualisasi analitik dalam satu web terpusat.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">2. Siapa saja pengguna yang bisa mengakses sistem ini?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Ada 5 jenis pengguna: <strong>Admin Prodi</strong> (pengelola sistem dan pengambil keputusan), serta 4 peran responden yaitu <strong>Mahasiswa</strong>, <strong>Dosen</strong>, <strong>Alumni</strong>, dan <strong>Perusahaan (Pengguna Lulusan)</strong>.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">3. Apa bedanya aplikasi ini dibandingkan tetap memakai Google Forms biasa?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Di aplikasi ini, kuesioner otomatis menyesuaikan peran yang login, memiliki fitur <strong>Auto-Save (Save &amp; Recovery)</strong> supaya progres tidak hilang, terhubung langsung dengan master data mata kuliah &amp; periode akademik, serta langsung menghasilkan grafik perbandingan kompetensi, peringkat mata kuliah, dan ekspor PDF/Excel tanpa perlu olah rumus manual lagi.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">4. Manfaat paling terasa bagi Program Studi dari adanya sistem ini apa?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Pimpinan Prodi bisa melihat mata kuliah mana yang dinilai paling relevan dan mana yang perlu diperbaiki, melihat kesenjangan kompetensi antara harapan perusahaan dengan lulusan, serta menyiapkan laporan hasil evaluasi dan tracer study untuk keperluan rapat kurikulum maupun akreditasi jauh lebih cepat.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">5. Apakah aplikasi ini hanya untuk evaluasi mata kuliah atau juga mencakup Tracer Study?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Keduanya terintegrasi. Selain mengevaluasi kelayakan 55 mata kuliah dan kompetensi kurikulum, sistem ini juga menampung data Tracer Study alumni seperti waktu tunggu kerja di bawah 6 bulan, kesesuaian pekerjaan dengan bidang SI/TI, tingkat gaji di atas UMP, skala perusahaan, dan sebaran profesi lulusan.</p>
+    </div>
+
+    <h3>B. Fitur Responden &amp; Cara Pengisian</h3>
+
+    <div class="qa-item">
+        <p class="qa-q">6. Bagaimana cara kerja fitur Save &amp; Recovery (Simpan Draf Otomatis)?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Setiap kali responden memilih jawaban di formulir, sistem langsung mengirim dan menyimpannya ke database sebagai status <em>Draf</em> melalui AJAX secara otomatis (terlihat indikator waktu simpan terakhir) beserta posisi tab terakhir. Jadi bila internet terputus atau responden harus berhenti di tengah jalan, mereka bisa login lagi nanti dan melanjutkan tanpa mengulang dari awal.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">7. Apakah pertanyaan yang muncul untuk Mahasiswa, Dosen, Alumni, dan Perusahaan sama semua?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Tidak. Sistem menyaring pertanyaan secara otomatis berdasarkan peran akun yang login (<em>peran sasaran</em>). Ada pertanyaan umum yang berlaku untuk semua peran, dan ada pertanyaan khusus—misalnya pertanyaan terkait kesesuaian pekerjaan dan waktu tunggu kerja hanya muncul untuk Alumni.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">8. Mata kuliah di Prodi kan banyak, apakah responden tidak bingung saat mencarinya di formulir?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Tidak, karena di Tab 1 (Evaluasi Mata Kuliah) sudah disediakan pencarian kode/nama, filter berdasarkan <strong>Semester</strong>, <strong>15 Bahan Kajian</strong>, dan <strong>Jenis (Wajib/Pilihan)</strong>, serta pengelompokan otomatis menurut Bahan Kajian khusus untuk Perusahaan agar responden cepat menemukan mata kuliah yang relevan.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">9. Setelah responden menekan Submit Final, apakah jawabannya masih bisa diubah lagi?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Setelah berstatus <em>Final</em>, jawaban dikunci agar hasil rekap analitik di dashboard tetap konsisten dan tidak berubah-ubah. Namun responden tetap bisa melihat arsip pengisiannya melalui menu <strong>Riwayat</strong>.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">10. Bagaimana jika responden mengalami kendala saat mengisi, misalnya mata kuliah tidak ditemukan atau salah data profil?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Sistem menyediakan fitur <strong>Tiket Bantuan</strong> di portal responden. Responden dapat mengirim laporan/pertanyaan langsung dari akunnya, lalu Admin Prodi bisa memantau dan menindaklanjutinya melalui menu <em>Tiket</em> di halaman Admin.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">11. Apakah responden bisa mengisi kuesioner berulang kali dalam satu periode yang sama?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Tidak bisa. Sistem membatasi satu akun hanya dapat melakukan satu kali pengisian final untuk setiap periode evaluasi aktif guna mencegah duplikasi suara yang bisa memengaruhi keakuratan grafik.</p>
+    </div>
+
+    <h3>C. Fitur Dashboard Analitik, Admin &amp; Laporan</h3>
+
+    <div class="qa-item">
+        <p class="qa-q">12. Apa maksud dari grafik "Tren Warna Prodi" di Dashboard Admin?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Grafik radar <em>Tren Warna Prodi</em> menampilkan peta kekuatan 5 kategori kompetensi utama Program Studi Sistem Informasi. Dari grafik ini, Prodi bisa membandingkan secara visual bagaimana persepsi Alumni dibandingkan kebutuhan Perusahaan (atau peran lain sesuai filter), sehingga terlihat kompetensi mana yang paling kuat dan mana yang perlu ditingkatkan.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">13. Filter apa saja yang tersedia di Dashboard Analitik?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Admin dapat memfilter data berdasarkan <strong>Periode Evaluasi</strong>, <strong>Peran Responden</strong> (Semua/Mahasiswa/Dosen/Alumni/Perusahaan), <strong>Kelompok Mata Kuliah</strong> (Prodi/Fakultas/Universitas), <strong>Jenis Mata Kuliah</strong> (Wajib/Pilihan), serta <strong>Angkatan Tahun Lulus</strong> khusus pada bagian Tracer Study.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">14. Bagaimana sistem menentukan Top 5 Mata Kuliah Tertinggi dan Terendah?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Sistem menghitung nilai rata-rata skor kelayakan mata kuliah dari seluruh responden yang sudah berstatus final pada periode dan filter yang dipilih, lalu mengurutkannya otomatis menjadi 5 mata kuliah dengan nilai tertinggi dan 5 mata kuliah dengan nilai terendah untuk prioritas evaluasi.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">15. Bagaimana cara Admin menambahkan ratusan akun mahasiswa atau alumni tanpa input satu per satu?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Admin cukup menggunakan fitur <strong>Impor Data User Massal</strong> dengan mengunggah file <strong>Excel atau CSV</strong> sesuai format. Sistem akan otomatis membuatkan akun beserta kata sandi default, sekaligus mencatat riwayat keberhasilan atau baris yang gagal pada menu <strong>Log Impor</strong>.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">16. Jika semester depan Prodi ingin menambah atau mengganti pertanyaan kuesioner, apakah harus menghubungi programmer?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Tidak perlu. Di menu <strong>Manajemen Kuesioner</strong>, Admin dapat menambah, mengubah, mengurutkan, atau mengaktifkan/menonaktifkan pertanyaan, mata kuliah, bahan kajian, dan kategori kompetensi secara mandiri langsung dari web.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">17. Mengapa di data master Admin ada fitur Nonaktifkan (Soft Delete) selain Hapus Permanen?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Karena jika akun yang sudah pernah mengisi evaluasi dihapus permanen, data historis dan statistik periode sebelumnya bisa hilang atau rusak. Dengan <em>Soft Delete</em>, akun dinonaktifkan agar tidak bisa login lagi, namun riwayat jawabannya tetap utuh dan akun masih bisa diaktifkan kembali (<em>Restore</em>) jika diperlukan.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">18. Output laporan apa saja yang bisa dihasilkan dari sistem ini?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Hasil evaluasi dapat langsung diekspor sekali klik ke format <strong>PDF</strong> (siap cetak untuk rapat atau dokumentasi akreditasi) dan format <strong>Excel</strong> (apabila Prodi ingin mengolah data mentah lebih lanjut).</p>
+    </div>
+
+    <h3>D. Teknis, Keamanan &amp; Pengembangan</h3>
+
+    <div class="qa-item">
+        <p class="qa-q">19. Teknologi apa saja yang digunakan untuk membangun aplikasi web ini?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Backend menggunakan <strong>PHP Native</strong> dengan koneksi database <strong>MySQL (15 tabel relasional berbasis PDO)</strong>, tampilan antarmuka menggunakan <strong>Tailwind CSS</strong> dan ikon <strong>Phosphor Icons</strong>, sedangkan visualisasi grafik interaktif di dashboard menggunakan library <strong>Chart.js</strong>.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">20. Bagaimana sistem ini menjaga keamanan data dan mencegah akses yang tidak berhak?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Sistem menerapkan beberapa lapis keamanan: kata sandi dienkripsi dengan <strong>password hashing (bcrypt)</strong>, pembatasan hak akses berbasis peran (<strong>RBAC</strong>) agar responden tidak bisa membuka halaman Admin, proteksi <strong>CSRF Token</strong> pada setiap pengiriman form, <strong>PDO Prepared Statements</strong> untuk mencegah SQL Injection, serta sanitasi tampilan untuk mencegah XSS.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">21. Apakah aplikasi ini bisa dibuka lewat HP (smartphone) atau hanya lewat laptop?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Bisa dibuka lewat HP maupun laptop karena desain antarmukanya sudah dibuat <strong>responsif</strong>. Hal ini memudahkan alumni dan perwakilan perusahaan yang umumnya lebih praktis mengisi kuesioner melalui smartphone.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">22. Bagaimana alur kerja tim saat membangun sistem ini dari awal hingga selesai?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Kami mengikuti 5 fase manajemen proyek (<em>Initiating, Planning, Executing, Monitoring, Closing</em>) dari September hingga November 2026: dimulai dari wawancara kebutuhan dengan pihak Prodi, penyusunan dokumen SRS, ERD (15 tabel) &amp; desain UI/UX di Figma, pengembangan modul bertahap, hingga pengujian internal <strong>46 kasus QA Black-Box Testing (100% PASS)</strong> dan <strong>18 skenario UAT (100% Diterima)</strong>.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">23. Apa tantangan terbesar yang dihadapi selama pengerjaan proyek ini?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Tantangan terbesarnya adalah merancang struktur basis data kuesioner yang cukup fleksibel untuk 4 peran berbeda sekaligus tetap cepat saat diagregasi menjadi grafik radar, peringkat mata kuliah, dan indikator Tracer Study secara dinamis dengan banyak kombinasi filter.</p>
+    </div>
+
+    <div class="qa-item">
+        <p class="qa-q">24. Bagaimana sistem menangani pergantian semester atau tahun ajaran baru?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Admin cukup membuat entri baru di menu <strong>Periode Evaluasi</strong> dan mengatur statusnya menjadi <em>Buka</em>. Data dari periode sebelumnya otomatis tersimpan sebagai arsip historis dan tetap bisa dilihat kapan saja lewat dropdown filter Periode di Dashboard.</p>
+    </div>
+
+    <div class="qa-item" style="border-bottom:none;">
+        <p class="qa-q">25. Jika sistem ini dikembangkan lebih lanjut ke depannya, fitur apa yang bisa ditambahkan?</p>
+        <p class="qa-a"><strong>Jawaban:</strong> Ke depannya sistem dapat diintegrasikan dengan <strong>Single Sign-On (SSO) / SIAKAD kampus</strong> agar mahasiswa dan dosen tidak perlu akun terpisah, penambahan notifikasi pengingat otomatis via Email/WhatsApp bagi responden yang belum mengisi, serta fitur analisis ringkasan otomatis untuk saran teks/esai responden.</p>
+    </div>
+</div>
+
+<script>
+function copyToWord() {
+    const el = document.getElementById('doc-content');
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    try {
+        document.execCommand('copy');
+        alert('Seluruh isi panduan & Q&A berhasil disalin! Silakan langsung Paste (Ctrl+V) ke Microsoft Word.');
+    } catch (e) {
+        alert('Gagal menyalin otomatis. Silakan tekan Ctrl+A lalu Ctrl+C.');
+    }
+    sel.removeAllRanges();
+}
+</script>
+</body>
+</html>
